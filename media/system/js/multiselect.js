@@ -6,16 +6,16 @@
 /**
  * JavaScript behavior to allow shift select in administrator grids
  */
-(function() {
 
+(function() {
+    "use strict";
     Joomla = window.Joomla || {};
     var boxes;
     Joomla.JMultiSelect = function(table) {
         var last,
 
             initialize = function(table) {
-                tableEl = document.querySelector('#' + table);
-                boxes = document.querySelectorAll('input[type=checkbox]');
+                boxes = table.querySelectorAll('input[type=checkbox]');
                 var i = 0, countB = boxes.length;
                 for (i; boxes<countB; i++) {
                     boxes[i].addEventListener('click', function (e) {
@@ -44,3 +44,11 @@
         initialize(table);
     }
 })();
+
+document.addEventListener('DOMContentLoaded', function() {
+    var options = Joomla.getOptions("multiselect", {id: '#adminForm'});
+    var element = document.querySelector(options.id);
+    if (element) {
+        Joomla.JMultiSelect(element);
+    }
+});

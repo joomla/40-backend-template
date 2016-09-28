@@ -46,8 +46,7 @@
 })();
 
 document.addEventListener('DOMContentLoaded', function() {
-    var options = Joomla.getOptions("multiselect", {id: '#adminForm'});
-    var element = document.querySelector(options.id);
+    var element = document.querySelector('.js-multiselect');
     if (element) {
         Joomla.JMultiSelect(element);
     }

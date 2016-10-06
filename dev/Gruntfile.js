@@ -1,7 +1,18 @@
 module.exports = function(grunt) {
 
-	var CmSettings = grunt.file.readYAML('codemirror.yaml');
-	var path = require('path');
+	var CmSettings  = grunt.file.readYAML('codemirror.yaml'),
+		venVersions = grunt.file.readYAML('vendors_versions.yaml'),
+		path        = require('path'),
+		preText     = '{ "name": "joomla-assets", "version": "4.0.0", "description": "External assets that Joomla is using", "dependencies": { ',
+		postText    = '  }, "license": "GPL-2.0+" }',
+		name,
+		vendorsTxt = '';
+
+	for (name in venVersions.vendors) {
+		vendorsTxt += '"' + name + '": "' + venVersions.vendors[name] + '",';
+	}
+
+	grunt.file.write('assets/package.json', preText + vendorsTxt.substring(0, vendorsTxt.length - 1) + postText);
 
 	// Project configuration.
 	grunt.initConfig({
@@ -49,8 +60,7 @@ module.exports = function(grunt) {
 			},
 			tmp: {
 				src: [
-					'assets/tmp/**',
-					'assets/node_modules/**',
+					'assets/**',
 				],
 				expand: true,
 				options: {
@@ -67,14 +77,14 @@ module.exports = function(grunt) {
 		// Get the latest codemirror
 		curl: {
 			'cmGet': {
-				src: 'https://github.com/codemirror/CodeMirror/archive/' + CmSettings.version + '.zip',
+				src: 'https://github.com/codemirror/CodeMirror/archive/' + venVersions.vendors.codemirror + '.zip',
 				dest: 'assets/tmp/cmzip.zip'
 			}
 		},
 		unzip: {
 			'cmUnzip': {
 				router: function (filepath) {
-					var re = new RegExp('CodeMirror-' + CmSettings.version + '/', 'g');
+					var re = new RegExp('CodeMirror-' + venVersions.vendors.codemirror + '/', 'g');
 					var newFilename = filepath.replace(re, '');
 					return newFilename;
 				},

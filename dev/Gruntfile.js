@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 		venVersions = grunt.file.readYAML('vendors_versions.yaml'),
 		path        = require('path'),
 		preText     = '{ "name": "joomla-assets", "version": "4.0.0", "description": "External assets that Joomla is using", "dependencies": { ',
-		postText    = '  }, "license": "GPL-2.0+" }',
+		postText    = ' }, "license": "GPL-2.0+" }',
 		name,
 		vendorsTxt = '';
 
@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 		vendorsTxt += '"' + name + '": "' + venVersions.vendors[name] + '",';
 	}
 
+	// Build the package.json for all 3rd Party assets
 	grunt.file.write('assets/package.json', preText + vendorsTxt.substring(0, vendorsTxt.length - 1) + postText);
 
 	// Project configuration.
@@ -190,12 +191,6 @@ module.exports = function(grunt) {
 					// 	expand: true,
 					// 	ext: '.min.js'
 					// }
-					{
-						src: ['<%= folder.chosenjs %>/j-chosen.js','!<%= folder.chosenjs %>/j-chosen.min.js'],
-						dest: '',
-						expand: true,
-						ext: '.min.js'
-					},
 				]
 			}
 		},

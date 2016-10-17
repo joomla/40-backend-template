@@ -284,10 +284,15 @@ abstract class JHtmlBehavior
 	 *
 	 * @since   1.7
 	 */
-	public static function multiselect()
+	public static function multiselect($id = 'adminForm')
 	{
 		// Include core
 		static::core();
+
+		if ($id !== 'adminForm')
+		{
+			JFactory::getDocument()->addScriptOptions('js-multiselect', array('id' => $id));
+		}
 
 		JHtml::_('script', 'system/multiselect.min.js', false, true);
 	}

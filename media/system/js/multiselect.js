@@ -46,7 +46,18 @@
 })();
 
 document.addEventListener('DOMContentLoaded', function() {
-    var element = document.querySelector('.js-multiselect');
+    var element;
+
+    if (Joomla.getOptions('js-multiselect')) {
+        element = document.querySelector(Joomla.getOptions('js-multiselect').id);
+    } else {
+        element = document.querySelector('.js-multiselect');
+
+        if (!element) {
+            element = document.querySelector('#adminForm');
+        }
+    }
+
     if (element) {
         Joomla.JMultiSelect(element);
     }

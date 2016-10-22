@@ -148,6 +148,7 @@ abstract class JHtmlTag
 			static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
 		}
 
+JFactory::getApplication()->enqueueMessage($msg, 'error');
 		return static::$items[$hash];
 	}
 
@@ -166,15 +167,72 @@ abstract class JHtmlTag
 		// Get the component parameters
 		$params = JComponentHelper::getParams("com_tags");
 		$minTermLength = (int) $params->get("min_term_length", 3);
+		$url = JUri::root() . 'index.php?option=com_tags&task=tags.searchAjax';
 
 		JText::script('JGLOBAL_KEEP_TYPING');
 		JText::script('JGLOBAL_LOOKING_FOR');
 
 		// Include scripts
 		JHtml::_('behavior.core');
-		JHtml::_('jquery.framework');
-		JHtml::_('script', 'system/legacy/ajax-chosen.min.js', false, true, false, false, JDEBUG);
+		JHtml::_('stylesheet', 'vendor/choices/css/choices.css', array(), true);
+		JHtml::_('script', 'vendor/choices/choices.js', false, true, false, false, JDEBUG);
 
+		JFactory::getDocument()->addScriptDeclaration(
+<<<JS
+	document.addEventListener('DOMContentLoaded', function(){
+
+	var element = document.querySelector('.js-choices');
+
+ 	var tags_field = new Choices(element, {
+		addItems: true,
+		removeItemButton: true,
+		removeItems: true,
+		duplicateItems: false,
+		paste: true,
+		search: true,
+		flip: true,
+	}).ajax(function(callback) {
+		fetch('$url')
+			.then(function(response) {
+				response.json().then(function(data) {
+				callback(data, 'value', 'text');
+			});
+		})
+		.catch(function(error) {
+			console.log(error);
+		});
+});
+	var input = element.parentNode.querySelector('.choices__input.choices__input--cloned');
+
+	// Override to provide ability to add new tag
+	input.addEventListener('keypress', function(event) {
+		if (event.keyCode === 13) {
+	
+			var choisesVal = tags_field.getValue();
+			var elem = document.querySelector('#jform_tags');
+			var value = element.parentNode.querySelector('.choices__input.choices__input--cloned').value;
+			if (value) {
+				var option = document.createElement('option');
+				option.value = "#new#" + value;
+				option.text = value;
+				elem.add(option);
+	
+				choisesVal.push({id: choisesVal.length +1, choiceId: choisesVal.length +1, groupId: -1, value: option.value, label: option.text});
+	
+				tags_field.setValue([{id: choisesVal.length +1, choiceId: choisesVal.length +1, groupId: -1, value: option.value, label: option.text}]);
+	
+				element.parentNode.querySelector('.choices__input.choices__input--cloned').value = '';
+			}
+		}
+	})
+
+});
+
+
+JS
+);
+
+	/**
 		JFactory::getDocument()->addScriptOptions(
 			'ajax-chosen',
 			array(
@@ -202,5 +260,6 @@ abstract class JHtmlTag
 				)
 			);
 		}
+	 * 	 * */
 	}
 }

@@ -192,6 +192,7 @@ $choices-button-offset: 8px !default;
   border-bottom-left-radius: $choices-border-radius;
   border-bottom-right-radius: $choices-border-radius;
   overflow: hidden;
+  word-break: break-all;
   &.is-active { display: block; }
   .is-open & { border-color: darken($choices-keyline-color, 15%); }
   .is-flipped & {

@@ -220,6 +220,7 @@
   border-bottom-left-radius: 2.5px;
   border-bottom-right-radius: 2.5px;
   overflow: hidden;
+  word-break: break-all;
 }
 
 .choices__list--dropdown.is-active {

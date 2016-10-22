@@ -54,7 +54,7 @@
 			type="tag"
 			label="JTAG"
 			description="JTAG_DESC"
-			class="advancedSelect col-md-12"
+			class="js-choices col-md-12"
 			multiple="true"
 		>
 		</field>

@@ -1,4 +1,4 @@
-/*! choices.js v2.3.0 | (c) 2016 Josh Johnson | https://github.com/jshjohnson/Choices#readme */ 
+/*! choices.js v2.4.0 | (c) 2016 Josh Johnson | https://github.com/jshjohnson/Choices#readme */ 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -187,6 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.currentValue = '';
 
 	    // Retrieve triggering element (i.e. element with 'data-choice' trigger)
+	    this.element = element;
 	    this.passedElement = (0, _utils.isType)('String', element) ? document.querySelector(element) : element;
 
 	    if (!this.passedElement) {
@@ -308,17 +309,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      // Reinstate passed element
 	      this.passedElement.classList.remove(this.config.classNames.input, this.config.classNames.hiddenState);
-	      this.passedElement.tabIndex = '';
+	      this.passedElement.removeAttribute('tabindex');
 	      this.passedElement.removeAttribute('style', 'display:none;');
 	      this.passedElement.removeAttribute('aria-hidden');
+	      this.passedElement.removeAttribute('data-choice', 'active');
 
-	      this.containerOuter.outerHTML = this.passedElement.outerHTML;
+	      // Re-assign values - this is weird, I know
+	      this.passedElement.value = this.passedElement.value;
 
-	      // Nullify stores
-	      this.passedElement = null;
-	      this.userConfig = null;
-	      this.config = null;
-	      this.store = null;
+	      // Move passed element back to original position
+	      this.containerOuter.parentNode.insertBefore(this.passedElement, this.containerOuter);
+	      // Remove added elements
+	      this.containerOuter.parentNode.removeChild(this.containerOuter);
+
+	      // Clear data store
+	      this.clearStore();
+
+	      // Nullify instance-specific data
+	      this.config.templates = null;
 
 	      // Uninitialise
 	      this.initialised = false;
@@ -970,7 +978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function clearInput() {
 	      if (this.input.value) this.input.value = '';
 	      if (this.passedElement.type !== 'select-one') {
-	        this.input.style.width = (0, _utils.getWidthOfInput)(this.input);
+	        this._setInputWidth();
 	      }
 	      if (this.passedElement.type !== 'text' && this.config.search) {
 	        this.isSearching = false;
@@ -1206,7 +1214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // we can edit the item value. Otherwise if we can remove items, remove all selected items
 	        if (this.config.editItems && !hasHighlightedItems && lastItem) {
 	          this.input.value = lastItem.value;
-	          this.input.style.width = (0, _utils.getWidthOfInput)(this.input);
+	          this._setInputWidth();
 	          this._removeItem(lastItem);
 	          this._triggerChange(lastItem.value);
 	        } else {
@@ -1437,7 +1445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    /**
-	     * Destroy event listeners
+	     * Remove event listeners
 	     * @return
 	     * @private
 	     */
@@ -1462,6 +1470,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.input.removeEventListener('paste', this._onPaste);
 	      this.input.removeEventListener('focus', this._onFocus);
 	      this.input.removeEventListener('blur', this._onBlur);
+	    }
+
+	    /**
+	     * Set the correct input width based on placeholder
+	     * value or input value
+	     * @return
+	     */
+
+	  }, {
+	    key: '_setInputWidth',
+	    value: function _setInputWidth() {
+	      if (this.config.placeholder && (this.config.placeholderValue || this.passedElement.getAttribute('placeholder'))) {
+	        // If there is a placeholder, we only want to set the width of the input when it is a greater
+	        // length than 75% of the placeholder. This stops the input jumping around.
+	        var placeholder = this.config.placeholder ? this.config.placeholderValue || this.passedElement.getAttribute('placeholder') : false;
+	        if (this.input.value && this.input.value.length >= placeholder.length / 1.25) {
+	          this.input.style.width = (0, _utils.getWidthOfInput)(this.input);
+	        }
+	      } else {
+	        // If there is no placeholder, resize input to contents
+	        this.input.style.width = (0, _utils.getWidthOfInput)(this.input);
+	      }
 	    }
 
 	    /**
@@ -1674,17 +1704,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_onInput',
 	    value: function _onInput() {
 	      if (this.passedElement.type !== 'select-one') {
-	        if (this.config.placeholder && (this.config.placeholderValue || this.passedElement.getAttribute('placeholder'))) {
-	          // If there is a placeholder, we only want to set the width of the input when it is a greater
-	          // length than 75% of the placeholder. This stops the input jumping around.
-	          var placeholder = this.config.placeholder ? this.config.placeholderValue || this.passedElement.getAttribute('placeholder') : false;
-	          if (this.input.value && this.input.value.length >= placeholder.length / 1.25) {
-	            this.input.style.width = (0, _utils.getWidthOfInput)(this.input);
-	          }
-	        } else {
-	          // If there is no placeholder, resize input to contents
-	          this.input.style.width = (0, _utils.getWidthOfInput)(this.input);
-	        }
+	        this._setInputWidth();
 	      }
 	    }
 

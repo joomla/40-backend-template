@@ -110,6 +110,7 @@ $url    = ($readonly ? ''
 	echo JHtml::_('bootstrap.renderModal',
 		'imageModal_'. $id,
 		array(
+			'url'    => $url,
 			'title' => JText::_('JLIB_FORM_CHANGE_IMAGE'),
 			'closeButton' => true,
 			'footer' => '<button class="btn btn-secondary" data-dismiss="modal">' . JText::_('JCANCEL') . '</button>'

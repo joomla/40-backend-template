@@ -2,33 +2,34 @@
  * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-jQuery(function($)
-{
-	var treeselectmenu = $('div#treeselectmenu').html();
+document.addEventListener('DOMContentLoaded', function() {
+	var i ,l, $ = jQuery, treeselectmenu = document.getElementById('treeselectmenu').innerHTML;
 
-	$('.treeselect li').each(function()
-	{
-		$li = $(this);
-		$div = $li.find('div.treeselect-item:first');
+	var items = document.querySelector('.treeselect li');
+	for (i = 0, l = items.length; l>i; i++) {
+		li = items[i];
+		div = li.querySelector('div.treeselect-item:first');
 
 		// Add icons
-		$li.prepend('<span class="float-xs-left icon-"></span>');
+		var node = document.createElement('span').classList.add('float-xs-left').add('icon-');
+		li.insertBefore(node, li.firstChild);
 
 		// Append clearfix
-		$div.after('<div class="clearfix"></div>');
+		node = document.creteElement('div').classList.add('clearfix');
+		div.appendChild(node);
 
-		if ($li.find('ul.treeselect-sub').length) {
+		if (li.querySelector('ul.treeselect-sub').length) {
 			// Add classes to Expand/Collapse icons
-			$li.find('span.icon-').addClass('treeselect-toggle icon-minus');
+			li.querySelector('span.icon-').classList.add('treeselect-toggle').add('icon-minus');
 
 			// Append drop down menu in nodes
-			$div.find('label:first').after(treeselectmenu);
-
-			if (!$li.find('ul.treeselect-sub ul.treeselect-sub').length) {
-				$li.find('div.treeselect-menu-expand').remove();
+			treeselectmenu.appendChild(div.querySelector('label:first'));
+			if (!li.querySelector('ul.treeselect-sub ul.treeselect-sub').length) {
+				li.removeChild(li.querySelector('div.treeselect-menu-expand'));
 			}
 		}
-	});
+	}
+
 
 	// Takes care of the Expand/Collapse of a node
 	$('span.treeselect-toggle').click(function()
@@ -36,21 +37,20 @@ jQuery(function($)
 		$i = $(this);
 
 		// Take care of parent UL
-		if ($i.parent().find('ul.treeselect-sub').is(':visible')) {
+		if ($i.parent().querySelector('ul.treeselect-sub').is(':visible')) {
 			$i.removeClass('icon-minus').addClass('icon-plus');
-			$i.parent().find('ul.treeselect-sub').hide();
-			$i.parent().find('ul.treeselect-sub i.treeselect-toggle').removeClass('icon-minus').addClass('icon-plus');
+			$i.parent().querySelector('ul.treeselect-sub').hide();
+			$i.parent().querySelector('ul.treeselect-sub i.treeselect-toggle').removeClass('icon-minus').addClass('icon-plus');
 		} else {
 			$i.removeClass('icon-plus').addClass('icon-minus');
-			$i.parent().find('ul.treeselect-sub').show();
-			$i.parent().find('ul.treeselect-sub i.treeselect-toggle').removeClass('icon-plus').addClass('icon-minus');
+			$i.parent().querySelector('ul.treeselect-sub').show();
+			$i.parent().querySelector('ul.treeselect-sub i.treeselect-toggle').removeClass('icon-plus').addClass('icon-minus');
 		}
 	});
 
 	// Takes care of the filtering
-	$('#treeselectfilter').keyup(function()
-	{
-		var text = $(this).val().toLowerCase();
+	document.getElementById('treeselectfilter').addEventListener('keyup', function() {
+		var text = this.value.toLowerCase();
 		var hidden = 0;
 		$("#noresultsfound").hide();
 		var $list_elements = $('.treeselect li');
@@ -71,51 +71,72 @@ jQuery(function($)
 	});
 
 	// Checks all checkboxes the tree
-	$('#treeCheckAll').click(function()
+	document.getElementById('treeCheckAll').addEventListener('click', function()
 	{
-		$('.treeselect input').attr('checked', 'checked');
+		document.querySelector('.treeselect input').setAttribute('checked', 'checked');
 	});
 
 	// Unchecks all checkboxes the tree
-	$('#treeUncheckAll').click(function()
+	document.getElementById('treeUncheckAll').addEventListener('click', function()
 	{
-		$('.treeselect input').attr('checked', false);
+		document.querySelector('.treeselect input').removeAttribute('checked');
 	});
 
 	// Checks all checkboxes the tree
-	$('#treeExpandAll').click(function()
+	document.getElementById('treeExpandAll').addEventListener('click', function()
 	{
 		$('ul.treeselect ul.treeselect-sub').show();
-		$('ul.treeselect i.treeselect-toggle').removeClass('icon-plus').addClass('icon-minus');
+		document.querySelector('ul.treeselect i.treeselect-toggle').classList.remove('icon-plus').add('icon-minus');
 	});
 
 	// Unchecks all checkboxes the tree
-	$('#treeCollapseAll').click(function()
+	document.getElementById('treeCollapseAll').addEventListener('click', function()
 	{
 		$('ul.treeselect ul.treeselect-sub').hide();
-		$('ul.treeselect i.treeselect-toggle').removeClass('icon-minus').addClass('icon-plus');
+		document.querySelector('ul.treeselect i.treeselect-toggle').classList.remove('icon-minus').add('icon-plus');
 	});
 	// Take care of children check/uncheck all
-	$('a.checkall').click(function()
+	document.querySelector('a.checkall').addEventListener('click', function()
 	{
 		$(this).parents().eq(5).find('ul.treeselect-sub input').attr('checked', 'checked');
 	});
-	$('a.uncheckall').click(function()
+	document.querySelector('a.uncheckall').click(function()
 	{
 		$(this).parents().eq(5).find('ul.treeselect-sub input').attr('checked', false);
 	});
 
 	// Take care of children toggle all
-	$('a.expandall').click(function()
+	document.querySelector('a.expandall').addEventListener('click', function()
 	{
 		var $parent = $(this).parents().eq(6);
-		$parent.find('ul.treeselect-sub').show();
-		$parent.find('ul.treeselect-sub i.treeselect-toggle').removeClass('icon-plus').addClass('icon-minus');
+		$parent.querySelector('ul.treeselect-sub').show();
+		$parent.querySelector('ul.treeselect-sub i.treeselect-toggle').removeClass('icon-plus').addClass('icon-minus');
 	});
-	$('a.collapseall').click(function()
+	document.querySelector('a.collapseall').addEventListener('click', function()
 	{
 		var $parent = $(this).parents().eq(6);
-		$parent.find('li ul.treeselect-sub').hide();
-		$parent.find('li i.treeselect-toggle').removeClass('icon-minus').addClass('icon-plus');
+		$parent.querySelector('li ul.treeselect-sub').hide();
+		$parent.querySelector('li i.treeselect-toggle').removeClass('icon-minus').addClass('icon-plus');
 	});
+});
+
+function menuHide(val)
+{
+	if (val == 0 || val == '-')
+	{
+		$('#menuselect-group').hide();
+	}
+	else
+	{
+		$('#menuselect-group').show();
+	}
+}
+
+jQuery(document).ready(function()
+{
+	menuHide(document.getElementById('jform_assignment').value);
+	jQuery('#jform_assignment').change(function()
+	{
+		menuHide(jQuery(this).val());
+	})
 });

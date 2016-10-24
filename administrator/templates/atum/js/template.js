@@ -10,7 +10,7 @@
 {
 	$(document).ready(function()
 	{
-		var $w = $(window);
+		var wrapper = document.getElementById('wrapper');
 
 		/**
 		 * Bootstrap tooltips
@@ -19,215 +19,255 @@
 			html: true
 		});
 
+		if (!document.getElementById('sidebar-wrapper').getAttribute('data-hidden')) {
+			/**
+			 * Sidebar
+			 */
+			var sidebar = document.getElementById('sidebar-wrapper');
+			var menu    = sidebar.querySelector('#menu');
+			// Apply 2nd level collapse
+			var first = Array.prototype.slice.call(menu.querySelector('.collapse-level-1'));
+			first.forEach(function(){
+				this.classList.remove('collapse-level-1').add('collapse-level-2');
+			});
 
-		/**
-		 * Sidebar
-		 */
-		var sidebar = $('#sidebar-wrapper');
-		var wrapper = $('#wrapper');
-		var menu    = sidebar.find('#menu');
+			// menu.querySelector('.nav > .parent > a')
+			// 	.classList.remove('data-parent');
 
-		// Apply 2nd level collapse
-		menu.find('.nav > .parent > ul')
-			.removeClass('collapse-level-1')
-			.addClass('collapse-level-2');
-		menu.find('.nav > .parent > a')
-			.removeAttr('data-parent');
-
-		function animateWrapper()
-		{
-			var logo       = $('#main-brand');
-			var menuToggle = $('#header').find('.menu-toggle');
-			var isClosed   = wrapper.hasClass('closed');
-
-			if (isClosed)
+			function animateWrapper()
 			{
-				logo.stop(true, false).fadeIn();
-				wrapper.removeClass('closed');
-				menuToggle.removeClass('active');
-				isClosed = false;
+				var logo       = document.getElementById('main-brand');
+				var menuToggle = document.getElementById('header').querySelector('.menu-toggle');
+				var isClosed   = wrapper.classList.contains('closed');
+
+				if (isClosed)
+				{
+					/// Let's just change the class
+					// And do the animation with css
+					// logo.stop(true, false).fadeIn();
+					wrapper.classList.remove('closed');
+					menuToggle.classList.remove('active');
+					isClosed = false;
+				}
+				else
+				{
+					sidebar.querySelector('.collapse').classList.remove('in');
+					sidebar.querySelector('.collapse-arrow').classList.add('collapsed');
+					menuToggle.classList.add('active');
+					/// Let's just change the class
+					// And do the animation with css
+					// logo.stop(true, false).fadeOut();
+					wrapper.classList.add('closed');
+					isClosed = true;
+				}
 			}
-			else
-			{
-				sidebar.find('.collapse').removeClass('in');
-				sidebar.find('.collapse-arrow').addClass('collapsed');
-				menuToggle.addClass('active');
-				logo.stop(true, false).fadeOut();
-				wrapper.addClass('closed');
-				isClosed = true;
-			}
-		}
-		
-		// Toggle menu
-		$('#menu-collapse').on('click', function(e) {
-			e.preventDefault();
-			animateWrapper();
-		});
 
-		$(document).on('click', "#wrapper.closed .sidebar-wrapper [data-toggle='collapse']", function () {		
-			if (wrapper.hasClass('closed') && $(window).width() > 767)
-			{
+			// Toggle menu
+			document.getElementById('menu-collapse').addEventListener('click', function(e) {
+				e.preventDefault();
 				animateWrapper();
-			}
-		});
+			});
 
-		// Set the height of the menu to prevent overlapping
-		function setMenuHeight()
-		{
-			var height = $('#header').height() + $('#main-brand').outerHeight();
-			$('#menu').height( $(window).height() - height );
-		}
-		setMenuHeight();
+			var classses = ["#wrapper.closed .sidebar-wrapper [data-toggle='collapse']"];
+			classses.forEach(function(item) {
+				var tmp = document.querySelector(item);
+				tmp.addEventListener('click', function () {
+					if (wrapper.classList.contains('closed') && window.outerWidth > 767) {
+						animateWrapper();
+					}
+				});
+			});
 
-		// Remove 'closed' class on resize
-		$(window).on('resize', function() {
-			if (wrapper.hasClass('closed'))
+			// Set the height of the menu to prevent overlapping
+			function setMenuHeight()
 			{
-				animateWrapper();
+				var height = $('#header').height() + $('#main-brand').outerHeight();
+				$('#menu').height( $(window).height() - height );
 			}
 			setMenuHeight();
-		});
-		
-		/**
-		 * Localstorage to remember which menu item was clicked on
-		 */
-		menu.find('a').on('click', function(){
 
-			var href = $(this).attr('href');
+			// Remove 'closed' class on resize
+			$(window).on('resize', function() {
+				if (wrapper.classList.contains('closed'))
+				{
+					animateWrapper();
+				}
+				setMenuHeight();
+			});
 
-			if (typeof(Storage) !== 'undefined')
-			{
-				// Set the last selection in localStorage
-				localStorage.setItem('href', href);
-			}
+			/**
+			 * Localstorage to remember which menu item was clicked on
+			 */
+			// menu.queryselector('a').on('click', function(){
+			//
+			// 	var href = $(this).attr('href');
+			//
+			// 	if (typeof(Storage) !== 'undefined')
+			// 	{
+			// 		// Set the last selection in localStorage
+			// 		localStorage.setItem('href', href);
+			// 	}
+			//
+			// });
 
-		});
-		
-		// Auto expand
-		if (typeof(Storage) !== 'undefined')
-		{
-			var wLocationpath   = window.location.pathname;
-			var wLocationSearch = window.location.search;
-
-			if ((wLocationpath !== '/administrator/' || wLocationpath !== '/administrator/index.php') && wLocationSearch == '')
-			{
-				localStorage.setItem('href', false);
-			}
-
-			var localItem       = menu.find('a[href="' + localStorage.getItem('href') + '"]');
-			var localitemParent = localItem.parents('.parent').find('a')[0];
-
-			if (typeof(localitemParent) !== 'undefined')
-			{
-				localitemParent.click();
-			}
+			// Auto expand
+			// if (typeof(Storage) !== 'undefined')
+			// {
+			// 	var wLocationpath   = window.location.pathname;
+			// 	var wLocationSearch = window.location.search;
+			//
+			// 	if ((wLocationpath !== '/administrator/' || wLocationpath !== '/administrator/index.php') && wLocationSearch == '')
+			// 	{
+			// 		localStorage.setItem('href', false);
+			// 	}
+			//
+			// 	var localItem       = menu.find('a[href="' + localStorage.getItem('href') + '"]');
+			// 	var localitemParent = localItem.parents('.parent').find('a')[0];
+			//
+			// 	if (typeof(localitemParent) !== 'undefined')
+			// 	{
+			// 		localitemParent.click();
+			// 	}
+			// }
+		} else {
+			document.getElementById('sidebar-wrapper').style.display = 'none';
+			document.getElementById('sidebar-wrapper').style.width = '0';
+			document.getElementsByClassName('wrapper')[0].style.paddingLeft = '0';
 		}
 
+		/** http://stackoverflow.com/questions/18663941/finding-closest-element-without-jquery */
+		function closest(el, selector) {
+			var matchesFn;
+
+			// find vendor prefix
+			['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
+				if (typeof document.body[fn] == 'function') {
+					matchesFn = fn;
+					return true;
+				}
+				return false;
+			});
+
+			var parent;
+
+			// traverse parents
+			while (el) {
+				parent = el.parentElement;
+				if (parent && parent[matchesFn](selector)) {
+					return parent;
+				}
+				el = parent;
+			}
+
+			return null;
+		}
 
 		/**
 		 * Turn radios into btn-group
 		 */
-		$('.radio.btn-group label').addClass('btn btn-outline-secondary');
+		var container = document.querySelectorAll('.btn-group.btn-group-yesno');
+		for (var i = 0; i < container.length; i++) {
+			var labels = container[i].querySelectorAll('label');
+			for (var i = 0; i < labels.length; i++) {
+				labels[i].classList.add('btn');
+				if ((i % 2) == 1) {
+					labels[i].classList.add('btn-outline-danger');
+				} else {
+					labels[i].classList.add('btn-outline-success');
 
-		$('.btn-group label:not(.active)').click(function()
-		{
-			var label = $(this);
-			var input = $('#' + label.attr('for'));
-
-			if (!input.prop('checked'))
-			{
-				label.closest('.btn-group').find('label').removeClass('active btn-success btn-danger btn-primary');
-
-				if (label.closest('.btn-group').hasClass('btn-group-reversed'))
-				{
-					if (input.val() == '')
-					{
-						label.addClass('active btn-outline-primary');
-					}
-					else if (input.val() == 0)
-					{
-						label.addClass('active btn-outline-success');
-					}
-					else
-					{
-						label.addClass('active btn-outline-danger');
-					}
-				}
-				else
-				{
-					if (input.val() == '')
-					{
-						label.addClass('active btn-outline-primary');
-					}
-					else if (input.val() == 0)
-					{
-						label.addClass('active btn-outline-danger');
-					}
-					else
-					{
-						label.addClass('active btn-outline-success');
-					}
-
-				}
-				input.prop('checked', true);
-				input.trigger('change');
-			}
-		});
-		
-		$('.btn-group input[checked=checked]').each(function()
-		{
-			var $self  = $(this);
-			var attrId = $self.attr('id');
-
-			if ($self.parent().hasClass('btn-group-reversed'))
-			{
-				if ($self.val() == '')
-				{
-					$('label[for=' + attrId + ']').addClass('active btn-outline-primary');
-				}
-				else if ($self.val() == 0)
-				{
-					$('label[for=' + attrId + ']').addClass('active btn-outline-success');
-				}
-				else
-				{
-					$('label[for=' + attrId + ']').addClass('active btn-outline-danger');
 				}
 			}
-			else
-			{
-				if ($self.val() == '')
-				{
-					$('label[for=' + attrId + ']').addClass('active btn-outline-primary');
-				}
-				else if ($self.val() == 0)
-				{
-					$('label[for=' + attrId + ']').addClass('active btn-outline-danger');
-				}
-				else
-				{
-					$('label[for=' + attrId + ']').addClass('active btn-outline-success');
-				}
-			}
-		});
+		}
 
+		var somemem = document.querySelector('.btn-group label:not(.active)');
+		if (somemem) {
+			somemem.addEventListener('click', function(event) {
+				var label = event.target;
+				var input = document.getElementById(label.getAttribute('for'));
 
-		/**
-		 * Add color classes to chosen field based on value
-		 */
-		// add color classes to chosen field based on value
-		$('select[class^="chzn-color"], select[class*=" chzn-color"]').on('liszt:ready', function(){
-			var select = $(this);
-			var cls = this.className.replace(/^.(chzn-color[a-z0-9-_]*)$.*/, '\1');
-			var container = select.next('.chzn-container').find('.chzn-single');
-			container.addClass(cls).attr('rel', 'value_' + select.val());
-			select.on('change click', function()
-			{
-				container.attr('rel', 'value_' + select.val());
+				if (input.getAttribute('checked') !== "checked") {
+					var aa = closest(label, '.btn-group').querySelector('label');
+					aa.classList.remove('active');
+					aa.classList.remove('btn-success');
+					aa.classList.remove('btn-danger');
+					aa.classList.remove('btn-primary');
+
+					if (closest(label, '.btn-group').classList.contains('btn-group-reversed')) {
+						if (!label.classList.contains('btn')) label.classList.add('btn');
+						if (input.value == '') {
+							label.classList.add('active');
+							label.classList.add('btn');
+							label.classList.add('btn-outline-primary');
+						} else if (input.value == 0) {
+							label.classList.add('active');
+							label.classList.add('btn');
+							label.classList.add('btn-outline-success');
+						} else {
+							label.classList.add('active');
+							label.classList.add('btn');
+							label.classList.add('btn-outline-danger');
+						}
+					} else {
+						if (input.value == '') {
+							label.classList.add('active');
+							label.classList.add('btn');
+							label.classList.add('btn-outline-primary');
+						} else if (input.value == 0) {
+							label.classList.add('active');
+							label.classList.add('btn');
+							label.classList.add('btn-outline-danger');
+						} else {
+							label.classList.add('active');
+							label.classList.add('btn');
+							label.classList.add('btn-outline-success');
+						}
+					}
+					input.setAttribute('checked', true);
+					//input.dispatchEvent('change');
+				}
 			});
+		}
 
-		});
+		var btsGrouped = document.querySelectorAll('.btn-group input[checked=checked]');
 
+		for(var i = 0, l = btsGrouped.length; l>i; i++) {
+			var self  = btsGrouped[i];
+			var attrId = self.id;
+			if (self.parentNode.parentNode.classList.contains('btn-group-reversed')) {
+				if (self.value == '') {
+					var aa =document.querySelector('label[for=' + attrId + ']');
+					aa.classList.add('active');
+					aa.classList.add('btn');
+					aa.classList.add('btn-outline-primary');
+				} else if (self.value == 0) {
+					var aa =document.querySelector('label[for=' + attrId + ']');
+					aa.classList.add('active');
+					aa.classList.add('btn');
+					aa.classList.add('btn-outline-success');
+				} else {
+					var aa =document.querySelector('label[for=' + attrId + ']');
+					aa.classList.add('active');
+					aa.classList.add('btn');
+					aa.classList.add('btn-outline-danger');
+				}
+			} else {
+				if (self.value == '') {
+					var aa = document.querySelector('label[for=' + attrId + ']');
+					aa.classList.add('active');
+					aa.classList.add('btn-outline-primary');
+				} else if (self.value == 0) {
+					var aa =document.querySelector('label[for=' + attrId + ']');
+					aa.classList.add('active');
+					aa.classList.add('btn');
+					aa.classList.add('btn-outline-danger');
+				} else {
+					var aa =document.querySelector('label[for=' + attrId + ']');
+					aa.classList.add('active');
+					aa.classList.add('btn');
+					aa.classList.add('btn-outline-success');
+				}
+			}
+		}
 
 		/**
 		 * Sticky Toolbar
@@ -238,48 +278,43 @@
 		processScrollInit();
 		processScroll();
 
-		$(window).on('resize', processScrollInit);
-		$(window).on('scroll', processScroll);
+		document.addEventListener('resize', processScrollInit, false);
+		document.addEventListener('scroll', processScroll);
 
-		function processScrollInit()
-		{
-			var subhead = $('#subhead');
+		function processScrollInit() {
+			var subhead = document.getElementById('subhead');
 
-			if (subhead.length)
+			if (subhead)
 			{
-				navTop = subhead.length && $('.subhead').offset().top - 50;
+				navTop = document.querySelector('.subhead').offsetHeight;
 
 				// Only apply the scrollspy when the toolbar is not collapsed
 				if (document.body.clientWidth > 480)
 				{
-					$('.subhead-collapse').height($('.subhead').outerHeight());
-					subhead.css('width', 'auto');
-					
-					subhead.scrollspy({
-						offset: subhead.height() + $('.navbar').height()
-					});
+					document.querySelector('.subhead-collapse').style.height = document.querySelector('.subhead').style.height;
+					subhead.style.width = 'auto';
 				}
 			}
 		}
 
-		function processScroll()
-		{
-			var subhead = $('#subhead');
+		function processScroll() {
+			var subhead = document.getElementById('subhead');
 
-			if (subhead.length) 
+			if (subhead)
 			{
-				var scrollTop = $(window).scrollTop();
+				var scrollTop = (window.pageYOffset || subhead.scrollTop)  - (subhead.clientTop || 0);
 
 				if (scrollTop >= navTop && !isFixed)
 				{
 					isFixed = true;
-					subhead.addClass('subhead-fixed')
-					subhead.css('width', $('.container-main').width());
+					subhead.classList.add('subhead-fixed');
+					subhead.style.top = '70px';
+					subhead.style.width = document.querySelector('.container-main').offsetWidth +'px';
 				}
 				else if (scrollTop <= navTop && isFixed)
 				{
 					isFixed = false;
-					subhead.removeClass('subhead-fixed');
+					subhead.classList.remove('subhead-fixed');
 				}
 			}
 		}

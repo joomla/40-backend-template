@@ -48,24 +48,9 @@ $task     = $input->get('task', '');
 $itemid   = $input->get('Itemid', '');
 $sitename = htmlspecialchars($app->get('sitename', ''), ENT_QUOTES, 'UTF-8');
 $cpanel   = ($option === 'com_cpanel');
-
+$showSubmenu = false;
 $hidden = JFactory::getApplication()->input->get('hidemainmenu');
-
-$showSubmenu          = false;
-$this->submenumodules = JModuleHelper::getModules('submenu');
-
-foreach ($this->submenumodules as $submenumodule)
-{
-	$output = JModuleHelper::renderModule($submenumodule);
-
-	if (strlen($output))
-	{
-		$showSubmenu = true;
-		break;
-	}
-}
-
-$logo = $this->baseurl . '/templates/' . $this->template . '/images/logo.png';
+$logo   = $this->baseurl . '/templates/' . $this->template . '/images/logo.png';
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
@@ -102,10 +87,10 @@ $logo = $this->baseurl . '/templates/' . $this->template . '/images/logo.png';
 
 
 	<?php // Wrapper ?>
-	<div id="wrapper" class="wrapper">
+	<div id="wrapper" class="wrapper closed">
 
 		<?php // Sidebar ?>
-		<div id="sidebar-wrapper" class="sidebar-wrapper">
+		<div id="sidebar-wrapper" class="sidebar-wrapper" <?php echo $hidden ? 'data-hidden="' . $hidden . '"' :''; ?>>
 
 			<jdoc:include type="modules" name="menu" style="none" />
 
@@ -123,7 +108,7 @@ $logo = $this->baseurl . '/templates/' . $this->template . '/images/logo.png';
 				<a class="btn btn-subhead hidden-md-up" data-toggle="collapse" data-target=".subhead-collapse"><?php echo JText::_('TPL_ATUM_TOOLBAR'); ?>
 					<span class="icon-wrench"></span></a>
 				<div class="subhead-collapse">
-					<div id="subhead" class="subhead">
+					<div id="subhead" class="subhead" style="margin: -18px -15px 0 -15px;" data-scroll="<?php echo $hidden; ?>">
 						<div class="container-fluid">
 							<div id="container-collapse" class="container-collapse"></div>
 							<div class="row">

@@ -48,7 +48,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     var element;
 
-    if (Joomla && Joomla.getOptions('js-multiselect')) {
+    if (Joomla && Joomla.optionsStorage && typeof Joomla.getOptions('js-multiselect') === 'object') {
+        console.log(Joomla.optionsStorage)
         element = document.querySelector('#' + Joomla.getOptions('js-multiselect').id);
     } else {
         element = document.querySelector('.js-multiselect');

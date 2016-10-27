@@ -75,6 +75,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<div class="col-md-6">
 							<?php echo $this->loadTemplate('seo'); ?>
 							<?php echo $this->loadTemplate('cookie'); ?>
+							<?php echo $this->loadTemplate('tier'); ?>
 						</div>
 					</div>
 				</div>

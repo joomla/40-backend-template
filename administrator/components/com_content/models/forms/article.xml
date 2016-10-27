@@ -178,6 +178,7 @@
 				name="link_titles"
 				type="list"
 				class="custom-select custom-select-color"
+				tier="advanced"
 				label="JGLOBAL_LINKED_TITLES_LABEL"
 				description="JGLOBAL_LINKED_TITLES_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -211,6 +212,7 @@
 				type="list"
 				class="custom-select"
 				default=""
+				tier="advanced"
 				label="COM_CONTENT_FIELD_INFOBLOCK_POSITION_LABEL"
 				description="COM_CONTENT_FIELD_INFOBLOCK_POSITION_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>

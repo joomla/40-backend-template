@@ -396,6 +396,7 @@ abstract class JFormField
 			case 'autofocus':
 			case 'autocomplete':
 			case 'spellcheck':
+			case 'tier':
 				return $this->$name;
 
 			case 'input':
@@ -573,7 +574,7 @@ abstract class JFormField
 		$attributes = array(
 			'multiple', 'name', 'id', 'hint', 'class', 'description', 'labelclass', 'onchange', 'onclick', 'validate', 'pattern', 'default',
 			'required', 'disabled', 'readonly', 'autofocus', 'hidden', 'autocomplete', 'spellcheck', 'translateHint', 'translateLabel',
-			'translate_label', 'translateDescription', 'translate_description', 'size');
+			'translate_label', 'translateDescription', 'translate_description', 'size', 'tier');
 
 		$this->default = isset($element['value']) ? (string) $element['value'] : $this->default;
 
@@ -964,6 +965,15 @@ abstract class JFormField
 			'label'   => $this->getLabel(),
 			'options' => $options,
 		);
+
+		// Check for the parameter tier before rendering it
+		$tierGlob = JFactory::getConfig()->get('tier_type');
+		$tierAttr = $this->getAttribute('tier');
+
+		if ($tierGlob == 'simple' && $tierAttr == 'advanced')
+		{
+			return false;
+		}
 
 		return $this->getRenderer($this->renderLayout)->render($data);
 	}

@@ -1045,6 +1045,21 @@
 	</fieldset>
 
 	<fieldset
+		name="tier"
+		label="Tier">
+		<field
+			name="tier_type"
+			type="list"
+			class="custom-select"
+			default="advanced"
+			label="Show Parameters"
+			description="Choose which parameters to display in the CMS">
+			<option value="simple">Simple</option>
+			<option value="advanced">Advanced</option>
+		</field>
+	</fieldset>
+
+	<fieldset
 		name="permissions"
 		label="CONFIG_PERMISSION_SETTINGS_LABEL">
 

@@ -1054,8 +1054,8 @@
 			default="simple"
 			label="Show Parameters"
 			description="Choose which parameters to display in the CMS">
-			<option value="simple">Simple</option>
-			<option value="advanced">Advanced</option>
+			<option value="simple">JSIMPLE</option>
+			<option value="all">JALL</option>
 		</field>
 	</fieldset>
 

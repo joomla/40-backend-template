@@ -970,7 +970,7 @@ abstract class JFormField
 		$tierGlob = JFactory::getConfig()->get('tier_type');
 		$tierAttr = $this->getAttribute('tier');
 
-		if ($tierGlob == 'simple' && $tierAttr == 'advanced')
+		if ($tierGlob == 'simple' && $tierAttr == 'all')
 		{
 			return false;
 		}

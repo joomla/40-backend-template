@@ -966,11 +966,17 @@ abstract class JFormField
 			'options' => $options,
 		);
 
-		// Check for the parameter tier before rendering it
-		$tierGlob = JFactory::getConfig()->get('tier_type');
-		$tierAttr = $this->getAttribute('tier');
+		// Get the Global Config Tier value
+		$tier = JFactory::getConfig()->get('tier_type');
 
-		if ($tierGlob == 'simple' && $tierAttr == 'all')
+		if (!is_null(JFactory::getUser()->getParam('tier_type')))
+		{
+			// If the User has their own Tier set, use this instead
+			$tier = JFactory::getUser()->getParam('tier_type');
+		}
+
+		// Check the tier before rendering the form field
+		if ($tier == 'simple' && $this->getAttribute('tier') == 'advanced')
 		{
 			return false;
 		}

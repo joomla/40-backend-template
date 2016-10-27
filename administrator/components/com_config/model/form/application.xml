@@ -1051,7 +1051,7 @@
 			name="tier_type"
 			type="list"
 			class="custom-select"
-			default="advanced"
+			default="simple"
 			label="Show Parameters"
 			description="Choose which parameters to display in the CMS">
 			<option value="simple">Simple</option>

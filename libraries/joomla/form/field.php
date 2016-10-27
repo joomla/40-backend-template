@@ -969,7 +969,7 @@ abstract class JFormField
 		// Get the Global Config Tier value
 		$tier = JFactory::getConfig()->get('tier_type');
 
-		if (!is_null(JFactory::getUser()->getParam('tier_type')))
+		if (JFactory::getUser()->getParam('tier_type') !== 0)
 		{
 			// If the User has their own Tier set, use this instead
 			$tier = JFactory::getUser()->getParam('tier_type');

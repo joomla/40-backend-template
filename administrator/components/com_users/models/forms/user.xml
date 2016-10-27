@@ -148,7 +148,7 @@
 				default="simple"
 				label="Show Parameters"
 				description="Choose which parameters to display in the CMS">
-				<option value="">JOPTION_USE_DEFAULT</option>
+				<option value="0">JOPTION_USE_DEFAULT</option>
 				<option value="simple">JSIMPLE</option>
 				<option value="advanced">JADVANCED</option>
 			</field>

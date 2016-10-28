@@ -16,7 +16,7 @@
 		var field = document.querySelector('.module-ajax-ordering'),
 			linkedField = field.getAttribute('data-linked-field') ? field.getAttribute('data-linked-field') : 'jform_position',
 			linkedFieldEl = document.getElementById(linkedField),
-			originalPos = (jQuery().chosen && field.classList.contains('advansedSelect')) ? jQuery(linkedFieldEl).chosen().val() : linkedFieldEl.value,
+			originalPos = linkedFieldEl.value,
 
 		/**
 		 * Creates a dynamically generated list
@@ -70,7 +70,7 @@
 				element = document.getElementById(field.getAttribute('data-element')),
 				originalOrder = field.getAttribute('data-ordering'),
 				name = field.getAttribute('data-name'),
-				attr = 'custom-select', //field.getAttribute('data-client-attr') ? field.getAttribute('data-client-attr') : 'custom-select',
+				attr = field.getAttribute('data-client-attr') ? field.getAttribute('data-client-attr') : 'custom-select',
 				id = field.getAttribute('id') + '_1',
 				orders = new Array();
 
@@ -105,13 +105,6 @@
 									originalOrder,
 									element
 								);
-
-								/** Add chosen to the element **/
-								var el = document.getElementById(id);
-								if (el && jQuery().chosen && field.classList.contains('advansedSelect')) {
-									el.chosen('destroy');
-									el.chosen();
-								}
 							}
 						}
 
@@ -130,14 +123,22 @@
 		getNewOrder(field, originalPos);
 
 		/** Event listener for the linked field **/
-		if (jQuery().chosen && field.classList.contains('advansedSelect')) { /** Chosen styled **/
-			 linkedFieldEl.chosen().change( function() {
-				originalPos = jQuery('#' + linkedField).chosen().val();
+		if (window.jQuery && jQuery().chosen) {
+			/** Chosen styled **/
+			// @TODO Replace Chosen with Choice.js and support Chosen.js ONLY with class advansedSelect
+			// && linkedFieldEl.classList.contains('advansedSelect')
+			 jQuery(linkedFieldEl).chosen().change( function() {
+				originalPos = jQuery(linkedFieldEl).chosen().val();
 				getNewOrder(field, originalPos);
+
+				 /** Add chosen **/
+				jQuery(field.childNodes[0]).chosen('destroy');
+				jQuery(field.childNodes[0]).chosen();
+
 			});
 		} else { /** Default select TAG **/
 			linkedFieldEl.addEventListener('change', function () {
-				originalPos = document.getElementById(linkedField).value;
+				originalPos = linkedFieldEl.value;
 				getNewOrder(field, originalPos);
 			});
 		}

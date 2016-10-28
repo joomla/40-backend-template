@@ -5,51 +5,6 @@
  */
 
 /**
- * Creates a dynamically generated list
- *
- * @param selectParams string The parameters to insert into the <select> tag
- * @param source array  A javascript array of list options in the form [key,value,text]
- * @param key string The key to display for the initial state of the list
- * @param orig_val string The original item value that was selected
- * @param element string The elem where the list will be written
- **/
-window.writeDynaList = function(selectParams, source, key, orig_val, element) {
-	"use strict";
-
-	var node, selectNode = document.createElement('select');
-	selectNode.name = selectParams.name;
-	selectNode.id = selectParams.id;
-	selectNode.classList.add(selectParams.itemClass);
-
-	if (element) {
-		element.innerHTML = '';
-		element.appendChild(selectNode);
-	}
-
-	var hasSelection = key,
-		i = 0,
-		selected, x, item;
-
-	for ( x in source ) {
-		if (!source.hasOwnProperty(x)) { continue; }
-
-		item = source[ x ];
-
-		node = document.createElement('option');
-		node.value = item[1];
-		node.innerHTML = item[ 2 ];
-
-		if ( ( hasSelection && orig_val == item[ 1 ] ) || ( !hasSelection && i === 0 ) ) {
-			node.setAttribute('selected', 'selected');
-		}
-
-		selectNode.appendChild(node);
-
-		i++;
-	}
-};
-
-/**
  * Ajax rebuild of the module order
  */
 (function() {
@@ -62,6 +17,52 @@ window.writeDynaList = function(selectParams, source, key, orig_val, element) {
 			linkedField = field.getAttribute('data-linked-field') ? field.getAttribute('data-linked-field') : 'jform_position',
 			linkedFieldEl = document.getElementById(linkedField),
 			originalPos = (jQuery().chosen && field.classList.contains('advansedSelect')) ? jQuery(linkedFieldEl).chosen().val() : linkedFieldEl.value,
+
+		/**
+		 * Creates a dynamically generated list
+		 *
+		 * @param selectParams string The parameters to insert into the <select> tag
+		 * @param source array  A javascript array of list options in the form [key,value,text]
+		 * @param key string The key to display for the initial state of the list
+		 * @param orig_val string The original item value that was selected
+		 * @param element string The elem where the list will be written
+		 **/
+		writeDynaList = function(selectParams, source, key, orig_val, element) {
+			var node, selectNode = document.createElement('select');
+				selectNode.classList.add(selectParams.itemClass);
+				selectNode.setAttribute('name', selectParams.name);
+				selectNode.id = selectParams.id;
+
+			if (element) {
+				element.innerHTML = '';
+				element.appendChild(selectNode);
+			}
+
+			var hasSelection = key,
+				i = 0,
+				selected, x, item;
+
+			for ( x in source ) {
+				if (!source.hasOwnProperty(x)) { continue; }
+
+				item = source[ x ];
+
+				node = document.createElement('option');
+				node.value = item[1];
+
+				node.innerHTML = item[ 2 ];
+
+				if ( ( hasSelection && orig_val == item[ 1 ] ) || ( !hasSelection && i === 0 ) ) {
+					node.setAttribute('selected', 'selected');
+				}
+
+				selectNode.appendChild(node);
+				selectNode.parentNode.innerHtml = '';
+				selectNode.parentNode.appendChild(selectNode);
+
+				i++;
+			}
+		},
 
 		getNewOrder = function(field, originalPos) {
 			var url = field.getAttribute('data-url'),
@@ -77,10 +78,7 @@ window.writeDynaList = function(selectParams, source, key, orig_val, element) {
 				{
 					url: url,
 					method: 'GET',
-					data: {
-						"client_id": clientId,
-						"position" : originalPos
-					},
+					data: 'client_id=' + clientId + '&position=' + originalPos,
 					perform: true,
 					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 					onSuccess: function(response, xhr)

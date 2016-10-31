@@ -177,6 +177,12 @@ JFactory::getApplication()->enqueueMessage($msg, 'error');
 		JHtml::_('stylesheet', 'vendor/choices/css/choices.css', array(), true);
 		JHtml::_('script', 'vendor/choices/choices.js', false, true, false, false, JDEBUG);
 
+		JFactory::getDocument()->addStyleDeclaration("
+		div.choices__list{z-index:1060;}
+		.choices__inner{background-color:#fff;}
+		input.choices__input.choices__input--cloned{background-color:#fff;}
+		");
+
 		JFactory::getDocument()->addScriptDeclaration(
 <<<JS
 	document.addEventListener('DOMContentLoaded', function(){
@@ -188,47 +194,45 @@ JFactory::getApplication()->enqueueMessage($msg, 'error');
 		removeItemButton: true,
 		removeItems: true,
 		duplicateItems: false,
+		shouldSort: false,
 		paste: true,
 		search: true,
 		flip: true,
-		}).ajax(function(callback) {
-			fetch('$url')
-				.then(function(response) {
-				console.log(response)
-					response.json().then(function(data) {
-					callback(data, 'value', 'text');
-				});
-			})
-			.catch(function(error) {
-				console.log(error);
-			});
+		searchFloor: 3
 		});
 
-		var additionalFuncForTagInput = function() {
-				// Override to provide ability to add new tag
-				tags_field.input.addEventListener('keypress', function(event) {
-					if (event.keyCode === 13) {
-						event.preventDefault();
-						var choisesVal = tags_field.getValue();
-						tags_field.clearStore();
-						var elem = document.querySelector('#jform_tags');
-						var value = tags_field.input.value;
-						if (value) {
-							tags_field.destroy();
-							var option = document.createElement('option');
-							option.value = "#new#" + value;
-							option.text = value;
-							option.setAttribute('selected', '')
-							elem.appendChild(option);
-
-							tags_field.init();
-							additionalFuncForTagInput();
-						}
-					}
-				});
+	var additionalFuncForTagInput = function() {
+		// Override to provide ability to add new tag
+		tags_field.input.addEventListener('keypress', function(event) {
+			// Remove the search entries if something is typed
+			if (tags_field.input.value > 0) {
+				tags_field.input.parentNode.querySelector('.choices__list').innerHTML = '';
 			}
+			// @TODO If tags_field.input.value >3 do ajax
+			
+			// @TODO If allowed to create new tag
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				var choisesVal = tags_field.getValue();
+				tags_field.clearStore();
+				var elem = document.querySelector('#jform_tags');
+				var value = tags_field.input.value;
+				if (value) {
+					tags_field.destroy();
+					var option = document.createElement('option');
+					option.value = "#new#" + value;
+					option.text = value;
+					option.setAttribute('selected', '')
+					elem.appendChild(option);
 
-			additionalFuncForTagInput();
+					tags_field.init();
+					additionalFuncForTagInput();
+				}
+			}
+		});
+	}
+
+	additionalFuncForTagInput();
 });
 
 

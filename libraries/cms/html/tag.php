@@ -191,41 +191,44 @@ JFactory::getApplication()->enqueueMessage($msg, 'error');
 		paste: true,
 		search: true,
 		flip: true,
-	}).ajax(function(callback) {
-		fetch('$url')
-			.then(function(response) {
-				response.json().then(function(data) {
-				callback(data, 'value', 'text');
+		}).ajax(function(callback) {
+			fetch('$url')
+				.then(function(response) {
+				console.log(response)
+					response.json().then(function(data) {
+					callback(data, 'value', 'text');
+				});
+			})
+			.catch(function(error) {
+				console.log(error);
 			});
-		})
-		.catch(function(error) {
-			console.log(error);
 		});
-});
-	var input = element.parentNode.querySelector('.choices__input.choices__input--cloned');
 
-	// Override to provide ability to add new tag
-	input.addEventListener('keypress', function(event) {
-		if (event.keyCode === 13) {
-	
-			var choisesVal = tags_field.getValue();
-			var elem = document.querySelector('#jform_tags');
-			var value = element.parentNode.querySelector('.choices__input.choices__input--cloned').value;
-			if (value) {
-				var option = document.createElement('option');
-				option.value = "#new#" + value;
-				option.text = value;
-				elem.add(option);
-	
-				choisesVal.push({id: choisesVal.length +1, choiceId: choisesVal.length +1, groupId: -1, value: option.value, label: option.text});
-	
-				tags_field.setValue([{id: choisesVal.length +1, choiceId: choisesVal.length +1, groupId: -1, value: option.value, label: option.text}]);
-	
-				element.parentNode.querySelector('.choices__input.choices__input--cloned').value = '';
+		var additionalFuncForTagInput = function() {
+				// Override to provide ability to add new tag
+				tags_field.input.addEventListener('keypress', function(event) {
+					if (event.keyCode === 13) {
+						event.preventDefault();
+						var choisesVal = tags_field.getValue();
+						tags_field.clearStore();
+						var elem = document.querySelector('#jform_tags');
+						var value = tags_field.input.value;
+						if (value) {
+							tags_field.destroy();
+							var option = document.createElement('option');
+							option.value = "#new#" + value;
+							option.text = value;
+							option.setAttribute('selected', '')
+							elem.appendChild(option);
+
+							tags_field.init();
+							additionalFuncForTagInput();
+						}
+					}
+				});
 			}
-		}
-	})
 
+			additionalFuncForTagInput();
 });
 
 

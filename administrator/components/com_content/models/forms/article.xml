@@ -41,12 +41,12 @@
 		</field>
 
 		<field name="catid"
-			   type="categoryedit"
-			   class="advancedSelect"
+			type="categoryedit"
+			class="advancedSelect"
 			label="JCATEGORY"
-			   description="JFIELD_CATEGORY_DESC"
+			description="JFIELD_CATEGORY_DESC"
 			required="true"
-			   default=""
+			default=""
 		>
 		</field>
 

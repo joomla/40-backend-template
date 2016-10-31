@@ -354,12 +354,64 @@ class JFormFieldCategoryEdit extends JFormFieldList
 
 		if ($this->allowAdd)
 		{
-			$customGroupText = JText::_('JGLOBAL_CUSTOM_CATEGORY');
+			JText::script('JGLOBAL_KEEP_TYPING');
+			JText::script('JGLOBAL_LOOKING_FOR');
+			JText::script('JGLOBAL_CUSTOM_CATEGORY');
 
-			$class[] = 'chzn-custom-value';
-			$attr .= ' data-custom_group_text="' . $customGroupText . '" '
-					. 'data-no_results_text="' . JText::_('JGLOBAL_ADD_CUSTOM_CATEGORY') . '" '
-					. 'data-placeholder="' . JText::_('JGLOBAL_TYPE_OR_SELECT_CATEGORY') . '" ';
+			// Include scripts
+			JHtml::_('behavior.core');
+			JHtml::_('stylesheet', 'vendor/choices/css/choices.css', array(), true);
+			JHtml::_('script', 'vendor/choices/choices.js', false, true, false, false, JDEBUG);
+
+JFactory::getDocument()->addScriptDeclaration(
+<<<JS
+document.addEventListener('DOMContentLoaded', function(){
+
+	var element = document.querySelector('#jform_catid');
+
+ 	var cat_field = new Choices(element, {
+		addItems: true,
+		removeItemButton: true,
+		removeItems: true,
+		duplicateItems: false,
+		// paste: true,
+		// search: true,
+		flip: true,
+	});
+
+
+	// Override to provide ability to add new tag
+	var additionalFuncForInput = function() {
+		cat_field.input.addEventListener('keypress', function(event) {
+			var element = document.querySelector('#jform_catid');
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				
+				console.log(event.target)
+				var elem = document.querySelector('#jform_catid');
+				var choisesVal = cat_field.getValue();
+				cat_field.clearStore();
+	
+				if (cat_field.input.value) {
+					cat_field.destroy();
+					var option = document.createElement('option');
+					option.value = cat_field.input.value;
+					option.text = cat_field.input.value;
+					option.setAttribute('selected', '')
+					elem.appendChild(option);
+	
+					cat_field.init();
+					additionalFuncForInput();
+				}
+			}
+		})
+	};
+
+	additionalFuncForInput();
+});
+JS
+			);
+
 		}
 
 		if ($class)
@@ -390,6 +442,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 		// Create a read-only list (no name) with hidden input(s) to store the value(s).
 		if ((string) $this->readonly == '1' || (string) $this->readonly == 'true')
 		{
+//			$html[] = '<div id="choices_cat_id">';
 			$html[] = JHtml::_('select.genericlist', $options, '', trim($attr), 'value', 'text', $this->value, $this->id);
 
 			// E.g. form field type tag sends $this->value as array
@@ -415,7 +468,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 		{
 			$html[] = JHtml::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
 		}
-
+//		$html[] = '</div>';
 		return implode($html);
 	}
 }

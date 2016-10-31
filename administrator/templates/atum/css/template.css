@@ -7617,6 +7617,9 @@ div.awesomplete {
 .jviewport-height100 {
   height: 100vh; }
 
+[class*=jviewport-height] iframe {
+  height: 100%; }
+
 .modal-dialog.jviewport-width10 {
   width: 10vw;
   max-width: none; }
@@ -7793,8 +7796,7 @@ iframe {
   border: 0; }
 
 .modal iframe {
-  width: 100%;
-  height: 100%; }
+  width: 100%; }
 
 .contentpane.component .j-main-container {
   padding: 0;

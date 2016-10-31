@@ -32,8 +32,6 @@ class JToolbarButtonPopup extends JToolbarButton
 	 * @param   string   $url      URL for popup
 	 * @param   integer  $width    Width of popup
 	 * @param   integer  $height   Height of popup
-	 * @param   integer  $top      Top attribute.  [@deprecated  Unused, will be removed in 4.0]
-	 * @param   integer  $left     Left attribute. [@deprecated  Unused, will be removed in 4.0]
 	 * @param   string   $onClose  JavaScript for the onClose event.
 	 * @param   string   $title    The title text
 	 * @param   string   $footer   The footer html
@@ -42,7 +40,7 @@ class JToolbarButtonPopup extends JToolbarButton
 	 *
 	 * @since   3.0
 	 */
-	public function fetchButton($type = 'Modal', $name = '', $text = '', $url = '', $width = 640, $height = 480, $top = 0, $left = 0,
+	public function fetchButton($type = 'Modal', $name = '', $text = '', $url = '', $width = 640, $height = 480,
 		$onClose = '', $title = '', $footer = null)
 	{
 		// If no $title is set, use the $text element

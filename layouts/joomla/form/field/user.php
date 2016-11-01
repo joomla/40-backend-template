@@ -86,6 +86,7 @@ JHtml::script('system/fields/fielduser.min.js', false, true, false, false, true)
 						'bootstrap.renderModal',
 						'userModal_' . $id,
 						array(
+							'url'    => $link,
 							'title'  => JText::_('JLIB_FORM_CHANGE_USER'),
 							'closeButton' => true,
 							'footer' => '<a type="button" class="btn btn-secondary" data-dismiss="modal">' . JText::_('JCANCEL') . '</a>'

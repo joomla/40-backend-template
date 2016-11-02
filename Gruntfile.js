@@ -419,9 +419,9 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('compile', 'Compiles the stylesheet files.', function() {
 		grunt.task.run([
+			'uglify:templates',
 			'scsslint',
 			'sass:dist',
-			'uglify:templates',
 			'postcss',
 			'cssmin:templates'
 		]);

@@ -13,7 +13,7 @@ abstract class ExternalAssets{
 			'jquery-sortable' => array('version' => '0.9.13','dependencies' => 'jquery'),
 			'jquery-ui' => array('version' => '1.12.1','dependencies' => 'jquery'),
 			'mediaelement' => array('version' => '2.23.4','dependencies' => 'jquery'),
-			'punycode' => array('version' => '2.0.1','dependencies' => ''),
+			'punycode' => array('version' => '1.4.1','dependencies' => ''),
 			'tinymce' => array('version' => '4.4.3','dependencies' => ''),
 			'awesomplete' => array('version' => '1.1.1','dependencies' => ''),
 			'dragula' => array('version' => '3.7.2','dependencies' => ''),

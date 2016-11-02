@@ -7446,7 +7446,6 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   overflow: visible;
   clip: auto; }
 
-/* B/C for icomoon */
 /* IcoMoon Conversion */
 [class^="icon-"],
 [class*=" icon-"] {

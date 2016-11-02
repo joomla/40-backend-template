@@ -268,6 +268,17 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// CSS build configuration
+		scsslint: {
+			allFiles: [
+				'<%= folder.adminTemplate %>/scss/*.scss',
+			],
+			options: {
+				config: '<%= folder.adminTemplate %>/scss/scss-lint.yml',
+				reporterOutput: '<%= folder.adminTemplate %>/scss/scss-lint-report.xml'
+			}
+		},
+
 		// Minimize some javascript files
 		uglify: {
 			allJs: {
@@ -346,6 +357,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-scss-lint');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-zip');
@@ -369,6 +381,8 @@ module.exports = function(grunt) {
 			'clean:temp'
 		]
 	);
+	
+	grunt.registerTask('test-scss', ['scsslint']);
 
 	grunt.registerTask('polyfills', 'Download the polyfills from FT.', function() {
 		grunt.task.run([
@@ -390,6 +404,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('compile', 'Compiles the stylesheet files.', function() {
 		grunt.task.run([
+			'scsslint',
 			'sass:dist',
 			'uglify:templates',
 			'cssmin:templates'

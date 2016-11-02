@@ -392,6 +392,7 @@ module.exports = function(grunt) {
 			'sass:dist',
 			'uglify:allJs',
 			'cssmin:allCss',
+			'postcss',
 			'cssmin:templates',
 			'clean:temp'
 		]

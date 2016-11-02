@@ -374,6 +374,7 @@ module.exports = function(grunt) {
 			'unzip:jcropUnzip',
 			'concat:someFiles',
 			'copy:fromSource',
+			'scsslint',
 			'sass:dist',
 			'uglify:allJs',
 			'cssmin:allCss',

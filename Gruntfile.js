@@ -274,7 +274,7 @@ module.exports = function(grunt) {
 				'<%= folder.adminTemplate %>/scss',
 			],
 			options: {
-				config: '<%= folder.adminTemplate %>/scss/scss-lint.yml',
+				config: 'scss-lint.yml',
 				reporterOutput: '<%= folder.adminTemplate %>/scss/scss-lint-report.xml'
 			}
 		},

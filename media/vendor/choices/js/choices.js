@@ -1,9 +1,9 @@
-/*! choices.js v2.4.0 | (c) 2016 Josh Johnson | https://github.com/jshjohnson/Choices#readme */ 
+/*! choices.js v2.4.1 | (c) 2016 Josh Johnson | https://github.com/jshjohnson/Choices#readme */ 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("Choices", [], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
 		exports["Choices"] = factory();
 	else
@@ -74,11 +74,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _index3 = __webpack_require__(22);
+	var _index3 = __webpack_require__(23);
 
-	var _utils = __webpack_require__(23);
+	var _utils = __webpack_require__(24);
 
-	__webpack_require__(24);
+	__webpack_require__(25);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -95,8 +95,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function Choices() {
 	    var _this = this;
 
-	    var element = arguments.length <= 0 || arguments[0] === undefined ? '[data-choice]' : arguments[0];
-	    var userConfig = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '[data-choice]';
+	    var userConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	    _classCallCheck(this, Choices);
 
@@ -135,9 +135,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      prependValue: null,
 	      appendValue: null,
 	      loadingText: 'Loading...',
-	      noResultsText: 'No results round',
+	      noResultsText: 'No results found',
 	      noChoicesText: 'No choices to choose from',
 	      itemSelectText: 'Press to select',
+	      addItemText: function addItemText(value) {
+	        return 'Press Enter to add <b>"' + value + '"</b>';
+	      },
+	      maxItemText: function maxItemText(maxItemCount) {
+	        return 'Only ' + maxItemCount + ' values can be added.';
+	      },
+	      uniqueItemText: 'Only unique values can be added.',
 	      classNames: {
 	        containerOuter: 'choices',
 	        containerInner: 'choices__inner',
@@ -189,6 +196,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Retrieve triggering element (i.e. element with 'data-choice' trigger)
 	    this.element = element;
 	    this.passedElement = (0, _utils.isType)('String', element) ? document.querySelector(element) : element;
+	    this.isSelectElement = this.passedElement.type === 'select-one' || this.passedElement.type === 'select-multiple';
+	    this.isTextElement = this.passedElement.type === 'text';
 
 	    if (!this.passedElement) {
 	      console.error('Passed element not found');
@@ -232,7 +241,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.wasTap = true;
 
 	    // Cutting the mustard
-	    var cuttingTheMustard = 'querySelector' in document && 'addEventListener' in document && 'classList' in document.createElement('div');
+	    var cuttingTheMustard = 'classList' in document.documentElement;
 	    if (!cuttingTheMustard) console.error('Choices: Your browser doesn\'t support Choices');
 
 	    // Input type check
@@ -286,7 +295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Run callback if it is a function
 	      if (callback) {
 	        if ((0, _utils.isType)('Function', callback)) {
-	          callback();
+	          callback.call(this);
 	        } else {
 	          console.error('callbackOnInit: Callback is not a function');
 	        }
@@ -424,7 +433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Simplify store data to just values
 	      var itemsFiltered = this.store.getItemsReducedToValues(items);
 
-	      if (this.passedElement.type === 'text') {
+	      if (this.isTextElement) {
 	        // Assign hidden input array of values
 	        this.passedElement.setAttribute('value', itemsFiltered.join(this.config.delimiter));
 	      } else {
@@ -547,9 +556,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ((0, _utils.isType)('Function', callback)) {
 	          var group = groupId >= 0 ? this.store.getGroupById(groupId) : null;
 	          if (group && group.value) {
-	            callback(id, item.value, group.value);
+	            callback.call(this, id, item.value, group.value);
 	          } else {
-	            callback(id, item.value);
+	            callback.call(this, id, item.value);
 	          }
 	        } else {
 	          console.error('callbackOnHighlightItem: Callback is not a function');
@@ -581,9 +590,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ((0, _utils.isType)('Function', callback)) {
 	          var group = groupId >= 0 ? this.store.getGroupById(groupId) : null;
 	          if (group && group.value) {
-	            callback(id, item.value, group.value);
+	            callback.call(this, id, item.value, group.value);
 	          } else {
-	            callback(id, item.value);
+	            callback.call(this, id, item.value);
 	          }
 	        } else {
 	          console.error('callbackOnUnhighlightItem: Callback is not a function');
@@ -695,7 +704,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function removeHighlightedItems() {
 	      var _this9 = this;
 
-	      var runCallback = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+	      var runCallback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
 	      var items = this.store.getItemsFilteredByActive();
 
@@ -722,7 +731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'showDropdown',
 	    value: function showDropdown() {
-	      var focusInput = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+	      var focusInput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
 	      var body = document.body;
 	      var html = document.documentElement;
@@ -760,7 +769,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'hideDropdown',
 	    value: function hideDropdown() {
-	      var blurInput = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+	      var blurInput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
 	      // A dropdown flips if it does not have space within the page
 	      var isFlipped = this.containerOuter.classList.contains(this.config.classNames.flippedState);
@@ -812,13 +821,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function getValue() {
 	      var _this10 = this;
 
-	      var valueOnly = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+	      var valueOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
 	      var items = this.store.getItemsFilteredByActive();
 	      var selectedItems = [];
 
 	      items.forEach(function (item) {
-	        if (_this10.passedElement.type === 'text') {
+	        if (_this10.isTextElement) {
 	          selectedItems.push(valueOnly ? item.value : item);
 	        } else if (item.active) {
 	          selectedItems.push(valueOnly ? item.value : item);
@@ -846,27 +855,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this11 = this;
 
 	      if (this.initialised === true) {
-	        // Convert args to an itterable array
-	        var values = [].concat(_toConsumableArray(args));
+	        (function () {
+	          // Convert args to an itterable array
+	          var values = [].concat(_toConsumableArray(args)),
+	              passedElementType = _this11.passedElement.type;
 
-	        values.forEach(function (item) {
-	          if ((0, _utils.isType)('Object', item)) {
-	            if (!item.value) return;
-	            // If we are dealing with a select input, we need to create an option first
-	            // that is then selected. For text inputs we can just add items normally.
-	            if (_this11.passedElement.type !== 'text') {
-	              _this11._addChoice(true, false, item.value, item.label, -1);
-	            } else {
-	              _this11._addItem(item.value, item.label, item.id);
+	          values.forEach(function (item) {
+	            if ((0, _utils.isType)('Object', item)) {
+	              if (!item.value) return;
+	              // If we are dealing with a select input, we need to create an option first
+	              // that is then selected. For text inputs we can just add items normally.
+	              if (passedElementType !== 'text') {
+	                _this11._addChoice(true, false, item.value, item.label, -1);
+	              } else {
+	                _this11._addItem(item.value, item.label, item.id);
+	              }
+	            } else if ((0, _utils.isType)('String', item)) {
+	              if (passedElementType !== 'text') {
+	                _this11._addChoice(true, false, item, item, -1);
+	              } else {
+	                _this11._addItem(item);
+	              }
 	            }
-	          } else if ((0, _utils.isType)('String', item)) {
-	            if (_this11.passedElement.type !== 'text') {
-	              _this11._addChoice(true, false, item, item, -1);
-	            } else {
-	              _this11._addItem(item);
-	            }
-	          }
-	        });
+	          });
+	        })();
 	      }
 	      return this;
 	    }
@@ -926,10 +938,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function setChoices(choices, value, label) {
 	      var _this13 = this;
 
-	      var replaceChoices = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+	      var replaceChoices = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
 	      if (this.initialised === true) {
-	        if (this.passedElement.type === 'select-one' || this.passedElement.type === 'select-multiple') {
+	        if (this.isSelectElement) {
 	          if (!(0, _utils.isType)('Array', choices) || !value) return;
 	          // Clear choices if needed
 	          if (replaceChoices) {
@@ -1039,7 +1051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'ajax',
 	    value: function ajax(fn) {
 	      if (this.initialised === true) {
-	        if (this.passedElement.type === 'select-one' || this.passedElement.type === 'select-multiple') {
+	        if (this.isSelectElement) {
 	          // Show loading text
 	          this._handleLoadingState(true);
 	          // Run callback
@@ -1071,7 +1083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Run callback if it is a function
 	      if (callback) {
 	        if ((0, _utils.isType)('Function', callback)) {
-	          callback(value);
+	          callback.call(this, value);
 	        } else {
 	          console.error('callbackOnChange: Callback is not a function');
 	        }
@@ -1130,7 +1142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _handleItemAction(activeItems, element) {
 	      var _this15 = this;
 
-	      var hasShiftKey = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	      var hasShiftKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 	      if (!activeItems || !element) return;
 
@@ -1238,14 +1250,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_canAddItem',
 	    value: function _canAddItem(activeItems, value) {
 	      var canAddItem = true;
-	      var notice = 'Press Enter to add <b>"' + value + '"</b>';
+	      var notice = (0, _utils.isType)('Function', this.config.addItemText) ? this.config.addItemText(value) : this.config.addItemText;
 
 	      if (this.passedElement.type === 'select-multiple' || this.passedElement.type === 'text') {
 	        if (this.config.maxItemCount > 0 && this.config.maxItemCount <= this.itemList.children.length) {
 	          // If there is a max entry limit and we have reached that limit
 	          // don't update
 	          canAddItem = false;
-	          notice = 'Only ' + this.config.maxItemCount + ' values can be added.';
+	          notice = (0, _utils.isType)('Function', this.config.maxItemText) ? this.config.maxItemText(this.config.maxItemCount) : this.config.maxItemText;
 	        }
 	      }
 
@@ -1265,7 +1277,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // in the array
 	        if (this.config.duplicateItems === false && !isUnique) {
 	          canAddItem = false;
-	          notice = 'Only unique values can be added.';
+	          notice = (0, _utils.isType)('Function', this.config.uniqueItemText) ? this.config.uniqueItemText(value) : this.config.uniqueItemText;
 	        }
 	      }
 
@@ -1285,7 +1297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_handleLoadingState',
 	    value: function _handleLoadingState() {
-	      var isLoading = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	      var isLoading = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	      var placeholderItem = this.itemList.querySelector('.' + this.config.classNames.placeholder);
 	      if (isLoading) {
@@ -1403,7 +1415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          // Run callback if it is a function
 	          if (callback) {
 	            if ((0, _utils.isType)('Function', callback)) {
-	              callback(value);
+	              callback.call(this, value);
 	            } else {
 	              console.error('callbackOnSearch: Callback is not a function');
 	            }
@@ -1509,7 +1521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (e.target !== this.input && !this.containerOuter.contains(e.target)) return;
 
 	      var target = e.target;
-
+	      var passedElementType = this.passedElement.type;
 	      var activeItems = this.store.getItemsFilteredByActive();
 	      var hasFocusedInput = this.input === document.activeElement;
 	      var hasActiveDropdown = this.dropdown.classList.contains(this.config.classNames.activeState);
@@ -1526,7 +1538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var ctrlDownKey = e.ctrlKey || e.metaKey;
 
 	      // If a user is typing and the dropdown is not active
-	      if (this.passedElement.type !== 'text' && /[a-zA-Z0-9-_ ]/.test(keyString) && !hasActiveDropdown) {
+	      if (passedElementType !== 'text' && /[a-zA-Z0-9-_ ]/.test(keyString) && !hasActiveDropdown) {
 	        this.showDropdown(true);
 	      }
 
@@ -1545,7 +1557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var onEnterKey = function onEnterKey() {
 	        // If enter key is pressed and the input has a value
-	        if (_this17.passedElement.type === 'text' && target.value) {
+	        if (passedElementType === 'text' && target.value) {
 	          var value = _this17.input.value;
 	          var canAddItem = _this17._canAddItem(activeItems, value);
 
@@ -1572,7 +1584,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if (highlighted) {
 	            _this17._handleChoiceAction(activeItems, highlighted);
 	          }
-	        } else if (_this17.passedElement.type === 'select-one') {
+	        } else if (passedElementType === 'select-one') {
 	          // Open single select dropdown if it's not active
 	          if (!hasActiveDropdown) {
 	            _this17.showDropdown(true);
@@ -1589,7 +1601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var onDirectionKey = function onDirectionKey() {
 	        // If up or down key is pressed, traverse through options
-	        if (hasActiveDropdown || _this17.passedElement.type === 'select-one') {
+	        if (hasActiveDropdown || passedElementType === 'select-one') {
 	          // Show dropdown if focus
 	          if (!hasActiveDropdown) {
 	            _this17.showDropdown(true);
@@ -1624,7 +1636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var onDeleteKey = function onDeleteKey() {
 	        // If backspace or delete key is pressed and the input has no value
-	        if (hasFocusedInput && !e.target.value && _this17.passedElement.type !== 'select-one') {
+	        if (hasFocusedInput && !e.target.value && passedElementType !== 'select-one') {
 	          _this17._handleBackspace(activeItems);
 	          e.preventDefault();
 	        }
@@ -1653,7 +1665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      // We are typing into a text input and have a value, we want to show a dropdown
 	      // notice. Otherwise hide the dropdown
-	      if (this.passedElement.type === 'text') {
+	      if (this.isTextElement) {
 	        var hasActiveDropdown = this.dropdown.classList.contains(this.config.classNames.activeState);
 	        var value = this.input.value;
 
@@ -1740,7 +1752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.wasTap === true && this.containerOuter.contains(target)) {
 	        // ...and we aren't dealing with a single select box, show dropdown/focus input
 	        if ((target === this.containerOuter || target === this.containerInner) && this.passedElement.type !== 'select-one') {
-	          if (this.passedElement.type === 'text') {
+	          if (this.isTextElement) {
 	            // If text element, we only want to focus the input (if it isn't already)
 	            if (document.activeElement !== this.input) {
 	              this.input.focus();
@@ -1806,7 +1818,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        if (!hasActiveDropdown) {
-	          if (this.passedElement.type === 'text') {
+	          if (this.isTextElement) {
 	            if (document.activeElement !== this.input) {
 	              this.input.focus();
 	            }
@@ -2028,36 +2040,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var dropdownHeight = this.choiceList.offsetHeight;
 	      var choiceHeight = choice.offsetHeight;
-
 	      // Distance from bottom of element to top of parent
 	      var choicePos = choice.offsetTop + choiceHeight;
-
 	      // Scroll position of dropdown
 	      var containerScrollPos = this.choiceList.scrollTop + dropdownHeight;
-
 	      // Difference between the choice and scroll position
 	      var endPoint = direction > 0 ? this.choiceList.scrollTop + choicePos - containerScrollPos : choice.offsetTop;
 
 	      var animateScroll = function animateScroll() {
 	        var strength = 4;
+	        var choiceListScrollTop = _this20.choiceList.scrollTop;
 	        var continueAnimation = false;
 	        var easing = void 0;
 	        var distance = void 0;
 
 	        if (direction > 0) {
-	          easing = (endPoint - _this20.choiceList.scrollTop) / strength;
+	          easing = (endPoint - choiceListScrollTop) / strength;
 	          distance = easing > 1 ? easing : 1;
 
-	          _this20.choiceList.scrollTop = _this20.choiceList.scrollTop + distance;
-	          if (_this20.choiceList.scrollTop < endPoint) {
+	          _this20.choiceList.scrollTop = choiceListScrollTop + distance;
+	          if (choiceListScrollTop < endPoint) {
 	            continueAnimation = true;
 	          }
 	        } else {
-	          easing = (_this20.choiceList.scrollTop - endPoint) / strength;
+	          easing = (choiceListScrollTop - endPoint) / strength;
 	          distance = easing > 1 ? easing : 1;
 
-	          _this20.choiceList.scrollTop = _this20.choiceList.scrollTop - distance;
-	          if (_this20.choiceList.scrollTop > endPoint) {
+	          _this20.choiceList.scrollTop = choiceListScrollTop - distance;
+	          if (choiceListScrollTop > endPoint) {
 	            continueAnimation = true;
 	          }
 	        }
@@ -2132,8 +2142,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_addItem',
 	    value: function _addItem(value, label) {
-	      var choiceId = arguments.length <= 2 || arguments[2] === undefined ? -1 : arguments[2];
-	      var groupId = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
+	      var choiceId = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
+	      var groupId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : -1;
 
 	      var passedValue = (0, _utils.isType)('String', value) ? value.trim() : value;
 	      var items = this.store.getItems();
@@ -2165,9 +2175,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var group = groupId >= 0 ? this.store.getGroupById(groupId) : null;
 	        if ((0, _utils.isType)('Function', callback)) {
 	          if (group && group.value) {
-	            callback(id, passedValue, group.value);
+	            callback.call(this, id, passedValue, group.value);
 	          } else {
-	            callback(id, passedValue);
+	            callback.call(this, id, passedValue);
 	          }
 	        } else {
 	          console.error('callbackOnAddItem: Callback is not a function');
@@ -2206,9 +2216,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ((0, _utils.isType)('Function', callback)) {
 	          var group = groupId >= 0 ? this.store.getGroupById(groupId) : null;
 	          if (group && group.value) {
-	            callback(id, value, group.value);
+	            callback.call(this, id, value, group.value);
 	          } else {
-	            callback(id, value);
+	            callback.call(this, id, value);
 	          }
 	        } else {
 	          console.error('callbackOnRemoveItem: Callback is not a function');
@@ -2232,7 +2242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_addChoice',
 	    value: function _addChoice(isSelected, isDisabled, value, label) {
-	      var groupId = arguments.length <= 4 || arguments[4] === undefined ? -1 : arguments[4];
+	      var groupId = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
 
 	      if (!value) return;
 
@@ -2275,8 +2285,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _addGroup(group, id) {
 	      var _this22 = this;
 
-	      var valueKey = arguments.length <= 2 || arguments[2] === undefined ? 'value' : arguments[2];
-	      var labelKey = arguments.length <= 3 || arguments[3] === undefined ? 'label' : arguments[3];
+	      var valueKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'value';
+	      var labelKey = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'label';
 
 	      var groupChoices = (0, _utils.isType)('Object', group) ? group.choices : Array.from(group.getElementsByTagName('OPTION'));
 	      var groupId = id;
@@ -2382,7 +2392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var callbackTemplate = this.config.callbackOnCreateTemplates;
 	      var userTemplates = {};
 	      if (callbackTemplate && (0, _utils.isType)('Function', callbackTemplate)) {
-	        userTemplates = callbackTemplate(this, _utils.strToEl);
+	        userTemplates = callbackTemplate.call(this, _utils.strToEl);
 	      }
 	      this.config.templates = (0, _utils.extend)(templates, userTemplates);
 	    }
@@ -2507,7 +2517,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	          })();
 	        }
-	      } else if (this.passedElement.type === 'text') {
+	      } else if (this.isTextElement) {
 	        // Add any preset values seperated by delimiter
 	        this.presetItems.forEach(function (item) {
 	          if ((0, _utils.isType)('Object', item)) {
@@ -3349,7 +3359,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _redux = __webpack_require__(4);
 
-	var _index = __webpack_require__(18);
+	var _index = __webpack_require__(19);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -3436,7 +3446,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getItemsReducedToValues',
 	    value: function getItemsReducedToValues() {
-	      var items = arguments.length <= 0 || arguments[0] === undefined ? this.getItems() : arguments[0];
+	      var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getItems();
 
 	      var values = items.reduce(function (prev, current) {
 	        prev.push(current.value);
@@ -3581,27 +3591,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(13);
+	var _combineReducers = __webpack_require__(14);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(15);
+	var _bindActionCreators = __webpack_require__(16);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(16);
+	var _applyMiddleware = __webpack_require__(17);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(17);
+	var _compose = __webpack_require__(18);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(14);
+	var _warning = __webpack_require__(15);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	/*
 	* This is a dummy function to check if the function name has been altered by minification.
@@ -3610,14 +3620,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	function isCrushed() {}
 
 	if (false) {
-	  (0, _warning2["default"])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
+	  (0, _warning2['default'])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 	}
 
-	exports.createStore = _createStore2["default"];
-	exports.combineReducers = _combineReducers2["default"];
-	exports.bindActionCreators = _bindActionCreators2["default"];
-	exports.applyMiddleware = _applyMiddleware2["default"];
-	exports.compose = _compose2["default"];
+	exports.createStore = _createStore2['default'];
+	exports.combineReducers = _combineReducers2['default'];
+	exports.bindActionCreators = _bindActionCreators2['default'];
+	exports.applyMiddleware = _applyMiddleware2['default'];
+	exports.compose = _compose2['default'];
 
 /***/ },
 /* 5 */
@@ -3627,17 +3637,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 	exports.ActionTypes = undefined;
-	exports["default"] = createStore;
+	exports['default'] = createStore;
 
 	var _isPlainObject = __webpack_require__(6);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _symbolObservable = __webpack_require__(11);
+	var _symbolObservable = __webpack_require__(10);
 
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	/**
 	 * These are private action types reserved by Redux.
@@ -3660,7 +3670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {Function} reducer A function that returns the next state tree, given
 	 * the current state tree and the action to handle.
 	 *
-	 * @param {any} [initialState] The initial state. You may optionally specify it
+	 * @param {any} [preloadedState] The initial state. You may optionally specify it
 	 * to hydrate the state from the server in universal apps, or to restore a
 	 * previously serialized user session.
 	 * If you use `combineReducers` to produce the root reducer function, this must be
@@ -3674,12 +3684,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {Store} A Redux store that lets you read the state, dispatch actions
 	 * and subscribe to changes.
 	 */
-	function createStore(reducer, initialState, enhancer) {
+	function createStore(reducer, preloadedState, enhancer) {
 	  var _ref2;
 
-	  if (typeof initialState === 'function' && typeof enhancer === 'undefined') {
-	    enhancer = initialState;
-	    initialState = undefined;
+	  if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
+	    enhancer = preloadedState;
+	    preloadedState = undefined;
 	  }
 
 	  if (typeof enhancer !== 'undefined') {
@@ -3687,7 +3697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      throw new Error('Expected the enhancer to be a function.');
 	    }
 
-	    return enhancer(createStore)(reducer, initialState);
+	    return enhancer(createStore)(reducer, preloadedState);
 	  }
 
 	  if (typeof reducer !== 'function') {
@@ -3695,7 +3705,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  var currentReducer = reducer;
-	  var currentState = initialState;
+	  var currentState = preloadedState;
 	  var currentListeners = [];
 	  var nextListeners = currentListeners;
 	  var isDispatching = false;
@@ -3787,7 +3797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * return something else (for example, a Promise you can await).
 	   */
 	  function dispatch(action) {
-	    if (!(0, _isPlainObject2["default"])(action)) {
+	    if (!(0, _isPlainObject2['default'])(action)) {
 	      throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
 	    }
 
@@ -3852,7 +3862,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	       * be used to unsubscribe the observable from the store, and prevent further
 	       * emission of values from the observable.
 	       */
-
 	      subscribe: function subscribe(observer) {
 	        if (typeof observer !== 'object') {
 	          throw new TypeError('Expected the observer to be an object.');
@@ -3868,7 +3877,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var unsubscribe = outerSubscribe(observeState);
 	        return { unsubscribe: unsubscribe };
 	      }
-	    }, _ref[_symbolObservable2["default"]] = function () {
+	    }, _ref[_symbolObservable2['default']] = function () {
 	      return this;
 	    }, _ref;
 	  }
@@ -3883,7 +3892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    subscribe: subscribe,
 	    getState: getState,
 	    replaceReducer: replaceReducer
-	  }, _ref2[_symbolObservable2["default"]] = observable, _ref2;
+	  }, _ref2[_symbolObservable2['default']] = observable, _ref2;
 	}
 
 /***/ },
@@ -3891,8 +3900,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var getPrototype = __webpack_require__(7),
-	    isHostObject = __webpack_require__(9),
-	    isObjectLike = __webpack_require__(10);
+	    isObjectLike = __webpack_require__(9);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -3946,8 +3954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * // => true
 	 */
 	function isPlainObject(value) {
-	  if (!isObjectLike(value) ||
-	      objectToString.call(value) != objectTag || isHostObject(value)) {
+	  if (!isObjectLike(value) || objectToString.call(value) != objectTag) {
 	    return false;
 	  }
 	  var proto = getPrototype(value);
@@ -4000,32 +4007,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * Checks if `value` is a host object in IE < 9.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-	 */
-	function isHostObject(value) {
-	  // Many host objects are `Object` objects that can coerce to strings
-	  // despite having improperly defined `toString` methods.
-	  var result = false;
-	  if (value != null && typeof value.toString != 'function') {
-	    try {
-	      result = !!(value + '');
-	    } catch (e) {}
-	  }
-	  return result;
-	}
-
-	module.exports = isHostObject;
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	/**
 	 * Checks if `value` is object-like. A value is object-like if it's not `null`
 	 * and has a `typeof` result of "object".
 	 *
@@ -4050,39 +4031,90 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * // => false
 	 */
 	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
+	  return value != null && typeof value == 'object';
 	}
 
 	module.exports = isObjectLike;
 
 
 /***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(11);
+
+
+/***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/* global window */
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(global, module) {'use strict';
 
-	module.exports = __webpack_require__(12)(global || window || this);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+	var _ponyfill = __webpack_require__(13);
+
+	var _ponyfill2 = _interopRequireDefault(_ponyfill);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var root; /* global window */
+
+
+	if (typeof self !== 'undefined') {
+	  root = self;
+	} else if (typeof window !== 'undefined') {
+	  root = window;
+	} else if (typeof global !== 'undefined') {
+	  root = global;
+	} else if (true) {
+	  root = module;
+	} else {
+	  root = Function('return this')();
+	}
+
+	var result = (0, _ponyfill2['default'])(root);
+	exports['default'] = result;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(12)(module)))
 
 /***/ },
 /* 12 */
 /***/ function(module, exports) {
 
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
 	'use strict';
 
-	module.exports = function symbolObservablePonyfill(root) {
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports['default'] = symbolObservablePonyfill;
+	function symbolObservablePonyfill(root) {
 		var result;
-		var Symbol = root.Symbol;
+		var _Symbol = root.Symbol;
 
-		if (typeof Symbol === 'function') {
-			if (Symbol.observable) {
-				result = Symbol.observable;
+		if (typeof _Symbol === 'function') {
+			if (_Symbol.observable) {
+				result = _Symbol.observable;
 			} else {
-				result = Symbol('observable');
-				Symbol.observable = result;
+				result = _Symbol('observable');
+				_Symbol.observable = result;
 			}
 		} else {
 			result = '@@observable';
@@ -4091,15 +4123,14 @@ return /******/ (function(modules) { // webpackBootstrap
 		return result;
 	};
 
-
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
-	exports["default"] = combineReducers;
+	exports['default'] = combineReducers;
 
 	var _createStore = __webpack_require__(5);
 
@@ -4107,11 +4138,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(14);
+	var _warning = __webpack_require__(15);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	function getUndefinedStateErrorMessage(key, action) {
 	  var actionType = action && action.type;
@@ -4120,20 +4151,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return 'Given action ' + actionName + ', reducer "' + key + '" returned undefined. ' + 'To ignore an action, you must explicitly return the previous state.';
 	}
 
-	function getUnexpectedStateShapeWarningMessage(inputState, reducers, action) {
+	function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, unexpectedKeyCache) {
 	  var reducerKeys = Object.keys(reducers);
-	  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'initialState argument passed to createStore' : 'previous state received by the reducer';
+	  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'preloadedState argument passed to createStore' : 'previous state received by the reducer';
 
 	  if (reducerKeys.length === 0) {
 	    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
 	  }
 
-	  if (!(0, _isPlainObject2["default"])(inputState)) {
+	  if (!(0, _isPlainObject2['default'])(inputState)) {
 	    return 'The ' + argumentName + ' has unexpected type of "' + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
 	  }
 
 	  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
-	    return !reducers.hasOwnProperty(key);
+	    return !reducers.hasOwnProperty(key) && !unexpectedKeyCache[key];
+	  });
+
+	  unexpectedKeys.forEach(function (key) {
+	    unexpectedKeyCache[key] = true;
 	  });
 
 	  if (unexpectedKeys.length > 0) {
@@ -4178,11 +4213,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var finalReducers = {};
 	  for (var i = 0; i < reducerKeys.length; i++) {
 	    var key = reducerKeys[i];
+
+	    if (false) {
+	      if (typeof reducers[key] === 'undefined') {
+	        (0, _warning2['default'])('No reducer provided for key "' + key + '"');
+	      }
+	    }
+
 	    if (typeof reducers[key] === 'function') {
 	      finalReducers[key] = reducers[key];
 	    }
 	  }
 	  var finalReducerKeys = Object.keys(finalReducers);
+
+	  if (false) {
+	    var unexpectedKeyCache = {};
+	  }
 
 	  var sanityError;
 	  try {
@@ -4200,9 +4246,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (false) {
-	      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action);
+	      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
 	      if (warningMessage) {
-	        (0, _warning2["default"])(warningMessage);
+	        (0, _warning2['default'])(warningMessage);
 	      }
 	    }
 
@@ -4225,13 +4271,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
 
 	exports.__esModule = true;
-	exports["default"] = warning;
+	exports['default'] = warning;
 	/**
 	 * Prints a warning in the console if it exists.
 	 *
@@ -4255,13 +4301,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
 
 	exports.__esModule = true;
-	exports["default"] = bindActionCreators;
+	exports['default'] = bindActionCreators;
 	function bindActionCreator(actionCreator, dispatch) {
 	  return function () {
 	    return dispatch(actionCreator.apply(undefined, arguments));
@@ -4311,7 +4357,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4320,13 +4366,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	exports["default"] = applyMiddleware;
+	exports['default'] = applyMiddleware;
 
-	var _compose = __webpack_require__(17);
+	var _compose = __webpack_require__(18);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	/**
 	 * Creates a store enhancer that applies middleware to the dispatch method
@@ -4350,8 +4396,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  return function (createStore) {
-	    return function (reducer, initialState, enhancer) {
-	      var store = createStore(reducer, initialState, enhancer);
+	    return function (reducer, preloadedState, enhancer) {
+	      var store = createStore(reducer, preloadedState, enhancer);
 	      var _dispatch = store.dispatch;
 	      var chain = [];
 
@@ -4364,7 +4410,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      chain = middlewares.map(function (middleware) {
 	        return middleware(middlewareAPI);
 	      });
-	      _dispatch = _compose2["default"].apply(undefined, chain)(store.dispatch);
+	      _dispatch = _compose2['default'].apply(undefined, chain)(store.dispatch);
 
 	      return _extends({}, store, {
 	        dispatch: _dispatch
@@ -4374,7 +4420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4401,25 +4447,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return function (arg) {
 	      return arg;
 	    };
-	  } else {
-	    var _ret = function () {
-	      var last = funcs[funcs.length - 1];
-	      var rest = funcs.slice(0, -1);
-	      return {
-	        v: function v() {
-	          return rest.reduceRight(function (composed, f) {
-	            return f(composed);
-	          }, last.apply(undefined, arguments));
-	        }
-	      };
-	    }();
-
-	    if (typeof _ret === "object") return _ret.v;
 	  }
+
+	  if (funcs.length === 1) {
+	    return funcs[0];
+	  }
+
+	  var last = funcs[funcs.length - 1];
+	  var rest = funcs.slice(0, -1);
+	  return function () {
+	    return rest.reduceRight(function (composed, f) {
+	      return f(composed);
+	    }, last.apply(undefined, arguments));
+	  };
 	}
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4430,15 +4474,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _redux = __webpack_require__(4);
 
-	var _items = __webpack_require__(19);
+	var _items = __webpack_require__(20);
 
 	var _items2 = _interopRequireDefault(_items);
 
-	var _groups = __webpack_require__(20);
+	var _groups = __webpack_require__(21);
 
 	var _groups2 = _interopRequireDefault(_groups);
 
-	var _choices = __webpack_require__(21);
+	var _choices = __webpack_require__(22);
 
 	var _choices2 = _interopRequireDefault(_choices);
 
@@ -4466,7 +4510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = rootReducer;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4478,7 +4522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var items = function items() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -4534,7 +4578,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = items;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4546,7 +4590,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var groups = function groups() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -4575,7 +4619,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = groups;
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4584,12 +4628,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var choices = function choices() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -4703,7 +4747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = choices;
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4757,7 +4801,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	var activateChoices = exports.activateChoices = function activateChoices() {
-	  var active = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	  var active = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	  return {
 	    type: 'ACTIVATE_CHOICES',
@@ -4788,7 +4832,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		};
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4797,7 +4841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	/* eslint-disable */
 	/**
@@ -5104,7 +5148,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {[HTMLElement}           Found element
 	 */
 	var getAdjacentEl = exports.getAdjacentEl = function getAdjacentEl(startEl, className) {
-	  var direction = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+	  var direction = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
 	  if (!startEl || !className) return;
 
@@ -5151,7 +5195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {Boolean}
 	 */
 	var isScrolledIntoView = exports.isScrolledIntoView = function isScrolledIntoView(el, parent) {
-	  var direction = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+	  var direction = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
 	  if (!el) return;
 
@@ -5270,7 +5314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	'use strict';

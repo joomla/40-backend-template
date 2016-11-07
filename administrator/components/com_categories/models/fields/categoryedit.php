@@ -360,7 +360,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 
 			// Include scripts
 			JHtml::_('behavior.core');
-			JHtml::_('stylesheet', 'vendor/choices/css/choices.css', array(), true);
+			JHtml::_('stylesheet', 'vendor/choices/choices.css', array(), true);
 			JHtml::_('script', 'vendor/choices/choices.js', false, true, false, false, JDEBUG);
 
 JFactory::getDocument()->addScriptDeclaration(

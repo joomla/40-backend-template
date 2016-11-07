@@ -82,7 +82,7 @@ module.exports = function(grunt) {
 					'media/vendor/punycode/*',
 					'media/vendor/codemirror/*',
 					'media/vendor/mediaelement/*',
-					'media/vendor/chosenjs/*',
+					'media/vendor/choices/*',
 					'media/vendor/awesomplete/*',
 				],
 				expand: true,
@@ -199,6 +199,14 @@ module.exports = function(grunt) {
 					{ expand: true, cwd: 'build/assets_tmp/node_modules/dragula/dist', src: ['*.js'], dest: 'media/vendor/dragula/js/', filter: 'isFile'},
 					// Dragula css files
 					{ cwd: 'build/assets_tmp/node_modules/dragula/dist', src: ['*.css'], dest: 'media/vendor/dragula/css/', expand: true, filter: 'isFile'},
+					// Choices js files
+					{ expand: true, cwd: 'build/assets_tmp/node_modules/choices.js/assets/scripts/dist', src: ['**'], dest: 'media/vendor/choices/js/', filter: 'isFile'},
+					// Choices css files
+					{ cwd: 'build/assets_tmp/node_modules/choices.js/assets/styles/css', src: ['*.css'], dest: 'media/vendor/choices/css/', expand: true, filter: 'isFile'},
+					// Choices scss files
+					{ cwd: 'build/assets_tmp/node_modules/choices.js/assets/styles/scss', src: ['*.scss'], dest: 'media/vendor/choices/scss/', expand: true, filter: 'isFile'},
+					// Choices icon files
+					{ cwd: 'build/assets_tmp/node_modules/choices.js/assets/icons', src: ['*.svg'], dest: 'media/vendor/choices/icons/', expand: true, filter: 'isFile'},
 
 					// Licenses
 					{ src: ['build/assets_tmp/node_modules/jquery/LICENSE.txt'], dest: 'media/vendor/jquery/LICENSE.txt'},
@@ -209,6 +217,7 @@ module.exports = function(grunt) {
 					{ src: ['build/assets_tmp/tmp/jcrop/jcrop-MIT-LICENSE.txt'], dest: 'media/vendor/jcrop/jcrop-MIT-LICENSE.txt'},
 					{ src: ['build/assets_tmp/node_modules/dragula/license'], dest: 'media/vendor/dragula/license'},
 					{ src: ['build/assets_tmp/node_modules/awesomplete/LICENSE'], dest: 'media/vendor/awesomplete/LICENSE'},
+					{ src: ['build/assets_tmp/node_modules/choices.js/LICENSE'], dest: 'media/vendor/choices/LICENSE'},
 				]
 			}
 		},

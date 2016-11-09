@@ -131,31 +131,25 @@
 		/**
 		 * Switchers
 		 */
-		var switcher = Array.prototype.slice.call(document.querySelectorAll('.switcher'));
+		var switcher = document.querySelectorAll('.switcher');
 
-		switcher.forEach(function(el) {
-
-			// NEED HELP HERE
-			// Need to get the last "input" element
-			// Check if it's "checked"
-			// If so, add the "active" class
-			var lastChild = el.lastElementChild;
-			
-			if (lastChild.checked) {
-				lastChild.classList.add('active');
+		for (var i = 0; i < switcher.length; i++) {
+			// Add the initial active class
+			var nodes = switcher[i].querySelectorAll('input');
+			if (nodes[1].checked) {
+				nodes[1].parentNode.classList.add('active');
 			}
-
 			// Add the active class on click
-			el.addEventListener('click', function(event) {
+			switcher[i].addEventListener('click', function(event) {
 				var el = event.target;
-				if (!el.classList.contains('switcher')) {
+				if (!el.classList.contains('active')) {
 					el.parentNode.classList.add('active');
 				}
 				else {
 					el.parentNode.classList.remove('active');
 				}
 			});
-		});
+		}
 
 		/**
 		 * Turn radios into btn-group

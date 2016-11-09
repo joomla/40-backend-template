@@ -67,7 +67,7 @@ JHtml::_('stylesheet', 'vendor/switchery/switchery.css', false, true);
 					$optionClass = !empty($option->class) ? 'class="' . $option->class . '"' : '';
 					if ($i == 0)
 					{
-						$optionClass = !empty($option->class) ? 'class="' . $option->class . '"' : '';
+						$optionClass = !empty($option->class) ? 'class="active' . $option->class . '"' : 'class="active"';
 					}
 
 					$disabled    = !empty($option->disable) || ($disabled && !$checked) ? 'disabled' : '';

@@ -662,8 +662,8 @@
 			label="COM_CONFIG_FIELD_SEF_URL_LABEL"
 			description="COM_CONFIG_FIELD_SEF_URL_DESC"
 			filter="integer">
-			<option value="1">JYES</option>
 			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 
 		<field
@@ -674,8 +674,8 @@
 			description="COM_CONFIG_FIELD_SEF_REWRITE_DESC"
 			filter="integer"
 			showon="sef:1">
-			<option value="1">JYES</option>
 			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 
 		<field
@@ -686,8 +686,8 @@
 			description="COM_CONFIG_FIELD_SEF_SUFFIX_DESC"
 			filter="integer"
 			showon="sef:1">
-			<option value="1">JYES</option>
 			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 
 		<field
@@ -698,8 +698,8 @@
 			description="COM_CONFIG_FIELD_UNICODESLUGS_DESC"
 			filter="integer"
 			showon="sef:1">
-			<option value="1">JYES</option>
 			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 
 		<field

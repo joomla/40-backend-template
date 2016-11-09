@@ -131,21 +131,25 @@
 		
 		
 		/**
-		 * Initiate switchers
+		 * Switchers
 		 */
-		var switcherEl = Array.prototype.slice.call(document.querySelectorAll('.switcher'));
-
-		switcherEl.forEach(function(el) {
-
-			var switchery = new Switchery(el);
-			
-			el.onchange = function() {
-				var value = el.checked ? 1 : 0;
-				el.value = value;
-			};
-			
-		});
+		var switcher = Array.prototype.slice.call(document.querySelectorAll('.switcher'));
 		
+		switcher.forEach(function(el) {
+			el.addEventListener('click', function(event) {
+				
+				var el = event.target;
+
+				if (!el.classList.contains('switcher'))
+				{
+					el.parentNode.classList.add('active');
+				}
+				else
+				{
+					el.parentNode.classList.remove('active');
+				}
+			});
+		});
 		
 
 		/**

@@ -5,7 +5,6 @@ module.exports = function(grunt) {
 		preText       = '{\n "name": "joomla-assets",\n "version": "4.0.0",\n "description": "External assets that Joomla is using",\n "dependencies": {\n  ',
 		postText      = '  },\n  "license": "GPL-2.0+"\n}',
 		name,
-		disabledNPM   = ['switchery'],
 		vendorsTxt    = '',
 		vendorsArr    = '',
 		polyFillsUrls = [];
@@ -37,9 +36,7 @@ module.exports = function(grunt) {
 
 	// Loop to get some text for the packgage.json
 	for (name in settings.vendors) {
-		if (disabledNPM.indexOf(name) < 0 ) {
-			vendorsTxt += '"' + name + '": "' + settings.vendors[name].version + '",';
-		}
+		vendorsTxt += '"' + name + '": "' + settings.vendors[name].version + '",';
 	}
 
 	// Loop to get some text for the assets.php
@@ -87,7 +84,6 @@ module.exports = function(grunt) {
 					'media/vendor/mediaelement/*',
 					'media/vendor/chosenjs/*',
 					'media/vendor/awesomplete/*',
-					'media/vendor/switchery/*',
 				],
 				expand: true,
 				options: {
@@ -105,20 +101,6 @@ module.exports = function(grunt) {
 					'npm install'
 				].join('&&')
 			}
-		},
-
-		// Get the latest codemirror
-		curl: {
-			'switchery': {
-				src: 'https://github.com/abpetkov/switchery/archive/' + settings.vendors.switchery.version + '.zip',
-				dest: 'build/assets_tmp/tmp/switchery.zip'
-			},
-		},
-		unzip: {
-			'switcheryUnzip': {
-				src: 'build/assets_tmp/tmp/switchery.zip',
-				dest: 'build/assets_tmp/tmp/switchery/'
-			},
 		},
 
 		// Fetch the polyfills
@@ -217,10 +199,6 @@ module.exports = function(grunt) {
 					{ expand: true, cwd: 'build/assets_tmp/node_modules/dragula/dist', src: ['*.js'], dest: 'media/vendor/dragula/js/', filter: 'isFile'},
 					// Dragula css files
 					{ cwd: 'build/assets_tmp/node_modules/dragula/dist', src: ['*.css'], dest: 'media/vendor/dragula/css/', expand: true, filter: 'isFile'},
-					// Switchery js files
-					{ expand: true, cwd: 'build/assets_tmp/tmp/switchery/switchery-' + settings.vendors.switchery.version + '/dist/', src: ['*.js'], dest: 'media/vendor/switchery/js/', filter: 'isFile'},
-					// Switchery css files
-					{ expand: true, cwd: 'build/assets_tmp/tmp/switchery/switchery-' + settings.vendors.switchery.version + '/dist/', src: ['*.css'], dest: 'media/vendor/switchery/css/', filter: 'isFile'},
 
 					// Licenses
 					{ src: ['build/assets_tmp/node_modules/jquery/LICENSE.txt'], dest: 'media/vendor/jquery/LICENSE.txt'},
@@ -353,8 +331,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-scss-lint');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-shell');
-	grunt.loadNpmTasks('grunt-zip');
-	grunt.loadNpmTasks('grunt-curl');
 	grunt.loadNpmTasks('grunt-fetch-pages');
 	grunt.loadNpmTasks('grunt-postcss');
 
@@ -362,8 +338,6 @@ module.exports = function(grunt) {
 		[
 			'clean:assets',
 			'shell:update',
-			'curl:switchery',
-			'unzip:switcheryUnzip',
 			'concat:someFiles',
 			'copy:fromSource',
 			'sass:dist',

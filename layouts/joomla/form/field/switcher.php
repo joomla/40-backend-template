@@ -47,35 +47,44 @@ extract($displayData);
  *     %3 - value
  *     %4 = any other attributes
  */
-$format = '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s />';
+$format = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s />';
 $alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);	
 
 JHtml::_('stylesheet', 'vendor/switchery/switchery.css', false, true);
-JHtml::_('script', 'vendor/switchery/switchery.js', false, true);
 ?>
 <fieldset id="<?php echo $id; ?>" class="<?php echo trim($class . ' switchers'); ?>"
 	<?php echo $disabled ? 'disabled' : ''; ?>
 	<?php echo $required ? 'required aria-required="true"' : ''; ?>>
 
 	<?php if (!empty($options)) : ?>
-		<?php foreach ($options as $i => $option) : ?>
-			<?php
-				// Initialize some option attributes.
-				$checked     = ((string) $option->value == $value) ? 'checked="checked"' : '';
-				$optionClass = !empty($option->class) ? 'class="switcher ' . $option->class . '"' : 'class="switcher"';
-				$disabled    = !empty($option->disable) || ($disabled && !$checked) ? 'disabled' : '';
+		<span class="switcher">
+			<?php foreach ($options as $i => $option) : ?>
+				<?php
+					// Initialize some option attributes.
+					$checked     = ((string) $option->value == $value) ? 'checked="checked"' : '';
 
-				// Initialize some JavaScript option attributes.
-				$onclick     = !empty($option->onclick) ? 'onclick="' . $option->onclick . '"' : '';
-				$onchange    = !empty($option->onchange) ? 'onchange="' . $option->onchange . '"' : '';
-				$oid         = $id . $i;
-				$ovalue      = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
-				$attributes  = array_filter(array($checked, $optionClass, $disabled, $onchange, $onclick));
-			?>
-			<?php if ($required) : ?>
-				<?php $attributes[] = 'required aria-required="true"'; ?>
-			<?php endif; ?>
+					// Only add the switcher class to the first element
+					$optionClass = !empty($option->class) ? 'class="' . $option->class . '"' : '';
+					if ($i == 0)
+					{
+						$optionClass = !empty($option->class) ? 'class="switcher ' . $option->class . '"' : 'class="switcher"';
+					}
+
+					$disabled    = !empty($option->disable) || ($disabled && !$checked) ? 'disabled' : '';
+
+					// Initialize some JavaScript option attributes.
+					$onclick     = !empty($option->onclick) ? 'onclick="' . $option->onclick . '"' : '';
+					$onchange    = !empty($option->onchange) ? 'onchange="' . $option->onchange . '"' : '';
+					$oid         = $id . $i;
+					$ovalue      = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
+					$attributes  = array_filter(array($checked, $optionClass, $disabled, $onchange, $onclick));
+				?>
+				<?php if ($required) : ?>
+					<?php $attributes[] = 'required aria-required="true"'; ?>
+				<?php endif; ?>
 				<?php echo sprintf($format, $oid, $name, $ovalue, implode(' ', $attributes)); ?>
-		<?php endforeach; ?>
+			<?php endforeach; ?>
+			<span class="switch"></span>
+		</span>
 	<?php endif; ?>
 </fieldset>

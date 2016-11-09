@@ -48,12 +48,6 @@ vendors:
                   'dependencies': ''
 
 
-### These are always fetced with curl ###
-    'switchery':
-                  'version': '0.8.2'
-                  'dependencies': ''
-
-
 ### The javascript polyfills
 polyfills:
         - 'Element.prototype.classList'

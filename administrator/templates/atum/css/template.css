@@ -7796,8 +7796,8 @@ legend {
       display: inline;
       font-size: .85em;
       font-weight: bold;
-      letter-spacing: .4px;
-      line-height: 2em; }
+      line-height: 2em;
+      letter-spacing: .4px; }
       .quick-icons a span[class*=" icon-"], .quick-icons a span[class^="icon-"] {
         margin-right: .1em;
         font-size: 2.5em;
@@ -8105,6 +8105,57 @@ legend {
   .status .btn-group > a {
     font-size: .9rem;
     color: #555; }
+
+.switcher {
+  position: relative;
+  box-sizing: content-box;
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: #fff;
+  background-clip: content-box;
+  border: 1px solid #dfdfdf;
+  border-radius: 20px;
+  box-shadow: 0 0 0 0 #dfdfdf inset;
+  transition: border .4s ease 0s, box-shadow .4s ease 0s; }
+  .switcher.active {
+    background-color: #64bd63;
+    border-color: #64bd63;
+    box-shadow: 0 0 0 16px #64bd63 inset;
+    transition: border .4s ease 0s, box-shadow .4s ease 0s, background-color 1.2s ease 0s; }
+  .switcher input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 50px;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+    zoom: 1;
+    filter: alpha(opacity=0);
+    opacity: 0; }
+  .switcher .switch {
+    position: absolute;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border-radius: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    transition: left .2s ease 0s; }
+  .switcher input:checked ~ .switch {
+    left: -1px; }
+  .switcher input ~ :checked ~ .switch {
+    left: 20px; }
+  .switcher input:checked {
+    z-index: 0; }
 
 .table th,
 .table td {

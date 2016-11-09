@@ -669,8 +669,7 @@
 
 		<field
 			name="sef_rewrite"
-			type="radio"
-			class="btn-group btn-group-yesno"
+			type="switcher"
 			default="0"
 			label="COM_CONFIG_FIELD_SEF_REWRITE_LABEL"
 			description="COM_CONFIG_FIELD_SEF_REWRITE_DESC"
@@ -682,8 +681,7 @@
 
 		<field
 			name="sef_suffix"
-			type="radio"
-			class="btn-group btn-group-yesno"
+			type="switcher"
 			default="0"
 			label="COM_CONFIG_FIELD_SEF_SUFFIX_LABEL"
 			description="COM_CONFIG_FIELD_SEF_SUFFIX_DESC"
@@ -695,8 +693,7 @@
 
 		<field
 			name="unicodeslugs"
-			type="radio"
-			class="btn-group btn-group-yesno"
+			type="switcher"
 			default="0"
 			label="COM_CONFIG_FIELD_UNICODESLUGS_LABEL"
 			description="COM_CONFIG_FIELD_UNICODESLUGS_DESC"

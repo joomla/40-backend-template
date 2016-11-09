@@ -127,6 +127,26 @@
 
 			return null;
 		}
+		
+		
+		
+		/**
+		 * Initiate switchers
+		 */
+		var switcherEl = Array.prototype.slice.call(document.querySelectorAll('.switcher'));
+
+		switcherEl.forEach(function(el) {
+
+			var switchery = new Switchery(el);
+			
+			el.onchange = function() {
+				var value = el.checked ? 1 : 0;
+				el.value = value;
+			};
+			
+		});
+		
+		
 
 		/**
 		 * Turn radios into btn-group

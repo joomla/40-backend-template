@@ -127,30 +127,35 @@
 
 			return null;
 		}
-		
-		
-		
+
 		/**
 		 * Switchers
 		 */
 		var switcher = Array.prototype.slice.call(document.querySelectorAll('.switcher'));
-		
-		switcher.forEach(function(el) {
-			el.addEventListener('click', function(event) {
-				
-				var el = event.target;
 
-				if (!el.classList.contains('switcher'))
-				{
+		switcher.forEach(function(el) {
+
+			// NEED HELP HERE
+			// Need to get the last "input" element
+			// Check if it's "checked"
+			// If so, add the "active" class
+			var lastChild = el.lastElementChild;
+			
+			if (lastChild.checked) {
+				lastChild.classList.add('active');
+			}
+
+			// Add the active class on click
+			el.addEventListener('click', function(event) {
+				var el = event.target;
+				if (!el.classList.contains('switcher')) {
 					el.parentNode.classList.add('active');
 				}
-				else
-				{
+				else {
 					el.parentNode.classList.remove('active');
 				}
 			});
 		});
-		
 
 		/**
 		 * Turn radios into btn-group

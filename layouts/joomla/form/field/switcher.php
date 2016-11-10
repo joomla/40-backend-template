@@ -48,16 +48,16 @@ extract($displayData);
  *     %4 = any other attributes
  */
 $format = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s />';
-$alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);	
+$alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
 
-JHtml::_('stylesheet', 'vendor/switchery/switchery.css', false, true);
 ?>
-<fieldset id="<?php echo $id; ?>" class="<?php echo trim($class . ' switchers'); ?>"
+<fieldset id="<?php echo $id; ?>" class="<?php echo $class; ?>"
 	<?php echo $disabled ? 'disabled' : ''; ?>
-	<?php echo $required ? 'required aria-required="true"' : ''; ?>>
+	<?php echo $required ? 'required aria-required="true"' : ''; ?>
+	<?php echo $class ? 'class="' . $class . '"' : ''; ?>>
 
 	<?php if (!empty($options)) : ?>
-		<span class="switcher">
+		<span class="js-switcher">
 			<?php foreach ($options as $i => $option) : ?>
 				<?php
 					// Initialize some option attributes.

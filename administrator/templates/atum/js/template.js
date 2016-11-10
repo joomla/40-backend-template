@@ -131,7 +131,7 @@
 		/**
 		 * Switchers
 		 */
-		var switcher = document.querySelectorAll('.switcher');
+		var switcher = document.querySelectorAll('.js-switcher');
 
 		for (var i = 0; i < switcher.length; i++) {
 			// Add the initial active class

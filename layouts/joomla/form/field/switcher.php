@@ -50,8 +50,9 @@ extract($displayData);
 $format = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s />';
 $alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
 
+JHtml::_('script', 'system/fields/switcher.js', false, true);
 ?>
-<fieldset id="<?php echo $id; ?>" class="<?php echo $class; ?>"
+<fieldset id="<?php echo $id; ?>"
 	<?php echo $disabled ? 'disabled' : ''; ?>
 	<?php echo $required ? 'required aria-required="true"' : ''; ?>
 	<?php echo $class ? 'class="' . $class . '"' : ''; ?>>

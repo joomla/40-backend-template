@@ -129,29 +129,6 @@
 		}
 
 		/**
-		 * Switchers
-		 */
-		var switcher = document.querySelectorAll('.js-switcher');
-
-		for (var i = 0; i < switcher.length; i++) {
-			// Add the initial active class
-			var nodes = switcher[i].querySelectorAll('input');
-			if (nodes[1].checked) {
-				nodes[1].parentNode.classList.add('active');
-			}
-			// Add the active class on click
-			switcher[i].addEventListener('click', function(event) {
-				var el = event.target;
-				if (!el.classList.contains('active')) {
-					el.parentNode.classList.add('active');
-				}
-				else {
-					el.parentNode.classList.remove('active');
-				}
-			});
-		}
-
-		/**
 		 * Turn radios into btn-group
 		 */
 		var container = document.querySelectorAll('.btn-group.btn-group-yesno');

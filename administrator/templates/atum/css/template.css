@@ -2787,7 +2787,7 @@ tbody.collapse.in {
   margin-left: 1rem; }
 
 .nav-tabs {
-  border-bottom: 1px solid #ddd; }
+  border-bottom: 1px solid #eee; }
   .nav-tabs::after {
     content: "";
     display: table;
@@ -2801,10 +2801,10 @@ tbody.collapse.in {
     display: block;
     padding: 0.5em 1em;
     border: 1px solid transparent;
-    border-top-right-radius: 0.25rem;
-    border-top-left-radius: 0.25rem; }
+    border-top-right-radius: 0;
+    border-top-left-radius: 0; }
     .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
-      border-color: #eceeef #eceeef #ddd; }
+      border-color: #eceeef #eceeef #eee; }
     .nav-tabs .nav-link.disabled, .nav-tabs .nav-link.disabled:focus, .nav-tabs .nav-link.disabled:hover {
       color: #818a91;
       background-color: transparent;
@@ -8328,7 +8328,17 @@ legend {
   cursor: move; }
 
 .nav.nav-tabs {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  border-bottom: 5px solid #eee; }
+  .nav.nav-tabs .nav-item {
+    margin-bottom: -5px; }
+  .nav.nav-tabs .nav-link {
+    color: #55595c;
+    border-color: transparent;
+    border-width: 0 0 5px; }
+    .nav.nav-tabs .nav-link.active {
+      color: #0275d8;
+      border-bottom-color: #0275d8; }
 
 .jviewport-height10 {
   height: 10vh; }

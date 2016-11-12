@@ -56,6 +56,19 @@
 // Nav
 .nav.nav-tabs {
   margin-bottom: 20px;
+  border-bottom: 5px solid $nav-tabs-border-color;
+  .nav-item {
+    margin-bottom: -5px;
+  }
+  .nav-link {
+    color: $gray;
+    border-color: transparent;
+    border-width: 0 0 5px;
+    &.active {
+      color: $brand-primary;
+      border-bottom-color: $brand-primary;
+    }
+  }
 }
 
 // Modal

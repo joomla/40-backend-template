@@ -208,9 +208,10 @@ small, .small {
 .notify-alerts {
   position: fixed;
   right: 0;
-  bottom: 25px;
-  left: 0;
+  bottom: 30px;
+  left: 250px;
   z-index: 1029;
+  transition: all .5s ease;
   .alert {
     width: 100%;
     margin-bottom: 0;

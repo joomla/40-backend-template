@@ -28,7 +28,7 @@ if ($saveOrder)
 }
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_content&view=featured'); ?>" method="post" name="adminForm" id="adminForm">
+<form class="js-multiselect" action="<?php echo JRoute::_('index.php?option=com_content&view=featured'); ?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-main-container">
 		<?php
 		// Search tools bar

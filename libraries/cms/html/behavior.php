@@ -254,31 +254,15 @@ abstract class JHtmlBehavior
 	 */
 	public static function multiselect($id = 'adminForm')
 	{
-		// Only load once
-		if (isset(static::$loaded[__METHOD__][$id]))
-		{
-			return;
-		}
-
 		// Include core
 		static::core();
 
-		// Include jQuery
-		JHtml::_('jquery.framework');
+		if ($id !== 'adminForm')
+		{
+			JFactory::getDocument()->addScriptOptions('js-multiselect', array('id' => $id));
+		}
 
 		JHtml::_('script', 'system/multiselect.min.js', false, true);
-
-		// Attach multiselect to document
-		JFactory::getDocument()->addScriptDeclaration(
-			"jQuery(document).ready(function() {
-				Joomla.JMultiSelect('" . $id . "');
-			});"
-		);
-
-		// Set static array
-		static::$loaded[__METHOD__][$id] = true;
-
-		return;
 	}
 
 	/**

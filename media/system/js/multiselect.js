@@ -6,38 +6,59 @@
 /**
  * JavaScript behavior to allow shift select in administrator grids
  */
-(function($) {
-    
-    Joomla = window.Joomla || {};
-    var $boxes;
-    Joomla.JMultiSelect = function(table) {
-        var $last,
-        
-        initialize = function(table) {
-            $boxes = $('#' + table).find('input[type=checkbox]');
-            $boxes.on('click', function(e) {
-                doselect(e)
-            });
-        },
-        
-        doselect = function(e) {
-            var $current = $(e.target), isChecked, lastIndex, currentIndex, swap;
-            if (e.shiftKey && $last.length) {
-                isChecked = $current.is(':checked');
-                lastIndex = $boxes.index($last);
-                currentIndex = $boxes.index($current);
-                if (currentIndex < lastIndex) {
-                    // handle selection from bottom up
-                    swap = lastIndex;
-                    lastIndex = currentIndex;
-                    currentIndex = swap;
-                }
-                $boxes.slice(lastIndex, currentIndex + 1).attr('checked', isChecked);
-            }
 
-            $last = $current;
-        }
+(function() {
+    "use strict";
+    Joomla = window.Joomla || {};
+    var boxes;
+    Joomla.JMultiSelect = function(table) {
+        var last,
+
+            initialize = function(table) {
+                boxes = table.querySelectorAll('input[type=checkbox]');
+                var i = 0, countB = boxes.length;
+                for (i; boxes<countB; i++) {
+                    boxes[i].addEventListener('click', function (e) {
+                        doselect(e)
+                    });
+                }
+            },
+
+            doselect = function(e) {
+                var current = e.target, isChecked, lastIndex, currentIndex, swap;
+                if (e.shiftKey && last.length) {
+                    isChecked = current.hasAttribute(':checked');
+                    lastIndex = boxes.index(last);
+                    currentIndex = boxes.index(current);
+                    if (currentIndex < lastIndex) {
+                        // handle selection from bottom up
+                        swap = lastIndex;
+                        lastIndex = currentIndex;
+                        currentIndex = swap;
+                    }
+                    boxes.slice(lastIndex, currentIndex + 1).setAttribute('checked', isChecked);
+                }
+
+                last = current;
+            };
         initialize(table);
     }
+})();
 
-})(jQuery);
+document.addEventListener('DOMContentLoaded', function() {
+    var element;
+
+    if (Joomla && Joomla.optionsStorage && typeof Joomla.getOptions('js-multiselect') === 'object') {
+        element = document.querySelector('#' + Joomla.getOptions('js-multiselect').id);
+    } else {
+        element = document.querySelector('.js-multiselect');
+
+        if (!element) {
+            element = document.querySelector('#adminForm');
+        }
+    }
+
+    if (element) {
+        Joomla.JMultiSelect(element);
+    }
+});

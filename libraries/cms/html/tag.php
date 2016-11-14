@@ -198,41 +198,43 @@ JFactory::getApplication()->enqueueMessage($msg, 'error');
 		paste: true,
 		search: true,
 		flip: true,
-		searchFloor: 3
+		searchFloor: 3,
+		prependValue: '#new#',
+
 		});
 
-	var additionalFuncForTagInput = function() {
-		// Override to provide ability to add new tag
-		tags_field.input.addEventListener('keypress', function(event) {
-			// Remove the search entries if something is typed
-			if (tags_field.input.value > 0) {
-				tags_field.input.parentNode.querySelector('.choices__list').innerHTML = '';
-			}
-			// @TODO If tags_field.input.value >3 do ajax
-			
-			// @TODO If allowed to create new tag
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				var choisesVal = tags_field.getValue();
-				tags_field.clearStore();
-				var elem = document.querySelector('#jform_tags');
-				var value = tags_field.input.value;
-				if (value) {
-					tags_field.destroy();
-					var option = document.createElement('option');
-					option.value = "#new#" + value;
-					option.text = value;
-					option.setAttribute('selected', '')
-					elem.appendChild(option);
-
-					tags_field.init();
-					additionalFuncForTagInput();
-				}
-			}
-		});
-	}
-
-	additionalFuncForTagInput();
+	// var additionalFuncForTagInput = function() {
+	// 	// Override to provide ability to add new tag
+	// 	tags_field.input.addEventListener('keypress', function(event) {
+	// 		// Remove the search entries if something is typed
+	// 		if (tags_field.input.value > 0) {
+	// 			tags_field.input.parentNode.querySelector('.choices__list').innerHTML = '';
+	// 		}
+	// 		// @TODO If tags_field.input.value >3 do ajax
+	//		
+	// 		// @TODO If allowed to create new tag
+	// 		if (event.keyCode === 13) {
+	// 			event.preventDefault();
+	// 			var choisesVal = tags_field.getValue();
+	// 			tags_field.clearStore();
+	// 			var elem = document.querySelector('#jform_tags');
+	// 			var value = tags_field.input.value;
+	// 			if (value) {
+	// 				tags_field.destroy();
+	// 				var option = document.createElement('option');
+	// 				option.value = "#new#" + value;
+	// 				option.text = value;
+	// 				option.setAttribute('selected', '')
+	// 				elem.appendChild(option);
+	//
+	// 				tags_field.init();
+	// 				additionalFuncForTagInput();
+	// 			}
+	// 		}
+	// 	});
+	// }
+	//
+	// additionalFuncForTagInput();
 });
 
 

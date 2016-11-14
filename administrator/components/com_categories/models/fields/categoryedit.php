@@ -379,50 +379,46 @@ document.addEventListener('DOMContentLoaded', function(){
 		shouldSort: false,
 		search: true,
 		searchFloor: 3,
-		joomlaInput: '',
-		callbackOnSearch: function(value) {
-			// cat_field.
-		}
 	});
 
-console.log(cat_field)
+//console.log(cat_field)
 
-	// Override to provide ability to add new tag
-	var additionalFuncForInput = function() {
-		cat_field.input.addEventListener('keypress', function(event) {
-			// Remove the search entries if something is typed
-			if (cat_field.input.value.length > 0) {
-				event.preventDefault();
-				cat_field.input.parentNode.querySelector('.choices__list').innerHTML = '';
-				cat_field.input.value += String.fromCharCode(event.keyCode);
-				cat_field.input.parentNode.querySelector('.choices__list').innerHTML = '';
-
-				if (event.keyCode === 13) {
-					event.preventDefault();
-
-					var elem = document.querySelector('#jform_catid');
-					var choisesVal = cat_field.getValue();
-					//cat_field.setValue({value: choisesVal, label: choisesVal, selected: true, disabled: false})
-
-					cat_field.clearStore();
-
-					if (cat_field.input.value) {
-						cat_field.destroy();
-						var option = document.createElement('option');
-						option.value = cat_field.input.value;
-						option.text = cat_field.input.value;
-						option.setAttribute('selected', '')
-						elem.appendChild(option);
-
-						cat_field.init();
-						additionalFuncForInput();
-					}
-				}
-			}
-		})
-	};
-
-	additionalFuncForInput();
+	// // Override to provide ability to add new tag
+	// var additionalFuncForInput = function() {
+	// 	cat_field.input.addEventListener('keypress', function(event) {
+	// 		// Remove the search entries if something is typed
+	// 		if (cat_field.input.value.length > 0) {
+	// 			event.preventDefault();
+	// 			cat_field.input.parentNode.querySelector('.choices__list').innerHTML = '';
+	// 			cat_field.input.value += String.fromCharCode(event.keyCode);
+	// 			cat_field.input.parentNode.querySelector('.choices__list').innerHTML = '';
+	//
+	// 			if (event.keyCode === 13) {
+	// 				event.preventDefault();
+	//
+	// 				var elem = document.querySelector('#jform_catid');
+	// 				var choisesVal = cat_field.getValue();
+	// 				//cat_field.setValue({value: choisesVal, label: choisesVal, selected: true, disabled: false})
+	//
+	// 				cat_field.clearStore();
+	//
+	// 				if (cat_field.input.value) {
+	// 					cat_field.destroy();
+	// 					var option = document.createElement('option');
+	// 					option.value = cat_field.input.value;
+	// 					option.text = cat_field.input.value;
+	// 					option.setAttribute('selected', '')
+	// 					elem.appendChild(option);
+	//
+	// 					cat_field.init();
+	// 					additionalFuncForInput();
+	// 				}
+	// 			}
+	// 		}
+	// 	})
+	// };
+	//
+	// additionalFuncForInput();
 });
 JS
 			);

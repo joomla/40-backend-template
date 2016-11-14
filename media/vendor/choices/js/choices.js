@@ -1,4 +1,4 @@
-/*! choices.js v2.4.1 | (c) 2016 Josh Johnson | https://github.com/jshjohnson/Choices#readme */ 
+/*! choices.js v2.5.0 | (c) 2016 Josh Johnson | https://github.com/jshjohnson/Choices#readme */ 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -74,11 +74,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _index3 = __webpack_require__(23);
+	var _index3 = __webpack_require__(29);
 
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(30);
 
-	__webpack_require__(25);
+	__webpack_require__(31);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -480,7 +480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.currentState !== this.prevState) {
 	        // Choices
 	        if (this.currentState.choices !== this.prevState.choices || this.currentState.groups !== this.prevState.groups) {
-	          if (this.passedElement.type === 'select-multiple' || this.passedElement.type === 'select-one') {
+	          if (!this.isTextElement) {
 	            // Get active groups/choices
 	            var activeGroups = this.store.getGroupsFilteredByActive();
 	            var activeChoices = this.store.getChoicesFilteredByActive();
@@ -505,8 +505,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	              this.choiceList.appendChild(choiceListFragment);
 	              this._highlightChoice();
 	            } else {
-	              // Otherwise show a notice
-	              var dropdownItem = this.isSearching ? this._getTemplate('notice', this.config.noResultsText) : this._getTemplate('notice', this.config.noChoicesText);
+	              var activeItems = this.store.getItemsFilteredByActive();
+	              var canAddItem = this._canAddItem(activeItems, this.input.value);
+	              var dropdownItem = this._getTemplate('notice', this.config.noChoicesText);
+
+	              if (canAddItem.notice) {
+	                dropdownItem = this._getTemplate('notice', canAddItem.notice);
+	              } else if (this.isSearching) {
+	                dropdownItem = this._getTemplate('notice', this.config.noResultsText);
+	              }
+
 	              this.choiceList.appendChild(dropdownItem);
 	            }
 	          }
@@ -514,11 +522,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // Items
 	        if (this.currentState.items !== this.prevState.items) {
-	          var activeItems = this.store.getItemsFilteredByActive();
-	          if (activeItems) {
+	          var _activeItems = this.store.getItemsFilteredByActive();
+	          if (_activeItems) {
 	            // Create a fragment to store our list items
 	            // (so we don't have to update the DOM for each item)
-	            var itemListFragment = this.renderItems(activeItems);
+	            var itemListFragment = this.renderItems(_activeItems);
 
 	            // Clear list
 	            this.itemList.innerHTML = '';
@@ -1261,7 +1269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 
-	      if (this.passedElement.type === 'text' && this.config.addItems) {
+	      if (this.config.addItems) {
 	        var isUnique = !activeItems.some(function (item) {
 	          return item.value === value.trim();
 	        });
@@ -1385,7 +1393,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.currentValue = newValue;
 	        this.highlightPosition = 0;
 	        this.isSearching = true;
-	        this.store.dispatch((0, _index3.filterChoices)(results));
+
+	        return results;
 	      }
 	    }
 
@@ -1411,7 +1420,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Check that we have a value to search and the input was an alphanumeric character
 	        if (value && value.length > this.config.searchFloor) {
 	          // Filter available choices
-	          this._searchChoices(value);
+	          var results = this._searchChoices(value);
+	          if (results) {
+	            this.store.dispatch((0, _index3.filterChoices)(results));
+	          }
+
 	          // Run callback if it is a function
 	          if (callback) {
 	            if ((0, _utils.isType)('Function', callback)) {
@@ -1557,7 +1570,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var onEnterKey = function onEnterKey() {
 	        // If enter key is pressed and the input has a value
-	        if (passedElementType === 'text' && target.value) {
+	        if (target.value) {
 	          var value = _this17.input.value;
 	          var canAddItem = _this17._canAddItem(activeItems, value);
 
@@ -1566,7 +1579,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (hasActiveDropdown) {
 	              _this17.hideDropdown();
 	            }
-	            _this17._addItem(value);
+
+	            if (_this17.isTextElement) {
+	              _this17._addItem(value);
+	            } else {
+	              _this17._addChoice(true, false, value, value);
+	              console.log(_this17.store.getState());
+	            }
+
 	            _this17._triggerChange(value);
 	            _this17.clearInput(_this17.passedElement);
 	          }
@@ -3359,7 +3379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _redux = __webpack_require__(4);
 
-	var _index = __webpack_require__(19);
+	var _index = __webpack_require__(25);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -3591,23 +3611,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(14);
+	var _combineReducers = __webpack_require__(20);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(16);
+	var _bindActionCreators = __webpack_require__(22);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(17);
+	var _applyMiddleware = __webpack_require__(23);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(18);
+	var _compose = __webpack_require__(24);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(15);
+	var _warning = __webpack_require__(21);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -3643,7 +3663,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _symbolObservable = __webpack_require__(10);
+	var _symbolObservable = __webpack_require__(16);
 
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 
@@ -3899,8 +3919,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getPrototype = __webpack_require__(7),
-	    isObjectLike = __webpack_require__(9);
+	var baseGetTag = __webpack_require__(7),
+	    getPrototype = __webpack_require__(13),
+	    isObjectLike = __webpack_require__(15);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -3917,13 +3938,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/** Used to infer the `Object` constructor. */
 	var objectCtorString = funcToString.call(Object);
-
-	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
 
 	/**
 	 * Checks if `value` is a plain object, that is, an object created by the
@@ -3954,7 +3968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * // => true
 	 */
 	function isPlainObject(value) {
-	  if (!isObjectLike(value) || objectToString.call(value) != objectTag) {
+	  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
 	    return false;
 	  }
 	  var proto = getPrototype(value);
@@ -3962,8 +3976,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return true;
 	  }
 	  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-	  return (typeof Ctor == 'function' &&
-	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+	  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+	    funcToString.call(Ctor) == objectCtorString;
 	}
 
 	module.exports = isPlainObject;
@@ -3973,7 +3987,160 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(8);
+	var Symbol = __webpack_require__(8),
+	    getRawTag = __webpack_require__(11),
+	    objectToString = __webpack_require__(12);
+
+	/** `Object#toString` result references. */
+	var nullTag = '[object Null]',
+	    undefinedTag = '[object Undefined]';
+
+	/** Built-in value references. */
+	var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+	/**
+	 * The base implementation of `getTag` without fallbacks for buggy environments.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the `toStringTag`.
+	 */
+	function baseGetTag(value) {
+	  if (value == null) {
+	    return value === undefined ? undefinedTag : nullTag;
+	  }
+	  value = Object(value);
+	  return (symToStringTag && symToStringTag in value)
+	    ? getRawTag(value)
+	    : objectToString(value);
+	}
+
+	module.exports = baseGetTag;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(9);
+
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
+
+	module.exports = Symbol;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var freeGlobal = __webpack_require__(10);
+
+	/** Detect free variable `self`. */
+	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+	/** Used as a reference to the global object. */
+	var root = freeGlobal || freeSelf || Function('return this')();
+
+	module.exports = root;
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
+	var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+	module.exports = freeGlobal;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Symbol = __webpack_require__(8);
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var nativeObjectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+	/**
+	 * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the raw `toStringTag`.
+	 */
+	function getRawTag(value) {
+	  var isOwn = hasOwnProperty.call(value, symToStringTag),
+	      tag = value[symToStringTag];
+
+	  try {
+	    value[symToStringTag] = undefined;
+	    var unmasked = true;
+	  } catch (e) {}
+
+	  var result = nativeObjectToString.call(value);
+	  if (unmasked) {
+	    if (isOwn) {
+	      value[symToStringTag] = tag;
+	    } else {
+	      delete value[symToStringTag];
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = getRawTag;
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var nativeObjectToString = objectProto.toString;
+
+	/**
+	 * Converts `value` to a string using `Object.prototype.toString`.
+	 *
+	 * @private
+	 * @param {*} value The value to convert.
+	 * @returns {string} Returns the converted string.
+	 */
+	function objectToString(value) {
+	  return nativeObjectToString.call(value);
+	}
+
+	module.exports = objectToString;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var overArg = __webpack_require__(14);
 
 	/** Built-in value references. */
 	var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -3982,7 +4149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 14 */
 /***/ function(module, exports) {
 
 	/**
@@ -4003,7 +4170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 9 */
+/* 15 */
 /***/ function(module, exports) {
 
 	/**
@@ -4038,14 +4205,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 10 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(11);
+	module.exports = __webpack_require__(17);
 
 
 /***/ },
-/* 11 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, module) {'use strict';
@@ -4054,7 +4221,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _ponyfill = __webpack_require__(13);
+	var _ponyfill = __webpack_require__(19);
 
 	var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -4077,10 +4244,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var result = (0, _ponyfill2['default'])(root);
 	exports['default'] = result;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(12)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(18)(module)))
 
 /***/ },
-/* 12 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -4096,7 +4263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 13 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4124,7 +4291,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 14 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4138,7 +4305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(15);
+	var _warning = __webpack_require__(21);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -4271,7 +4438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 15 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4301,7 +4468,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 16 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4357,7 +4524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 17 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4368,7 +4535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports['default'] = applyMiddleware;
 
-	var _compose = __webpack_require__(18);
+	var _compose = __webpack_require__(24);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -4420,7 +4587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 18 */
+/* 24 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4463,7 +4630,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 19 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4474,15 +4641,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _redux = __webpack_require__(4);
 
-	var _items = __webpack_require__(20);
+	var _items = __webpack_require__(26);
 
 	var _items2 = _interopRequireDefault(_items);
 
-	var _groups = __webpack_require__(21);
+	var _groups = __webpack_require__(27);
 
 	var _groups2 = _interopRequireDefault(_groups);
 
-	var _choices = __webpack_require__(22);
+	var _choices = __webpack_require__(28);
 
 	var _choices2 = _interopRequireDefault(_choices);
 
@@ -4510,7 +4677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = rootReducer;
 
 /***/ },
-/* 20 */
+/* 26 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4578,7 +4745,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = items;
 
 /***/ },
-/* 21 */
+/* 27 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4619,7 +4786,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = groups;
 
 /***/ },
-/* 22 */
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4747,7 +4914,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = choices;
 
 /***/ },
-/* 23 */
+/* 29 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4832,7 +4999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		};
 
 /***/ },
-/* 24 */
+/* 30 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5314,7 +5481,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 25 */
+/* 31 */
 /***/ function(module, exports) {
 
 	'use strict';

@@ -248,13 +248,14 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	 * @return  void
 	 */
 	Joomla.renderMessages = function( messages ) {
-		Joomla.removeMessages();
-
-		var messageContainer = document.getElementById( 'system-message-container' ),
+		//Joomla.removeMessages();
+		console.log(messages)
+		var messageContainer = document.querySelector( '.notify-alerts' ),
 			type, typeMessages, messagesBox, title, titleWrapper, i, messageWrapper, alertClass;
 
 		for ( type in messages ) {
 			if ( !messages.hasOwnProperty( type ) ) { continue; }
+			if ( type === 'type' ) { continue; }
 			// Array of messages of this type
 			typeMessages = messages[ type ];
 
@@ -748,11 +749,9 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 		return xhr;
 	};
 
-	/**
-	 * Listener for control+s. Maps it to apply/save button
-	 */
-	// Initiate the listener for the combo key
+
 	document.addEventListener( 'DOMContentLoaded', function() {
+		/** Listener for control+s. Maps it to apply/save button */
 		if (Joomla.getOptions( 'keySave' ) ) {
 			document.addEventListener("keydown", function(e) {
 				if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
@@ -761,6 +760,19 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 				}
 			}, false);
 		}
+
+		/** Initiate the notifications */
+		if (Joomla.getOptions( 'js-alerts' ) ) {
+			var messages = Joomla.getOptions( 'js-alerts' );
+
+			for (var i = 0, l = messages.length; l > i; i++) {
+				console.log(messages.length)
+				if (messages[i].message.length > 0) {
+					Joomla.renderMessages({message: [messages[i].message], type: messages[i].type});
+				}
+			}
+		}
+
 	});
 
 }( Joomla, document ));

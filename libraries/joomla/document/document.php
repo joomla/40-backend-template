@@ -1117,4 +1117,20 @@ class JDocument
 		$app->mimeType = $this->_mime;
 		$app->charSet  = $this->_charset;
 	}
+
+	/**
+	 * Pass the notifications to javascript
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0
+	 */
+	public function alerts()
+	{
+		// Get the message queue
+		$messages = JFactory::getApplication()->getMessageQueue();
+
+		// Pass the queue to javascript
+		JFactory::getDocument()->addScriptOptions('js-alerts', $messages);
+	}
 }

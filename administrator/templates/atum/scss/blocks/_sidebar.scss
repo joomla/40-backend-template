@@ -50,6 +50,12 @@
     border: 0;
     box-shadow: none;
 
+    .logo {
+      a {
+        padding: 0;
+      }
+    }
+
     a {
       padding: 0 20px;
       border: 0;

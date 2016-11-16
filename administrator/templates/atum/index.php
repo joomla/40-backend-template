@@ -75,7 +75,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 					<img src="<?php echo $logoSm; ?>" class="logo" alt="<?php echo $sitename;?>" />
 				</a>
 			</div>
-			<div id="main-brand" class="main-brand hidden-xs-up">
+			<div id="main-brand" class="main-brand hidden-xs-up jlogo">
 				<a href="<?php echo JRoute::_('index.php'); ?>" aria-label="<?php echo JText::_('TPL_BACK_TO_CONTROL_PANEL'); ?>">
 					<img src="<?php echo $logoLg; ?>" class="logo" alt="<?php echo $sitename;?>" />
 				</a>

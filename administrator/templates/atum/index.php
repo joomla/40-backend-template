@@ -70,12 +70,16 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 
 		<?php // Sidebar ?>
 		<div id="sidebar-wrapper" class="sidebar-wrapper" <?php echo $hidden ? 'data-hidden="' . $hidden . '"' :''; ?>>
-			<div id="main-brand-sm" class="main-brand">
-				<img src="<?php echo $logoSm; ?>" class="logo" alt="<?php echo $sitename;?>" />
+			<div id="main-brand-sm" class="main-brand jlogo">
+                <a href="<?php JUri::current(); ?>" title="<?php echo $sitename; ?>">
+				    <img src="<?php echo $logoSm; ?>" class="logo" alt="<?php echo $sitename;?>" />
+                </a>
 			</div>
-			<div id="main-brand" class="main-brand hidden-xs-up">
-				<img src="<?php echo $logoLg; ?>" class="logo" alt="<?php echo $sitename;?>" />
-			</div>
+			<div id="main-brand" class="main-brand hidden-xs-up jlogo">
+                <a href="<?php JUri::current(); ?>" title="<?php echo $sitename;?> ">
+                    <img src="<?php echo $logoLg; ?>" class="logo" alt="<?php echo $sitename;?>" />
+                </a>
+            </div>
 			<jdoc:include type="modules" name="menu" style="none" />
 		</div>
 

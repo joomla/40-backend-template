@@ -50,6 +50,12 @@
     border: 0;
     box-shadow: none;
 
+    &.jlogo {
+      a {
+        padding: 0;
+      }
+    }
+
     a {
       border: 0;
       box-shadow: none;

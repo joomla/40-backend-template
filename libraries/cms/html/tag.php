@@ -148,7 +148,6 @@ abstract class JHtmlTag
 			static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
 		}
 
-JFactory::getApplication()->enqueueMessage($msg, 'error');
 		return static::$items[$hash];
 	}
 
@@ -177,19 +176,13 @@ JFactory::getApplication()->enqueueMessage($msg, 'error');
 		JHtml::_('stylesheet', 'vendor/choices/css/choices.css', array(), true);
 		JHtml::_('script', 'vendor/choices/choices.js', false, true, false, false, JDEBUG);
 
-		JFactory::getDocument()->addStyleDeclaration("
-		div.choices__list{z-index:1060;}
-		.choices__inner{background-color:#fff;}
-		input.choices__input.choices__input--cloned{background-color:#fff;}
-		");
-
 		JFactory::getDocument()->addScriptDeclaration(
 <<<JS
 	document.addEventListener('DOMContentLoaded', function(){
 
 	var tagEl = document.querySelector('.js-choices');
 
- 	new Choices(tagEl, {
+ 	var tagAdd = new Choices(tagEl, {
 		addItems: true,
 		removeItemButton: true,
 		removeItems: true,

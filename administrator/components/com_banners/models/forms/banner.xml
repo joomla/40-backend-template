@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="details" addfieldpath="/administrator/components/com_banners/models/fields">
+	<fieldset name="details">
 
 		<field
 			name="id"
@@ -38,9 +38,8 @@
 			description="COM_BANNERS_FIELD_CATEGORY_DESC"
 			extension="com_banners"
 			required="true"
-			addfieldpath="/administrator/components/com_categories/models/fields"
 			default=""
-			class="advancedSelect"
+			addfieldpath="/administrator/components/com_categories/models/fields"
 		/>
 
 		<field

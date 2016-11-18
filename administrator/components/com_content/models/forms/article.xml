@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset addfieldpath="/administrator/components/com_categories/models/fields" >
+	<fieldset>
 		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
 			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
 			readonly="true" />
@@ -42,11 +42,11 @@
 
 		<field name="catid"
 			type="categoryedit"
-			class="advancedSelect"
 			label="JCATEGORY"
 			description="JFIELD_CATEGORY_DESC"
 			required="true"
 			default=""
+			addfieldpath="/administrator/components/com_categories/models/fields"
 		>
 		</field>
 

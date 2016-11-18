@@ -354,31 +354,28 @@ class JFormFieldCategoryEdit extends JFormFieldList
 
 		if ($this->allowAdd)
 		{
-			JText::script('JGLOBAL_KEEP_TYPING');
-			JText::script('JGLOBAL_LOOKING_FOR');
+			$id = $this->id;
 			JText::script('JGLOBAL_CUSTOM_CATEGORY');
 
 			// Include scripts
 			JHtml::_('behavior.core');
-			JHtml::_('stylesheet', 'vendor/choices/choices.css', array(), true);
+			JHtml::_('stylesheet', 'vendor/choices/css/choices.css', array(), true);
 			JHtml::_('script', 'vendor/choices/choices.js', false, true, false, false, JDEBUG);
 
-JFactory::getDocument()->addScriptDeclaration(
+			JFactory::getDocument()->addScriptDeclaration(
 <<<JS
-document.addEventListener('DOMContentLoaded', function(){
+		document.addEventListener('DOMContentLoaded', function(){
 
-	var catEl = document.querySelector('#jform_catid');
+			var catEl = document.getElementById("$id");
 
- 	new Choices(catEl, {
-		addItems: true,
-		removeItemButton: true,
-		removeItems: true,
-		duplicateItems: false,
-		flip: true,
-		shouldSort: false,
-		search: true,
-	});
-});
+		    var catAdd = new Choices(catEl, {
+				addItems: true,
+				duplicateItems: false,
+				flip: true,
+				shouldSort: false,
+				search: true,
+			});
+		});
 JS
 			);
 
@@ -412,7 +409,6 @@ JS
 		// Create a read-only list (no name) with hidden input(s) to store the value(s).
 		if ((string) $this->readonly == '1' || (string) $this->readonly == 'true')
 		{
-//			$html[] = '<div id="choices_cat_id">';
 			$html[] = JHtml::_('select.genericlist', $options, '', trim($attr), 'value', 'text', $this->value, $this->id);
 
 			// E.g. form field type tag sends $this->value as array
@@ -438,7 +434,7 @@ JS
 		{
 			$html[] = JHtml::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
 		}
-//		$html[] = '</div>';
+
 		return implode($html);
 	}
 }

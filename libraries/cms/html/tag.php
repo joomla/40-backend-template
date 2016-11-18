@@ -148,6 +148,7 @@ abstract class JHtmlTag
 			static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
 		}
 
+JFactory::getApplication()->enqueueMessage($msg, 'error');
 		return static::$items[$hash];
 	}
 
@@ -166,15 +167,45 @@ abstract class JHtmlTag
 		// Get the component parameters
 		$params = JComponentHelper::getParams("com_tags");
 		$minTermLength = (int) $params->get("min_term_length", 3);
+		$url = JUri::root() . 'index.php?option=com_tags&task=tags.searchAjax';
 
 		JText::script('JGLOBAL_KEEP_TYPING');
 		JText::script('JGLOBAL_LOOKING_FOR');
 
 		// Include scripts
 		JHtml::_('behavior.core');
-		JHtml::_('jquery.framework');
-		JHtml::_('script', 'system/legacy/ajax-chosen.min.js', false, true, false, false, JDEBUG);
+		JHtml::_('stylesheet', 'vendor/choices/css/choices.css', array(), true);
+		JHtml::_('script', 'vendor/choices/choices.js', false, true, false, false, JDEBUG);
 
+		JFactory::getDocument()->addStyleDeclaration("
+		div.choices__list{z-index:1060;}
+		.choices__inner{background-color:#fff;}
+		input.choices__input.choices__input--cloned{background-color:#fff;}
+		");
+
+		JFactory::getDocument()->addScriptDeclaration(
+<<<JS
+	document.addEventListener('DOMContentLoaded', function(){
+
+	var tagEl = document.querySelector('.js-choices');
+
+ 	new Choices(tagEl, {
+		addItems: true,
+		removeItemButton: true,
+		removeItems: true,
+		duplicateItems: false,
+		shouldSort: false,
+		search: true,
+		flip: true,
+		prependValue: '#new#',
+		});
+});
+
+
+JS
+);
+
+	/**
 		JFactory::getDocument()->addScriptOptions(
 			'ajax-chosen',
 			array(
@@ -202,5 +233,6 @@ abstract class JHtmlTag
 				)
 			);
 		}
+	 * 	 * */
 	}
 }

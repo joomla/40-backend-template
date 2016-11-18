@@ -46,7 +46,9 @@ vendors:
     'cropperjs':
                   'version': '0.8.1'
                   'dependencies': ''
-
+    'choices.js':
+                  'version': '2.5.0'
+                  'dependencies': ''
 
 ### The javascript polyfills
 polyfills:

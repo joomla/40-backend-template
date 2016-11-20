@@ -8233,6 +8233,8 @@ legend {
       .subhead .btn-toolbar .btn-sm:hover, .subhead .btn-toolbar .btn-group-sm > .btn:hover {
         background-color: #eceeef;
         border-color: #ccc; }
+      .subhead .btn-toolbar .btn-sm:focus, .subhead .btn-toolbar .btn-group-sm > .btn:focus {
+        outline: #108ffd solid medium; }
     .subhead .btn-toolbar .btn-primary [class^="icon-"], .subhead .btn-toolbar .btn-primary [class*=" icon-"], .subhead .btn-toolbar .btn-outline-primary [class^="icon-"], .subhead .btn-toolbar .btn-outline-primary [class*=" icon-"] {
       color: #0275d8; }
     .subhead .btn-toolbar .btn-success [class^="icon-"], .subhead .btn-toolbar .btn-success [class*=" icon-"], .subhead .btn-toolbar .btn-outline-success [class^="icon-"], .subhead .btn-toolbar .btn-outline-success [class*=" icon-"] {

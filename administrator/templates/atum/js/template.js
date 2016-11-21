@@ -28,7 +28,7 @@
 				logo          = document.getElementById('main-brand'),
 				logoSm        = document.getElementById('main-brand-sm'),
 				menuToggle    = document.getElementById('header').querySelector('.menu-toggle'),
-				collapsMenus  = document.querySelectorAll('a[data-toggle="collapse"]'),
+				collapsMenus  = sidebar.querySelectorAll('a[data-toggle="collapse"]'),
 			    wrapperClosed = document.querySelector('#wrapper.closed'),
 			// Apply 2nd level collapse
 				first   = Array.prototype.slice.call(menu.querySelector('.collapse-level-1'));

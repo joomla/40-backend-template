@@ -135,6 +135,23 @@ abstract class JToolbarHelper
 	}
 
 	/**
+	 * Writes a guide button for a given option (starts an guide).
+	 *
+	 * @param   string $filepath The extra js file
+	 *
+	 * @return  void
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public static function guide($filePath = null)
+	{
+		$bar = JToolbar::getInstance('toolbar');
+
+		// Add a help button.
+		$bar->appendButton('Guide', $filePath);
+	}
+
+	/**
 	 * Writes a cancel button that will go back to the previous page without doing
 	 * any other operation.
 	 *

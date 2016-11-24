@@ -197,8 +197,12 @@ module.exports = function(grunt) {
 					{ expand: true, cwd: 'build/assets_tmp/node_modules/awesomplete', src: ['awesomplete.css'], dest: 'media/vendor/awesomplete/css/'},
 					// Dragula js files
 					{ expand: true, cwd: 'build/assets_tmp/node_modules/dragula/dist', src: ['*.js'], dest: 'media/vendor/dragula/js/', filter: 'isFile'},
-					// Dragula css files
+					// Shepherd css files
 					{ cwd: 'build/assets_tmp/node_modules/dragula/dist', src: ['*.css'], dest: 'media/vendor/dragula/css/', expand: true, filter: 'isFile'},
+					// Shepherd js files
+					{ expand: true, cwd: 'build/assets_tmp/node_modules/tether-shepherd/dist/js', src: ['shepherd*.js'], dest: 'media/vendor/shepherd/js/', filter: 'isFile'},
+					// Dragula css files
+					{ cwd: 'build/assets_tmp/node_modules/tether-shepherd/dist/css', src: ['*.css'], dest: 'media/vendor/shepherd/css/', expand: true, filter: 'isFile'},
 
 					// Licenses
 					{ src: ['build/assets_tmp/node_modules/jquery/LICENSE.txt'], dest: 'media/vendor/jquery/LICENSE.txt'},

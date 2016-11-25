@@ -12,6 +12,7 @@ vendors:
                   'dependencies': 'jquery, tether'
     'tether':
                   'version': '1.3.7'
+                  'dependencies': ''
     'font-awesome':
                   'version': '4.7.0'
                   'dependencies': ''

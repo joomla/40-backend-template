@@ -49,7 +49,23 @@ abstract class JHtmlJquery
 			$debug = (boolean) JFactory::getConfig()->get('debug');
 		}
 
-		JHtml::_('script', 'vendor/jquery/jquery.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+		// Get CDN plugin parameters
+		$plugin   = JPluginHelper::getPlugin('system', 'cdn');
+		$params   = new JRegistry($plugin->params);
+		$minified = $debug == 1 ? '' : '.min';
+
+		// Get asset version
+		JLoader::register('ExternalAssets', JPATH_LIBRARIES . '/cms/helper/assets.php');
+		$assets = ExternalAssets::getCoreAssets();
+
+		if ($params->get('jquery', 0) == 0)
+		{
+			JHtml::_('script', 'vendor/jquery/jquery.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+		}
+		else
+		{
+			JHtml::_('script', '//code.jquery.com/jquery-' . $assets['jquery']['version'] . $minified . '.js');
+		}
 
 		// Check if we are loading in noConflict
 		if ($noConflict)
@@ -60,7 +76,14 @@ abstract class JHtmlJquery
 		// Check if we are loading Migrate
 		if ($migrate)
 		{
-			JHtml::_('script', 'vendor/jquery/jquery-migrate.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+			if ($params->get('jquery', 0) == 0)
+			{
+				JHtml::_('script', 'vendor/jquery/jquery-migrate.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+			}
+			else
+			{
+				JHtml::_('script', '//code.jquery.com/jquery-migrate-' . $assets['jquery-migrate']['version'] . $minified . '.js');
+			}
 		}
 
 		static::$loaded[__METHOD__] = true;

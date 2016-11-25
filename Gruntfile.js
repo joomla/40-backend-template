@@ -54,7 +54,7 @@ module.exports = function(grunt) {
 
 	// Build the package.json and assets.php for all 3rd Party assets
 	grunt.file.write('build/assets_tmp/package.json', preText + vendorsTxt.substring(0, vendorsTxt.length - 1) + postText);
-//	grunt.file.write('build/assets_tmp.php', '<?php\ndefined(\'_JEXEC\') or die;\n\nabstract class ExternalAssets{\n\tpublic static function getCoreAssets() {\n\t\t return array(\n\t\t\t' + vendorsArr + '\n\t\t);\n\t}\n}\n');
+	grunt.file.write('build/assets_tmp/assets.php', '<?php\ndefined(\'_JEXEC\') or die;\n\nabstract class ExternalAssets\n{\n\tpublic static function getCoreAssets()\n\t{\n\t\t return array(\n\t\t\t' + vendorsArr + '\n\t\t);\n\t}\n}\n');
 
 	// Update the XML files for tinyMCE and Codemirror
 	tinyXml = grunt.file.read('plugins/editors/tinymce/tinymce.xml');
@@ -95,13 +95,14 @@ module.exports = function(grunt) {
 					'media/vendor/mediaelement/*',
 					'media/vendor/chosenjs/*',
 					'media/vendor/awesomplete/*',
+					'libraries/cms/helper/assets.php',
 				],
 				expand: true,
 				options: {
 					force: true
 				}
 			},
-			temp: { src: [ 'build/assets_tmp/*', 'build/assets_tmp/tmp', 'build/assets_tmp/package.json' ], expand: true, options: { force: true } }
+			temp: { src: [ 'build/assets_tmp/*', 'build/assets_tmp/tmp', 'build/assets_tmp/package.json', 'build/assets_tmp/assets.php' ], expand: true, options: { force: true } }
 		},
 
 		// Update all the packages to the version specified in assets/package.json
@@ -220,6 +221,9 @@ module.exports = function(grunt) {
 					{ src: ['build/assets_tmp/tmp/jcrop/jcrop-MIT-LICENSE.txt'], dest: 'media/vendor/jcrop/jcrop-MIT-LICENSE.txt'},
 					{ src: ['build/assets_tmp/node_modules/dragula/license'], dest: 'media/vendor/dragula/license'},
 					{ src: ['build/assets_tmp/node_modules/awesomplete/LICENSE'], dest: 'media/vendor/awesomplete/LICENSE'},
+
+					// assets.php
+					{ src: ['build/assets_tmp/assets.php'], dest: 'libraries/cms/helper/assets.php'},
 				]
 			}
 		},

@@ -60,7 +60,7 @@ function modChrome_well($module, &$params, &$attribs)
 		// Temporarily store header class in variable
 		$headerClass    = $params->get('header_class');
 		$headerClass    = ($headerClass) ? ' ' . htmlspecialchars($headerClass) : '';
-		
+
 		echo '<div class="' . $moduleClass . '">';
 		echo '<' . $moduleTag . ' class="cpanel-module card card-block' . $moduleClassSfx . '" data-moduleid="' . $module->id . '">';
 

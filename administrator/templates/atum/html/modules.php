@@ -60,9 +60,9 @@ function modChrome_well($module, &$params, &$attribs)
 		// Temporarily store header class in variable
 		$headerClass    = $params->get('header_class');
 		$headerClass    = ($headerClass) ? ' ' . htmlspecialchars($headerClass) : '';
-
+		
 		echo '<div class="' . $moduleClass . '">';
-		echo '<' . $moduleTag . ' class="card card-block' . $moduleClassSfx . '">';
+		echo '<' . $moduleTag . ' class="cpanel-module card card-block' . $moduleClassSfx . '" data-moduleid="' . $module->id . '">';
 
 			if ($canEdit)
 			{
@@ -70,6 +70,7 @@ function modChrome_well($module, &$params, &$attribs)
 				echo '<a href="#" data-toggle="dropdown"><span class="fa fa-cog"></span></a>';
 				echo '<div class="dropdown-menu dropdown-menu-right">';
 				echo '<a class="dropdown-item" href="' . JRoute::_('index.php?option=com_modules&task=module.edit&id=' . (int) $module->id) . '">' . JText::_('JACTION_EDIT') . '</a>';
+				echo '<a class="dropdown-item unpublish" href="#">' . JText::_('JACTION_UNPUBLISH') . '</a>';
 				echo '</div>';
 				echo '</div>';
 			}

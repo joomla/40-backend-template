@@ -12,6 +12,26 @@ defined('_JEXEC') or die;
 use Joomla\Registry\Registry;
 
 $user = JFactory::getUser();
+
+JFactory::getDocument()->addScriptDeclaration(
+	'jQuery(function($) {
+		$(".cpanel-module .unpublish").on("click", function(e) {
+			e.preventDefault();
+			var	parent = $(this).parents(".cpanel-module");
+
+			$.post("index.php?option=com_modules&task=modules.unpublish&cid=" + parent.attr("data-moduleid"), {
+				"' . JSession::getFormToken() . '": 1
+			})
+			.done(function() {
+				parent.remove();
+			})
+			.fail(function() {
+				// TODO: Make this a notification?
+				alert( "' . JText::_('COM_CPANEL_UNPUBLISH_MODULE_ERROR') . '" );
+			});
+		});
+	});'
+);
 ?>
 
 <?php if ($user->authorise('core.manage', 'com_postinstall') && $this->postinstall_message_count) : ?>

@@ -17,7 +17,7 @@ JFactory::getDocument()->addScriptDeclaration(
 	'jQuery(function($) {
 		$(".cpanel-module .unpublish").on("click", function(e) {
 			e.preventDefault();
-			var	parent = $(this).parents(".cpanel-module");
+			var parent = $(this).parents(".cpanel-module");
 
 			$.post("index.php?option=com_modules&task=modules.unpublish&cid=" + parent.attr("data-moduleid"), {
 				"' . JSession::getFormToken() . '": 1

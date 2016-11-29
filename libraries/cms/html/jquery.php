@@ -55,8 +55,7 @@ abstract class JHtmlJquery
 		$minified = $debug == 1 ? '' : '.min';
 
 		// Get asset version
-		JLoader::register('ExternalAssets', JPATH_LIBRARIES . '/cms/helper/assets.php');
-		$assets = ExternalAssets::getCoreAssets();
+		$assets = JHelperAssets::getCoreAssets();
 
 		if ($params->get('jquery', 0) == 0)
 		{

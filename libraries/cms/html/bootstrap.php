@@ -231,8 +231,7 @@ abstract class JHtmlBootstrap
 		$minified = $debug == 1 ? '' : '.min';
 
 		// Get asset version
-		JLoader::register('ExternalAssets', JPATH_LIBRARIES . '/cms/helper/assets.php');
-		$assets = ExternalAssets::getCoreAssets();
+		$assets = JHelperAssets::getCoreAssets();
 
 		if ($params->get('bootstrap', 0) == 0)
 		{
@@ -911,8 +910,7 @@ abstract class JHtmlBootstrap
 			$minified = $debug == 1 ? '' : '.min';
 
 			// Get asset version
-			JLoader::register('ExternalAssets', JPATH_LIBRARIES . '/cms/helper/assets.php');
-			$assets = ExternalAssets::getCoreAssets();
+			$assets = JHelperAssets::getCoreAssets();
 
 			if ($params->get('bootstrap', 0) == 0)
 			{
@@ -920,7 +918,7 @@ abstract class JHtmlBootstrap
 			}
 			else
 			{
-				JHtml::_('script', '//maxcdn.bootstrapcdn.com/bootstrap/'
+				JHtml::_('stylesheet', '//maxcdn.bootstrapcdn.com/bootstrap/'
 					. str_replace('~', '', $assets['bootstrap']['version']) . '/css/bootstrap' . $minified . '.css');
 			}
 		}

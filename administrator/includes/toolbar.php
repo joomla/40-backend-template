@@ -703,7 +703,7 @@ abstract class JToolbarHelper
 		$bar = JToolbar::getInstance('toolbar');
 
 		$layout = new JLayoutFile('joomla.toolbar.group.groupopen');
-		$bar->prependButton('Custom', $layout->render($options));
+		$bar->appendButton('Custom', $layout->render($options));
 		$firstItem = false;
 
 		foreach ($buttons as $button)
@@ -714,13 +714,13 @@ abstract class JToolbarHelper
 			if (!$firstItem)
 			{
 				$layout = new JLayoutFile('joomla.toolbar.group.groupmid');
-				$bar->prependButton('Custom', $layout->render($options));
+				$bar->appendButton('Custom', $layout->render($options));
 				$firstItem = true;
 			}
 		}
 
 		$layout = new JLayoutFile('joomla.toolbar.group.groupclose');
-		$bar->prependButton('Custom', $layout->render());
+		$bar->appendButton('Custom', $layout->render());
 	}
 
 	/**

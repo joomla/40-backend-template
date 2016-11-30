@@ -169,8 +169,8 @@ class ContentViewArticles extends JViewLegacy
 			JToolbarHelper::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 			JToolbarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
 			JToolbarHelper::custom('articles.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
-			JToolbarHelper::archiveList('articles.archive');
-			JToolbarHelper::checkin('articles.checkin');
+			//JToolbarHelper::archiveList('articles.archive');
+			//JToolbarHelper::checkin('articles.checkin');
 		}
 
 		// Add a batch button
@@ -189,12 +189,23 @@ class ContentViewArticles extends JViewLegacy
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
+			//JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::trash('articles.trash');
+			//JToolbarHelper::trash('articles.trash');
 		}
+		
+		
+		JToolbarHelper::appendGroup(
+			[
+				['archiveList', 'article.archive', 'JTOOLBAR_ARHIVE'],
+				['checkin', 'article.checkin', 'JTOOLBAR_CHECKIN', true],
+				['deleteList', 'article.delete', 'JTOOLBAR_DELETE'],
+				['trash', 'article.trash', 'JTOOLBAR_TRASH', true]
+			]
+		);
+		
 
 		if ($user->authorise('core.admin', 'com_content') || $user->authorise('core.options', 'com_content'))
 		{

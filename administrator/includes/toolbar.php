@@ -328,12 +328,12 @@ abstract class JToolbarHelper
 	 *
 	 * @since   1.5
 	 */
-	public static function archiveList($task = 'archive', $alt = 'JTOOLBAR_ARCHIVE')
+	public static function archiveList($task = 'archive', $alt = 'JTOOLBAR_ARCHIVE', $group = false)
 	{
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Add an archive button.
-		$bar->appendButton('Standard', 'archive', $alt, $task, true);
+		$bar->appendButton('Standard', 'archive', $alt, $task, true, $group);
 	}
 
 	/**
@@ -419,18 +419,18 @@ abstract class JToolbarHelper
 	 *
 	 * @since   1.5
 	 */
-	public static function deleteList($msg = '', $task = 'remove', $alt = 'JTOOLBAR_DELETE')
+	public static function deleteList($msg = '', $task = 'remove', $alt = 'JTOOLBAR_DELETE', $group = false)
 	{
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Add a delete button.
 		if ($msg)
 		{
-			$bar->appendButton('Confirm', $msg, 'delete', $alt, $task, true);
+			$bar->appendButton('Confirm', $msg, 'delete', $alt, $task, true, $group);
 		}
 		else
 		{
-			$bar->appendButton('Standard', 'delete', $alt, $task, true);
+			$bar->appendButton('Standard', 'delete', $alt, $task, true, $group);
 		}
 	}
 
@@ -445,12 +445,12 @@ abstract class JToolbarHelper
 	 *
 	 * @since   1.5
 	 */
-	public static function trash($task = 'remove', $alt = 'JTOOLBAR_TRASH', $check = true)
+	public static function trash($task = 'remove', $alt = 'JTOOLBAR_TRASH', $check = true, $group = false)
 	{
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Add a trash button.
-		$bar->appendButton('Standard', 'trash', $alt, $task, $check, false);
+		$bar->appendButton('Standard', 'trash', $alt, $task, $check, false, $group);
 	}
 
 	/**
@@ -541,12 +541,12 @@ abstract class JToolbarHelper
 	 *
 	 * @since   1.7
 	 */
-	public static function checkin($task = 'checkin', $alt = 'JTOOLBAR_CHECKIN', $check = true)
+	public static function checkin($task = 'checkin', $alt = 'JTOOLBAR_CHECKIN', $check = true, $group = false)
 	{
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Add a save and create new button.
-		$bar->appendButton('Standard', 'checkin', $alt, $task, $check);
+		$bar->appendButton('Standard', 'checkin', $alt, $task, $check, $group);
 	}
 
 	/**
@@ -682,6 +682,45 @@ abstract class JToolbarHelper
 
 		$layout = new JLayoutFile('joomla.toolbar.group.groupclose');
 		$bar->appendButton('Custom', $layout->render());
+	}
+	
+	/**
+	 * Writes a standard button dropdown
+	 *
+	 * @param   array   $buttons  An array of buttons
+	 * @param   string  $class    The button class
+	 *
+	 * @return  void
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public static function appendGroup($buttons = array(), $class = 'btn-secondary')
+	{
+		// Options array for JLayout
+		$options          = array();
+		$options['class'] = $class;
+
+		$bar = JToolbar::getInstance('toolbar');
+
+		$layout = new JLayoutFile('joomla.toolbar.group.groupopen');
+		$bar->prependButton('Custom', $layout->render($options));
+		$firstItem = false;
+
+		foreach ($buttons as $button)
+		{
+			$options['group'] = true;
+			call_user_func_array('JToolbarHelper::' . $button[0], array(implode(',', $button)));
+
+			if (!$firstItem)
+			{
+				$layout = new JLayoutFile('joomla.toolbar.group.groupmid');
+				$bar->prependButton('Custom', $layout->render($options));
+				$firstItem = true;
+			}
+		}
+
+		$layout = new JLayoutFile('joomla.toolbar.group.groupclose');
+		$bar->prependButton('Custom', $layout->render());
 	}
 
 	/**

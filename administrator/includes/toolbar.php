@@ -694,7 +694,7 @@ abstract class JToolbarHelper
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public static function appendGroup($buttons = array(), $class = 'btn-secondary')
+	public static function appendGroup($buttons = array(), $class = 'btn-secondary', $icon = 'fa fa-cog')
 	{
 		// Options array for JLayout
 		$options          = array();
@@ -705,25 +705,30 @@ abstract class JToolbarHelper
 		$layout = new JLayoutFile('joomla.toolbar.group.groupopen');
 		$bar->appendButton('Custom', $layout->render($options));
 		$firstItem = false;
+		$i = 0;
 
 		foreach ($buttons as $button)
 		{
-			$options['group'] = true;
+			$options['group'] = $firstItem;
 			$clone = $button;
-
-			array_push($clone, $options['group']);
+			array_push($clone, $firstItem);
 			$clone = array_slice($clone, 1);
-			
-			//var_dump($clone);
 
-			call_user_func_array('JToolbarHelper::' . $button[0], $clone);
-
-			if (!$firstItem)
+			if ($i == 0)
 			{
+				$alt = 'Actions';
+				$title = JText::_($alt);
+				$dhtml = "<a class='btn btn-sm " . $class . "' href='#'><i class='" . $icon . "'></i> " . $title . "</a>";
+
+				$bar->appendButton('Custom', $dhtml, $alt);
 				$layout = new JLayoutFile('joomla.toolbar.group.groupmid');
 				$bar->appendButton('Custom', $layout->render($options));
 				$firstItem = true;
 			}
+			
+			call_user_func_array('JToolbarHelper::' . $button[0], $clone);
+
+			$i++;
 		}
 
 		$layout = new JLayoutFile('joomla.toolbar.group.groupclose');

@@ -98,7 +98,6 @@ class JToolbar
 	{
 		// Push button onto the end of the toolbar array.
 		$btn = func_get_args();
-		var_dump($btn);
 		array_push($this->_bar, $btn);
 
 		return true;

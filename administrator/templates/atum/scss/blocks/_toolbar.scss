@@ -19,7 +19,7 @@
       margin-left: .5rem;
     }
     .btn-group {
-      margin-right: .35rem;
+      float: none;
       .btn {
         margin-left: 0;
       }
@@ -36,7 +36,8 @@
       color: $body-color;
       background-color: $white;
       border-color: $btn-secondary-border;
-      [class^="icon-"], [class*=" icon-"] {
+      [class^="icon-"], [class*=" icon-"],
+      [class^="fa-"], [class*=" fa-"] {
         z-index: -1;
         display: inline-block;
         width: 28px;

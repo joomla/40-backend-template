@@ -199,9 +199,9 @@ class ContentViewArticles extends JViewLegacy
 		
 		JToolbarHelper::appendGroup(
 			[
-				['archiveList', 'article.archive', 'JTOOLBAR_ARHIVE'],
+				['archiveList', 'article.archive', 'JTOOLBAR_ARHIVE', true],
 				['checkin', 'article.checkin', 'JTOOLBAR_CHECKIN', true],
-				['deleteList', 'article.delete', 'JTOOLBAR_DELETE'],
+				['deleteList', 'JGLOBAL_CONFIRM_DELETE', 'article.delete', 'JTOOLBAR_DELETE'],
 				['trash', 'article.trash', 'JTOOLBAR_TRASH', true]
 			]
 		);

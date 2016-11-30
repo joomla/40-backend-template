@@ -450,7 +450,7 @@ abstract class JToolbarHelper
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Add a trash button.
-		$bar->appendButton('Standard', 'trash', $alt, $task, $check, false, $group);
+		$bar->appendButton('Standard', 'trash', $alt, $task, $check, $group);
 	}
 
 	/**
@@ -709,7 +709,14 @@ abstract class JToolbarHelper
 		foreach ($buttons as $button)
 		{
 			$options['group'] = true;
-			call_user_func_array('JToolbarHelper::' . $button[0], array(implode(',', $button)));
+			$clone = $button;
+
+			array_push($clone, $options['group']);
+			$clone = array_slice($clone, 1);
+			
+			//var_dump($clone);
+
+			call_user_func_array('JToolbarHelper::' . $button[0], $clone);
 
 			if (!$firstItem)
 			{

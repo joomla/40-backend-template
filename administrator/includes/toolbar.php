@@ -255,12 +255,12 @@ abstract class JToolbarHelper
 	 *
 	 * @since   1.5
 	 */
-	public static function publish($task = 'publish', $alt = 'JTOOLBAR_PUBLISH', $check = false)
+	public static function publish($task = 'publish', $alt = 'JTOOLBAR_PUBLISH', $check = false, $group = false)
 	{
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Add a publish button.
-		$bar->appendButton('Standard', 'publish', $alt, $task, $check);
+		$bar->appendButton('Standard', 'publish', $alt, $task, $check, $group);
 	}
 
 	/**
@@ -292,12 +292,12 @@ abstract class JToolbarHelper
 	 *
 	 * @since   1.5
 	 */
-	public static function unpublish($task = 'unpublish', $alt = 'JTOOLBAR_UNPUBLISH', $check = false)
+	public static function unpublish($task = 'unpublish', $alt = 'JTOOLBAR_UNPUBLISH', $check = false, $group = false)
 	{
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Add an unpublish button
-		$bar->appendButton('Standard', 'unpublish', $alt, $task, $check);
+		$bar->appendButton('Standard', 'unpublish', $alt, $task, $check, $group);
 	}
 
 	/**
@@ -711,7 +711,7 @@ abstract class JToolbarHelper
 		{
 			$options['group'] = $firstItem;
 			$clone = $button;
-			array_push($clone, $firstItem);
+			array_push($clone, true);
 			$clone = array_slice($clone, 1);
 
 			if ($i == 0)

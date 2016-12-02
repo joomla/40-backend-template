@@ -165,8 +165,8 @@ class ContentViewArticles extends JViewLegacy
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			//JToolbarHelper::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
+			//JToolbarHelper::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 			JToolbarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
 			JToolbarHelper::custom('articles.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
 			//JToolbarHelper::archiveList('articles.archive');
@@ -199,8 +199,8 @@ class ContentViewArticles extends JViewLegacy
 		
 		JToolbarHelper::appendGroup(
 			[
-				//['custom', 'article.featured', 'JFEATURE', true],
-				//['custom', 'article.unfeatured', 'JUNFEATURE', true],
+				['unpublish', 'article.unpublish', 'JTOOLBAR_UNPUBLISH', true],
+				['publish', 'article.publish', 'JTOOLBAR_PUBLISH', true],
 				['archiveList', 'article.archive', 'JTOOLBAR_ARCHIVE', true],
 				['checkin', 'article.checkin', 'JTOOLBAR_CHECKIN', true],
 				['deleteList', 'JGLOBAL_CONFIRM_DELETE', 'article.delete', 'JTOOLBAR_DELETE'],

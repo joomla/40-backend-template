@@ -23,10 +23,16 @@
 			/**
 			 * Sidebar
 			 */
-			var sidebar = document.getElementById('sidebar-wrapper');
-			var menu    = sidebar.querySelector('#menu');
+			var sidebar       = document.getElementById('sidebar-wrapper'),
+				menu          = sidebar.querySelector('#menu'),
+				logo          = document.getElementById('main-brand'),
+				logoSm        = document.getElementById('main-brand-sm'),
+				menuToggle    = document.getElementById('header').querySelector('.menu-toggle'),
+				collapsMenus  = sidebar.querySelectorAll('a[data-toggle="collapse"]'),
+			    wrapperClosed = document.querySelector('#wrapper.closed'),
 			// Apply 2nd level collapse
-			var first = Array.prototype.slice.call(menu.querySelector('.collapse-level-1'));
+				first   = Array.prototype.slice.call(menu.querySelector('.collapse-level-1'));
+
 			first.forEach(function(){
 				this.classList.remove('collapse-level-1').add('collapse-level-2');
 			});
@@ -43,24 +49,46 @@
 				}
 			}
 
-			var animateWrapper = function() {
-				var logo       = document.getElementById('main-brand');
-				var logoSm     = document.getElementById('main-brand-sm');
-				var menuToggle = document.getElementById('header').querySelector('.menu-toggle');
-				var isClosed   = wrapper.classList.contains('closed');
+			var closeAll = function() {
+				for (var i = 0; i < collapsMenus.length; i++) {
+					collapsMenus[i].parentNode.querySelector('.panel-collapse').classList.remove('in');
+				}
+			};
 
-				if (isClosed) {
-					wrapper.classList.remove('closed');
-					menuToggle.classList.remove('active');
-					logoSm.classList.add('hidden-xs-up');
-					logo.classList.remove('hidden-xs-up');
-				} else {
-					sidebar.querySelector('.collapse').classList.remove('in');
-					sidebar.querySelector('.collapse-arrow').classList.add('collapsed');
-					menuToggle.classList.add('active');
-					wrapper.classList.add('closed');
-					logoSm.classList.remove('hidden-xs-up');
-					logo.classList.add('hidden-xs-up');
+			var menuClose = function() {
+				sidebar.querySelector('.collapse').classList.remove('in');
+				sidebar.querySelector('.collapse-arrow').classList.add('collapsed');
+				menuToggle.classList.add('active');
+				wrapper.classList.add('closed');
+				logoSm.classList.remove('hidden-xs-up');
+				logo.classList.add('hidden-xs-up');
+			};
+
+			var menuOpen = function() {
+				wrapper.classList.remove('closed');
+				menuToggle.classList.remove('active');
+				logoSm.classList.add('hidden-xs-up');
+				logo.classList.remove('hidden-xs-up');
+			};
+
+			/**
+			 * Localstorage to remember the menu state (open/close)
+			 */
+			var saveState = function () {
+				if (typeof(Storage) !== 'undefined') {
+					// Set the state of the menu in localStorage
+					localStorage.setItem('adminMenuState', wrapper.classList.contains('closed'));
+				}
+			};
+
+			var animateWrapper = function(keepOpen) {
+				if (window.outerWidth > 767) {
+
+					if (wrapper.classList.contains('closed') || keepOpen) {
+						menuOpen();
+					} else {
+						menuClose();
+					}
 				}
 			};
 
@@ -68,21 +96,20 @@
 			document.getElementById('menu-collapse').addEventListener('click', function(e) {
 				e.preventDefault();
 				animateWrapper();
+				saveState();
 			});
 
-			var doAnimate = function () {
-				if (wrapper.classList.contains('closed') && window.outerWidth > 767) {
-					animateWrapper();
-				}
-			};
+			if (wrapperClosed) {
+				wrapperClosed[i].addEventListener('click', animateWrapper(true));
+			}
 
-			var classses = ["#wrapper.closed .sidebar-wrapper [data-toggle='collapse']"];
-			classses.forEach(function(item) {
-				var tmp = document.querySelectorAll(item);
-				for (var i = 0; i < tmp.length; i++) {
-					tmp[i].addEventListener('click', doAnimate);
-				}
-			});
+			for (var i = 0; i < sidebar.length; i++) {
+				sidebar[i].addEventListener('click', animateWrapper(true));
+			}
+
+			for (var i = 0; i < collapsMenus.length; i++) {
+				collapsMenus[i].addEventListener('click', function(e){closeAll(); e.preventDefault(); animateWrapper(true); });
+			}
 
 			// Set the height of the menu to prevent overlapping
 			var setMenuHeight = function() {
@@ -107,7 +134,15 @@
 					if (!allLinks[i].parentNode.classList.contains('parent')) {
 						var parentLink = closest(allLinks[i], '.panel-collapse');
 						parentLink.parentNode.querySelector('a.collapse-arrow').classList.add('active');
+						parentLink.classList.add('in');
+
 					}
+				}
+			}
+
+			if (typeof(Storage) !== 'undefined') {
+				if (localStorage.getItem('adminMenuState') == "true") {
+					menuClose();
 				}
 			}
 

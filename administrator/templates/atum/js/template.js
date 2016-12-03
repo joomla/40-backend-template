@@ -116,7 +116,7 @@
 					var current = e.target;
 					if ((current.tagName && current.tagName.toLowerCase() !== 'a') || !current.tagName) current = e.target.parentNode;
 					current.removeAttribute('href');
-					if (current.classList.contains('open')) {
+					if (current.classList.contains('open') && !wrapper.classList.contains('closed')) {
 						current.classList.remove('open');
 						if (current.parentNode.querySelector('li')) current.parentNode.querySelector('li').classList.remove('open');
 						var ulEl = current.parentNode.querySelectorAll('ul');

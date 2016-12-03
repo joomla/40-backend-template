@@ -5324,7 +5324,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eee;
+  border: solid 0.08em transparent;
   border-radius: .1em; }
 
 .fa-pull-left {
@@ -8245,7 +8245,7 @@ iframe {
     .closed .main-nav > li:hover .sidebar-item-title {
       display: block;
       opacity: 1; }
-    .closed .main-nav > li .collapse, .closed .main-nav > li:hover .collapse {
+    .closed .main-nav > li .expandable, .closed .main-nav > li:hover .expandable {
       position: absolute;
       top: 100%;
       left: 100%;
@@ -8305,6 +8305,14 @@ iframe {
     .closed .main-nav .collapse-level-2 .sidebar-item-title::before {
       content: "\f10c";
       opacity: .75; }
+
+.fadeout {
+  opacity: 0;
+  transition: opacity 3s; }
+
+.fadein {
+  opacity: 1;
+  transition: opacity 3s; }
 
 .status {
   padding: 2px 10px 4px;

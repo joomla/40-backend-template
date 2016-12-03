@@ -8245,7 +8245,7 @@ iframe {
     .closed .main-nav > li:hover .sidebar-item-title {
       display: block;
       opacity: 1; }
-    .closed .main-nav > li .collapse, .closed .main-nav > li:hover .collapse {
+    .closed .main-nav > li .expandable, .closed .main-nav > li:hover .expandable {
       position: absolute;
       top: 100%;
       left: 100%;

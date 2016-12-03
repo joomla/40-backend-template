@@ -5324,7 +5324,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eee;
+  border: solid 0.08em transparent;
   border-radius: .1em; }
 
 .fa-pull-left {

@@ -31,7 +31,7 @@
 		/**
 		 * Bootstrap tooltips
 		 */
-		jQuery('*[rel=tooltip]').tooltip({
+		jQuery('*[rel="tooltip"]').tooltip({
 			html: true
 		});
 
@@ -57,8 +57,8 @@
 			}
 
 			var menuClose = function() {
-				sidebar.querySelector('.collapse').classList.remove('in');
-				sidebar.querySelector('.collapse-arrow').classList.add('collapsed');
+				// sidebar.querySelector('.collapse').classList.remove('in');
+				// sidebar.querySelector('.collapse-arrow').classList.add('collapsed');
 				menuToggle.classList.add('active');
 				wrapper.classList.add('closed');
 				logoSm.classList.remove('hidden-xs-up');
@@ -108,29 +108,48 @@
 			/**
 			 * Sidebar Accordion
 			 */
-			jQuery('.main-nav li.parent > a').on('click', function(){
-				jQuery(this).removeAttr('href');
-				var element = jQuery(this).parent('li');
-				if (element.hasClass('open')) {
-					element.removeClass('open');
-					element.find('li').removeClass('open');
-					element.find('ul').slideUp();
-				}
-				else {
-					element.addClass('open');
-					element.children('ul').slideDown();
-					element.siblings('li').children('ul').slideUp();
-					element.siblings('li').removeClass('open');
-					element.siblings('li').find('li').removeClass('open');
-					element.siblings('li').find('ul').slideUp();
-				}
-			});
+			var clickableElems = document.querySelectorAll('.main-nav li.parent > a');
+
+			for (var i = 0; i < clickableElems.length; i++) {
+
+				clickableElems[i].addEventListener('click', function(e) {
+					var current = e.target;
+					current.removeAttribute('href');
+					if (current.classList.contains('open')) {
+						current.classList.remove('open');
+						current.parentNode.parentNode.querySelector('li').classList.remove('open');
+						current.parentNode.parentNode.querySelector('ul').style.display = 'none';
+						current.parentNode.parentNode.querySelector('ul').classList.remove('fadein');
+						current.parentNode.parentNode.querySelector('ul').classList.add('fadeout');
+					}
+					else {
+						var siblings = current.parentNode.parentNode.parentNode.childNodes;
+						for (var j = 0; j < siblings.length; j++) {
+							if (siblings[j].tagName && siblings[j].tagName.toLowerCase() === 'li' && siblings[j].classList.contains('parent')) {
+								var ulEl = siblings[j].querySelector('ul');
+								ulEl.style.display = 'none';
+								ulEl.classList.remove('open');
+								siblings[j].classList.remove('open');
+							}
+						}
+						current.classList.add('open');
+						if (current.parentNode.parentNode.querySelector('ul')) {
+							current.parentNode.parentNode.querySelector('ul').classList.add('fadein');
+							current.parentNode.parentNode.querySelector('ul').classList.remove('fadeout');
+							current.parentNode.parentNode.querySelector('ul').style.display = 'block';
+						}
+					}
+				});
+
+			}
 
 			/** Accessibility */
 			var allLiEl = sidebar.querySelectorAll('ul[role="menubar"] li');
 			for (var i = 0; i < allLiEl.length; i++) {
 				// We care for enter and space
-				allLiEl[i].addEventListener('keyup', function(e) { if (e.keyCode == 32 || e.keyCode == 13 ) e.target.querySelector('a').click(); });
+				allLiEl[i].addEventListener('keyup', function(e) {
+					if (e.keyCode == 32 || e.keyCode == 13 ) e.target.querySelector('a').click();
+				});
 			}
 
 			// Set the height of the menu to prevent overlapping
@@ -211,51 +230,34 @@
 			}
 		}
 
-		var somemem = document.querySelector('.btn-group label:not(.active)');
-		if (somemem) {
-			somemem.addEventListener('click', function(event) {
+		var btnGroupActive = document.querySelector('.btn-group label:not(.active)');
+		if (btnGroupActive) {
+			btnGroupActive.addEventListener('click', function(event) {
 				var label = event.target;
 				var input = document.getElementById(label.getAttribute('for'));
 
 				if (input.getAttribute('checked') !== "checked") {
-					var aa = closest(label, '.btn-group').querySelector('label');
-					aa.classList.remove('active');
-					aa.classList.remove('btn-success');
-					aa.classList.remove('btn-danger');
-					aa.classList.remove('btn-primary');
+					closest(label, '.btn-group').querySelector('label').classList.remove('active', 'btn-success', 'btn-danger', 'btn-primary');
 
 					if (closest(label, '.btn-group').classList.contains('btn-group-reversed')) {
 						if (!label.classList.contains('btn')) label.classList.add('btn');
 						if (input.value == '') {
-							label.classList.add('active');
-							label.classList.add('btn');
-							label.classList.add('btn-outline-primary');
+							label.classList.add('btn', 'btn-outline-primary', 'active');
 						} else if (input.value == 0) {
-							label.classList.add('active');
-							label.classList.add('btn');
-							label.classList.add('btn-outline-success');
+							label.classList.add('btn', 'btn-outline-success', 'active');
 						} else {
-							label.classList.add('active');
-							label.classList.add('btn');
-							label.classList.add('btn-outline-danger');
+							label.classList.add('btn', 'btn-outline-danger', 'active');
 						}
 					} else {
 						if (input.value == '') {
-							label.classList.add('active');
-							label.classList.add('btn');
-							label.classList.add('btn-outline-primary');
+							label.classList.add('btn', 'btn-outline-primary', 'active');
 						} else if (input.value == 0) {
-							label.classList.add('active');
-							label.classList.add('btn');
-							label.classList.add('btn-outline-danger');
+							label.classList.add('btn', 'btn-outline-danger', 'active');
 						} else {
-							label.classList.add('active');
-							label.classList.add('btn');
-							label.classList.add('btn-outline-success');
+							label.classList.add('btn', 'btn-outline-success', 'active');
 						}
 					}
 					input.setAttribute('checked', true);
-					//input.dispatchEvent('change');
 				}
 			});
 		}
@@ -263,40 +265,21 @@
 		var btsGrouped = document.querySelectorAll('.btn-group input[checked=checked]');
 
 		for(var i = 0, l = btsGrouped.length; l>i; i++) {
-			var self   = btsGrouped[i],
-			    attrId = self.id;
-			if (self.parentNode.parentNode.classList.contains('btn-group-reversed')) {
-				if (self.value == '') {
-					var aa = document.querySelector('label[for=' + attrId + ']');
-					aa.classList.add('active');
-					aa.classList.add('btn');
-					aa.classList.add('btn-outline-primary');
-				} else if (self.value == 0) {
-					var aa = document.querySelector('label[for=' + attrId + ']');
-					aa.classList.add('active');
-					aa.classList.add('btn');
-					aa.classList.add('btn-outline-success');
+			if (btsGrouped[i].parentNode.parentNode.classList.contains('btn-group-reversed')) {
+				if (btsGrouped[i].value == '') {
+					document.querySelector('label[for=' + btsGrouped[i].id + ']').classList.add('btn', 'btn-outline-primary', 'active');
+				} else if (btsGrouped[i].value == 0) {
+					document.querySelector('label[for=' + btsGrouped[i].id + ']').classList.add('btn', 'btn-outline-success', 'active');
 				} else {
-					var aa = document.querySelector('label[for=' + attrId + ']');
-					aa.classList.add('active');
-					aa.classList.add('btn');
-					aa.classList.add('btn-outline-danger');
+					document.querySelector('label[for=' + btsGrouped[i].id + ']').classList.add('btn', 'btn-outline-danger', 'active');
 				}
 			} else {
-				if (self.value == '') {
-					var aa = document.querySelector('label[for=' + attrId + ']');
-					aa.classList.add('active');
-					aa.classList.add('btn-outline-primary');
-				} else if (self.value == 0) {
-					var aa = document.querySelector('label[for=' + attrId + ']');
-					aa.classList.add('active');
-					aa.classList.add('btn');
-					aa.classList.add('btn-outline-danger');
+				if (btsGrouped[i].value == '') {
+					document.querySelector('label[for=' + btsGrouped[i].id + ']').classList.add('active', 'btn-outline-primary');
+				} else if (btsGrouped[i].value == 0) {
+					document.querySelector('label[for=' + btsGrouped[i].id + ']').classList.add('btn', 'btn-outline-danger', 'active');
 				} else {
-					var aa = document.querySelector('label[for=' + attrId + ']');
-					aa.classList.add('active');
-					aa.classList.add('btn');
-					aa.classList.add('btn-outline-success');
+					document.querySelector('label[for=' + btsGrouped[i].id + ']').classList.add('btn', 'btn-outline-success', 'active');
 				}
 			}
 		}

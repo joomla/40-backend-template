@@ -215,7 +215,7 @@ class JAdminCssMenu extends JObject
 		// Recurse through children if they exist
 		while ($this->_current->hasChildren())
 		{
-			echo '<ul id="collapse' . $unique . '" class="nav panel-collapse collapse-level-1 collapse" role="menu" aria-hidden="true">' . "\n";
+			echo '<ul id="collapse' . $unique . '" class="nav panel-collapse collapse-level-1" role="menu" aria-hidden="true">' . "\n";
 
 			foreach ($this->_current->getChildren() as $child)
 			{

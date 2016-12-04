@@ -73,7 +73,7 @@ module.exports = function(grunt) {
 
 	// Build the package.json and assets.php for all 3rd Party assets
 	grunt.file.write('build/assets_tmp/package.json', preText + vendorsTxt.substring(0, vendorsTxt.length - 1) + postText);
-	grunt.file.write('build/assets_tmp/assets.php', '<?php\n' + docblock + '\ndefined(\'_JEXEC\') or die;\n\n' + docblock + 'abstract class JHelperAssets\n{\n' + docblock + '\tpublic static function getCoreAssets()\n\t{\n\t\t return [\n\t\t\t' + vendorsArr + '\n\t\t];\n\t}\n}\n');
+	grunt.file.write('build/assets_tmp/assets.php', '<?php\n' + docblock + '\ndefined(\'_JEXEC\') or die;\n\n' + docblock2 + 'abstract class JHelperAssets\n{\n' + docblock3 + '\tpublic static function getCoreAssets()\n\t{\n\t\t return [\n\t\t\t' + vendorsArr + '\n\t\t];\n\t}\n}\n');
 
 	// Update the XML files for tinyMCE and Codemirror
 	tinyXml = grunt.file.read('plugins/editors/tinymce/tinymce.xml');

@@ -10,22 +10,19 @@
 defined('_JEXEC') or die;
 
 /**
- * @package     Joomla.Library
- * @subpackage  Helper
+ * Helper for the vendor provided assets.
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @since  4.0
  */
 abstract class JHelperAssets
 {
-/**
- * @package     Joomla.Library
- * @subpackage  Helper
- *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
-	public static function getCoreAssets()
+	/**
+	 * Get all the vendor included assets.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0
+	 */	public static function getCoreAssets()
 	{
 		 return [
 			'jquery' => ['version' => '2.2.4','dependencies' => ''],

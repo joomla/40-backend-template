@@ -8,7 +8,14 @@ module.exports = function(grunt) {
 		vendorsTxt    = '',
 		vendorsArr    = '',
 		polyFillsUrls = [],
-		xmlVersionStr = /(<version>)(\d+.\d+.\d+)(<\/version>)/;
+		xmlVersionStr = /(<version>)(\d+.\d+.\d+)(<\/version>)/,
+		docblock = '/**\n' +
+			'* @package     Joomla.Library\n' +
+			'* @subpackage  Helper\n' +
+			'*\n' +
+			'* @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.\n' +
+			'* @license     GNU General Public License version 2 or later; see LICENSE.txt\n' +
+			'*/\n';
 
 	// Set some directories for codemirror
 	settings.CmAddons = {};
@@ -54,7 +61,7 @@ module.exports = function(grunt) {
 
 	// Build the package.json and assets.php for all 3rd Party assets
 	grunt.file.write('build/assets_tmp/package.json', preText + vendorsTxt.substring(0, vendorsTxt.length - 1) + postText);
-	grunt.file.write('build/assets_tmp/assets.php', '<?php\ndefined(\'_JEXEC\') or die;\n\nabstract class JHelperAssets\n{\n\tpublic static function getCoreAssets()\n\t{\n\t\t return [\n\t\t\t' + vendorsArr + '\n\t\t];\n\t}\n}\n');
+	grunt.file.write('build/assets_tmp/assets.php', '<?php\n' + docblock + 'defined(\'_JEXEC\') or die;\n\nabstract class JHelperAssets\n{\n\tpublic static function getCoreAssets()\n\t{\n\t\t return [\n\t\t\t' + vendorsArr + '\n\t\t];\n\t}\n}\n');
 
 	// Update the XML files for tinyMCE and Codemirror
 	tinyXml = grunt.file.read('plugins/editors/tinymce/tinymce.xml');
@@ -334,7 +341,7 @@ module.exports = function(grunt) {
 					dest: '<%= folder.adminTemplate %>/css',
 				}]
 			}
-		},
+		}
 	});
 
 	// Load required modules

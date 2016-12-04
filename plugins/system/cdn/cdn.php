@@ -56,28 +56,28 @@ class PlgSystemCdn extends JPlugin
 			$this->app = JFactory::getApplication();
 		}
 
-		// Early return
 		$doc = $this->app->getDocument();
 
+		// Early return
 		if (($this->jquery === false && $this->bootstrap === false) || $doc->getType() !== 'html')
 		{
 			return;
 		}
 
 		// Should jquery being served from CDN?
-		if ($this->params->get('jquery'))
+		if ($this->params->get('jquery', 0))
 		{
 			$this->jquery = true;
 		}
 
 		// Should jquery being served from CDN?
-		if ($this->params->get('bootstrap'))
+		if ($this->params->get('bootstrap', 0))
 		{
 			$this->bootstrap = true;
 		}
 
 		// Get the debug specific ext
-		$debug = $this->app->get('debug');
+		$debug = $this->app->get('debug', 0);
 		$minified = $debug == 1 ? '' : '.min';
 
 		// Get the document scripts

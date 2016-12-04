@@ -10,12 +10,12 @@ module.exports = function(grunt) {
 		polyFillsUrls = [],
 		xmlVersionStr = /(<version>)(\d+.\d+.\d+)(<\/version>)/,
 		docblock = '/**\n' +
-			'* @package     Joomla.Library\n' +
-			'* @subpackage  Helper\n' +
-			'*\n' +
-			'* @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.\n' +
-			'* @license     GNU General Public License version 2 or later; see LICENSE.txt\n' +
-			'*/\n';
+			' * @package     Joomla.Library\n' +
+			' * @subpackage  Helper\n' +
+			' *\n' +
+			' * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.\n' +
+			' * @license     GNU General Public License version 2 or later; see LICENSE.txt\n' +
+			' */\n';
 
 	// Set some directories for codemirror
 	settings.CmAddons = {};

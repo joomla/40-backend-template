@@ -22,7 +22,8 @@ abstract class JHelperAssets
 	 * @return  void
 	 *
 	 * @since   4.0
-	 */	public static function getCoreAssets()
+	 */
+	public static function getCoreAssets()
 	{
 		 return [
 			'jquery' => ['version' => '2.2.4','dependencies' => ''],

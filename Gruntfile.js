@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 			' * @return  void\n\t' +
 			' *\n\t' +
 			' * @since   4.0\n\t' +
-			' */';
+			' */\n';
 
 	// Set some directories for codemirror
 	settings.CmAddons = {};

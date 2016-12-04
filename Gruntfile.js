@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 			' * @package     Joomla.Library\n' +
 			' * @subpackage  Helper\n' +
 			' *\n' +
-			' * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.\n' +
+			' * @copyright   Copyright (C) 2005 - ' + new Date().getFullYear() + ' Open Source Matters, Inc. All rights reserved.\n' +
 			' * @license     GNU General Public License version 2 or later; see LICENSE.txt\n' +
 			' */\n',
 		docblock2 = '/**\n' +

@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 
 /**
- * Joomla! Debug plugin.
+ * Joomla! CDN plugin.
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -89,6 +89,10 @@ class PlgSystemCdn extends JPlugin
 		// An array for the modified scripts
 		$tempArray = [];
 
+		// Root path
+		$path = JUri::root(true);
+
+		// Reset $doc->_scripts and build, with any replacements, the $tempArray
 		foreach ($scripts as $script => $options)
 		{
 			// Keep a reference of the old script,path
@@ -96,13 +100,13 @@ class PlgSystemCdn extends JPlugin
 
 			if ($this->jquery === true)
 			{
-				if ($script === JUri::root(true) . '/media/vendor/jquery/js/jquery' . $minified . '.js')
+				if ($script === $path . '/media/vendor/jquery/js/jquery' . $minified . '.js')
 				{
 					$script = 'https://code.jquery.com/jquery-' . $assets['jquery']['version'] . $minified . '.js';
 					$options = [];
 				}
 
-				if ($script === JUri::root(true) . '/media/vendor/jquery/js/jquery-migrate' . $minified . '.js')
+				if ($script === $path . '/media/vendor/jquery/js/jquery-migrate' . $minified . '.js')
 				{
 					$script = 'https://code.jquery.com/jquery-migrate-' . $assets['jquery-migrate']['version'] . $minified . '.js';
 					$options = [];
@@ -111,13 +115,13 @@ class PlgSystemCdn extends JPlugin
 
 			if ($this->bootstrap === true)
 			{
-				if ($script === JUri::root(true) . '/media/vendor/tether/js/tether' . $minified . '.js')
+				if ($script === $path . '/media/vendor/tether/js/tether' . $minified . '.js')
 				{
 					$script = 'https://cdnjs.cloudflare.com/ajax/libs/tether/' . $assets['tether']['version'] . '/js/tether' . $minified . '.js';
 					$options = [];
 				}
 
-				if ($script === JUri::root(true) . '/media/vendor/bootstrap/js/bootstrap' . $minified . '.js')
+				if ($script === $path . '/media/vendor/bootstrap/js/bootstrap' . $minified . '.js')
 				{
 					$script = 'https://maxcdn.bootstrapcdn.com/bootstrap/'
 						. str_replace('~', '', $assets['bootstrap']['version'])
@@ -127,6 +131,8 @@ class PlgSystemCdn extends JPlugin
 			}
 
 			$tempArray[$script] = $options;
+
+			// Unset this script
 			unset($doc->_scripts[$oldRef]);
 		}
 

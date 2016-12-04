@@ -32,13 +32,13 @@ class PlgSystemCdn extends JPlugin
 		$bootstrap = false;
 
 		// Should jquery being served from CDN?
-		if ($this->params->get('jquery', 0) === 1)
+		if ((int) $this->params->get('jquery', 0) === 1)
 		{
 			$jquery = true;
 		}
 
 		// Should jquery being served from CDN?
-		if ($this->params->get('bootstrap', 0) === 1)
+		if ((int) $this->params->get('bootstrap', 0) === 1)
 		{
 			$bootstrap = true;
 		}

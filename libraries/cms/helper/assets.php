@@ -1,15 +1,30 @@
 <?php
 /**
-* @package     Joomla.Library
-* @subpackage  Helper
-*
-* @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
-* @license     GNU General Public License version 2 or later; see LICENSE.txt
-*/
+ * @package     Joomla.Library
+ * @subpackage  Helper
+ *
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 defined('_JEXEC') or die;
 
+/**
+ * @package     Joomla.Library
+ * @subpackage  Helper
+ *
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 abstract class JHelperAssets
 {
+/**
+ * @package     Joomla.Library
+ * @subpackage  Helper
+ *
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 	public static function getCoreAssets()
 	{
 		 return [

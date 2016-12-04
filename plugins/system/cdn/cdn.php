@@ -49,8 +49,6 @@ class PlgSystemCdn extends JPlugin
 			return;
 		}
 
-
-
 		// Get the debug specific ext
 		$debug = $app->get('debug', 0);
 		$minified = $debug == 1 ? '' : '.min';

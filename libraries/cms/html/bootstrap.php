@@ -225,25 +225,8 @@ abstract class JHtmlBootstrap
 			$debug = JDEBUG;
 		}
 
-		// Get CDN plugin parameters
-		$plugin   = JPluginHelper::getPlugin('system', 'cdn');
-		$params   = new JRegistry($plugin->params);
-		$minified = $debug == 1 ? '' : '.min';
-
-		// Get asset version
-		$assets = JHelperAssets::getCoreAssets();
-
-		if ($params->get('bootstrap', 0) == 0)
-		{
-			JHtml::_('script', 'vendor/tether/tether.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
-			JHtml::_('script', 'vendor/bootstrap/bootstrap.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
-		}
-		else
-		{
-			JHtml::_('script', '//cdnjs.cloudflare.com/ajax/libs/tether/' . $assets['tether']['version'] . '/js/tether' . $minified . '.js');
-			JHtml::_('script', '//maxcdn.bootstrapcdn.com/bootstrap/'
-				. str_replace('~', '', $assets['bootstrap']['version']) . '/js/bootstrap' . $minified . '.js');
-		}
+		JHtml::_('script', 'vendor/tether/tether.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+		JHtml::_('script', 'vendor/bootstrap/bootstrap.min.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
 
 		static::$loaded[__METHOD__] = true;
 
@@ -904,23 +887,7 @@ abstract class JHtmlBootstrap
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
-			// Get CDN plugin parameters
-			$plugin   = JPluginHelper::getPlugin('system', 'cdn');
-			$params   = new JRegistry($plugin->params);
-			$minified = $debug == 1 ? '' : '.min';
-
-			// Get asset version
-			$assets = JHelperAssets::getCoreAssets();
-
-			if ($params->get('bootstrap', 0) == 0)
-			{
-				JHtml::_('stylesheet', 'vendor/bootstrap/bootstrap.min.css', array('version' => 'auto', 'relative' => true), $attribs);
-			}
-			else
-			{
-				JHtml::_('stylesheet', '//maxcdn.bootstrapcdn.com/bootstrap/'
-					. str_replace('~', '', $assets['bootstrap']['version']) . '/css/bootstrap' . $minified . '.css');
-			}
+			JHtml::_('stylesheet', 'vendor/bootstrap/bootstrap.min.css', array('version' => 'auto', 'relative' => true), $attribs);
 		}
 
 		// BOOTSTRAP RTL - WILL SORT OUT LATER DOWN THE LINE

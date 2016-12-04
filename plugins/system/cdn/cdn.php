@@ -18,30 +18,6 @@ defined('_JEXEC') or die;
 class PlgSystemCdn extends JPlugin
 {
 	/**
-	 * Application object.
-	 *
-	 * @var    JApplicationCms
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $app;
-
-	/**
-	 * jQuery switch.
-	 *
-	 * @var    boolean
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $jquery;
-
-	/**
-	 * Bootstrap switch.
-	 *
-	 * @var    boolean
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $bootstrap;
-
-	/**
 	 * Replace local scripts with CDN versions
 	 *
 	 * @return  void
@@ -50,34 +26,33 @@ class PlgSystemCdn extends JPlugin
 	 */
 	public function onBeforeCompileHead()
 	{
-		// Get the application if not done by JPlugin. This may happen during upgrades from Joomla 2.5.
-		if (!$this->app)
-		{
-			$this->app = JFactory::getApplication();
-		}
-
-		$doc = $this->app->getDocument();
-
-		// Early return
-		if (($this->jquery === false && $this->bootstrap === false) || $doc->getType() !== 'html')
-		{
-			return;
-		}
+		$app       = JFactory::getApplication();
+		$doc       = $app->getDocument();
+		$jquery    = false;
+		$bootstrap = false;
 
 		// Should jquery being served from CDN?
 		if ($this->params->get('jquery', 0))
 		{
-			$this->jquery = true;
+			$jquery = true;
 		}
 
 		// Should jquery being served from CDN?
 		if ($this->params->get('bootstrap', 0))
 		{
-			$this->bootstrap = true;
+			$bootstrap = true;
 		}
 
+		// Early return
+		if (($jquery === false && $bootstrap === false) || $doc->getType() !== 'html')
+		{
+			return;
+		}
+
+
+
 		// Get the debug specific ext
-		$debug = $this->app->get('debug', 0);
+		$debug = $app->get('debug', 0);
 		$minified = $debug == 1 ? '' : '.min';
 
 		// Get the document scripts
@@ -98,7 +73,7 @@ class PlgSystemCdn extends JPlugin
 			// Keep a reference of the old script,path
 			$oldRef = $script;
 
-			if ($this->jquery === true)
+			if ($jquery === true)
 			{
 				if ($script === $path . '/media/vendor/jquery/js/jquery' . $minified . '.js')
 				{
@@ -113,7 +88,7 @@ class PlgSystemCdn extends JPlugin
 				}
 			}
 
-			if ($this->bootstrap === true)
+			if ($bootstrap === true)
 			{
 				if ($script === $path . '/media/vendor/tether/js/tether' . $minified . '.js')
 				{

@@ -61,7 +61,17 @@ module.exports = function(grunt) {
 
 	// Loop to get some text for the assets.php
 	for (name in settings.vendors) {
-		vendorsArr += '\'' + name + '\' => [\'version\' => \'' + settings.vendors[name].version + '\',' + '\'dependencies\' => \'' + settings.vendors[name].dependencies + '\'],\n\t\t\t';
+		/** Build the array for dependencies */
+		var depArray = '';
+		if (settings.vendors[name].dependencies.length > 0){
+			settings.vendors[name].dependencies.forEach(function(item) {
+				"use strict";
+				depArray += '\'' + item + '\', '
+			});
+		}
+		depArray = '[' + depArray + ']';
+
+		vendorsArr += '\'' + name + '\' => [\'version\' => \'' + settings.vendors[name].version + '\',' + '\'dependencies\' => ' + depArray + '],\n\t\t\t';
 	}
 
 	// Build the array of the polyfills urls for curl

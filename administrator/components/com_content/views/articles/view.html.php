@@ -167,8 +167,8 @@ class ContentViewArticles extends JViewLegacy
 		{
 			//JToolbarHelper::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
 			//JToolbarHelper::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolbarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
-			JToolbarHelper::custom('articles.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
+			//JToolbarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
+			//JToolbarHelper::custom('articles.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
 			//JToolbarHelper::archiveList('articles.archive');
 			//JToolbarHelper::checkin('articles.checkin');
 		}
@@ -178,13 +178,13 @@ class ContentViewArticles extends JViewLegacy
 			&& $user->authorise('core.edit', 'com_content')
 			&& $user->authorise('core.edit.state', 'com_content'))
 		{
-			$title = JText::_('JTOOLBAR_BATCH');
+			//$title = JText::_('JTOOLBAR_BATCH');
 
 			// Instantiate a new JLayoutFile instance and render the batch button
-			$layout = new JLayoutFile('joomla.toolbar.batch');
+			//$layout = new JLayoutFile('joomla.toolbar.batch');
 
-			$dhtml = $layout->render(array('title' => $title));
-			$bar->appendButton('Custom', $dhtml, 'batch');
+			//$dhtml = $layout->render(array('title' => $title));
+			//$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
@@ -199,6 +199,9 @@ class ContentViewArticles extends JViewLegacy
 		
 		JToolbarHelper::appendGroup(
 			[
+				['batch', 'JTOOLBAR_BATCH'],
+				['custom', 'articles.featured', 'featured', '', 'JFEATURE', true],
+				['custom', 'articles.unfeatured', 'unfeatured', '', 'JUNFEATURE', true],
 				['unpublish', 'article.unpublish', 'JTOOLBAR_UNPUBLISH', true],
 				['publish', 'article.publish', 'JTOOLBAR_PUBLISH', true],
 				['archiveList', 'article.archive', 'JTOOLBAR_ARCHIVE', true],

@@ -85,7 +85,7 @@ abstract class JToolbarHelper
 	 *
 	 * @since   1.5
 	 */
-	public static function custom($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
+	public static function custom($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true, $group = false)
 	{
 		$bar = JToolbar::getInstance('toolbar');
 
@@ -93,7 +93,7 @@ abstract class JToolbarHelper
 		$icon = preg_replace('#\.[^.]*$#', '', $icon);
 
 		// Add a standard button.
-		$bar->appendButton('Standard', $icon, $alt, $task, $listSelect);
+		$bar->appendButton('Standard', $icon, $alt, $task, $listSelect, $group);
 	}
 
 	/**
@@ -733,6 +733,30 @@ abstract class JToolbarHelper
 
 		$layout = new JLayoutFile('joomla.toolbar.group.groupclose');
 		$bar->appendButton('Custom', $layout->render());
+	}
+
+	/**
+	 * Displays a batch button
+	 *
+	 * @param   string  $title  The button text
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public static function batch($title = 'JTOOLBAR_BATCH', $group = false)
+	{
+		$bar = JToolbar::getInstance('toolbar');
+
+		// Options array for JLayout
+		$options          = array();
+		$options['title'] = JText::_($title);
+		$options['group'] = $group;
+
+		// Instantiate a new JLayoutFile instance and render the batch button
+		$layout = new JLayoutFile('joomla.toolbar.batch');
+
+		$bar->appendButton('Custom', $layout->render($options));
 	}
 
 	/**

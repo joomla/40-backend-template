@@ -243,6 +243,13 @@ class JDocumentRendererHtmlHead extends JDocumentRenderer
 			$buffer .= '</script>' . $lnEnd;
 		}
 
+		// Get the debug specific ext
+		$debug    = $app->get('debug', 0);
+		$minified = $debug == 1 ? '' : '.min';
+		$path     = JUri::root(true);
+
+		// Get asset version
+		$assets                 = JHelperAssets::getCoreAssets();
 		$defaultJsMimes         = array('text/javascript', 'application/javascript', 'text/x-javascript', 'application/x-javascript');
 		$html5NoValueAttributes = array('defer', 'async');
 
@@ -308,6 +315,30 @@ class JDocumentRendererHtmlHead extends JDocumentRenderer
 			}
 
 			$buffer .= '></script>';
+
+			// Add fallback for the CDNs
+			if ($src === 'https://code.jquery.com/jquery-' . $assets['jquery']['version'] . $minified . '.js')
+			{
+				$buffer .= $tab . '<script>if (!window.jQuery) { document.write(\'<script src="'
+					. $path . '/media/vendor/jquery/js/jquery' . $minified . '.js">\x3C/script>\'); }</script>' . $lnEnd;
+			}
+			if ($src === 'https://code.jquery.com/jquery-migrate-' . $assets['jquery-migrate']['version'] . $minified . '.js')
+			{
+				$buffer .= $tab . '<script>if (typeof jQuery.migrateVersion !== "string") { document.write(\'<script src = "'
+					. $path . '/media/vendor/jquery/js/jquery-migrate' . $minified . '.js" >\x3C/script>\'); }</script>' . $lnEnd;
+
+			}
+			if ($src === 'https://cdnjs.cloudflare.com/ajax/libs/tether/' . $assets['tether']['version'] . '/js/tether' . $minified . '.js')
+			{
+				$buffer .= $tab . '<script>if (typeof window.Tether !== "function") { document.write(\'<script src = "'
+					. $path . '/media/vendor/tether/js/tether' . $minified . '.js" >\x3C/script>\'); }</script>' . $lnEnd;
+			}
+			if ($src === 'https://maxcdn.bootstrapcdn.com/bootstrap/' . str_replace('~', '', $assets['bootstrap']['version'])
+					. '/js/bootstrap' . $minified . '.js')
+			{
+				$buffer .= $tab . '<script>if (typeof jQuery.fn.popover !== "function") { document.write(\'<script src="'
+					. $path . '/media/vendor/bootstrap/js/bootstrap' . $minified . '.js">\x3C/script>\'); }</script>' . $lnEnd;
+			}
 
 			// This is for IE conditional statements support.
 			if (!is_null($conditional))

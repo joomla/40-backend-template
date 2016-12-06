@@ -148,6 +148,9 @@ class ContentViewArticles extends JViewLegacy
 		$canDo = JHelperContent::getActions('com_content', 'category', $this->state->get('filter.category_id'));
 		$user  = JFactory::getUser();
 
+		// Array of toolbar buttons
+		$toolbarButtons = [];
+
 		// Get the toolbar object instance
 		$bar = JToolbar::getInstance('toolbar');
 
@@ -165,12 +168,12 @@ class ContentViewArticles extends JViewLegacy
 
 		if ($canDo->get('core.edit.state'))
 		{
-			//JToolbarHelper::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
-			//JToolbarHelper::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			//JToolbarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
-			//JToolbarHelper::custom('articles.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
-			//JToolbarHelper::archiveList('articles.archive');
-			//JToolbarHelper::checkin('articles.checkin');
+			$toolbarButtons[] = ['publish', 'article.publish', 'JTOOLBAR_PUBLISH', true];
+			$toolbarButtons[] = ['unpublish', 'article.unpublish', 'JTOOLBAR_UNPUBLISH', true];
+			$toolbarButtons[] = ['custom', 'articles.featured', 'featured', '', 'JFEATURE', true];
+			$toolbarButtons[] = ['custom', 'articles.unfeatured', 'unfeatured', '', 'JUNFEATURE', true];
+			$toolbarButtons[] = ['archiveList', 'article.archive', 'JTOOLBAR_ARCHIVE', true];
+			$toolbarButtons[] = ['checkin', 'article.checkin', 'JTOOLBAR_CHECKIN', true];
 		}
 
 		// Add a batch button
@@ -178,39 +181,19 @@ class ContentViewArticles extends JViewLegacy
 			&& $user->authorise('core.edit', 'com_content')
 			&& $user->authorise('core.edit.state', 'com_content'))
 		{
-			//$title = JText::_('JTOOLBAR_BATCH');
-
-			// Instantiate a new JLayoutFile instance and render the batch button
-			//$layout = new JLayoutFile('joomla.toolbar.batch');
-
-			//$dhtml = $layout->render(array('title' => $title));
-			//$bar->appendButton('Custom', $dhtml, 'batch');
+			$toolbarButtons[] = ['batch', 'JTOOLBAR_BATCH'];
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			//JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
+			$toolbarButtons[] = ['deleteList', 'JGLOBAL_CONFIRM_DELETE', 'article.delete', 'JTOOLBAR_DELETE'];
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			//JToolbarHelper::trash('articles.trash');
+			$toolbarButtons[] = ['trash', 'article.trash', 'JTOOLBAR_TRASH', true];
 		}
-		
-		
-		JToolbarHelper::appendGroup(
-			[
-				['batch', 'JTOOLBAR_BATCH'],
-				['custom', 'articles.featured', 'featured', '', 'JFEATURE', true],
-				['custom', 'articles.unfeatured', 'unfeatured', '', 'JUNFEATURE', true],
-				['unpublish', 'article.unpublish', 'JTOOLBAR_UNPUBLISH', true],
-				['publish', 'article.publish', 'JTOOLBAR_PUBLISH', true],
-				['archiveList', 'article.archive', 'JTOOLBAR_ARCHIVE', true],
-				['checkin', 'article.checkin', 'JTOOLBAR_CHECKIN', true],
-				['deleteList', 'JGLOBAL_CONFIRM_DELETE', 'article.delete', 'JTOOLBAR_DELETE'],
-				['trash', 'article.trash', 'JTOOLBAR_TRASH', true]
-			]
-		);
-		
+
+		JToolbarHelper::appendGroup($toolbarButtons);
 
 		if ($user->authorise('core.admin', 'com_content') || $user->authorise('core.options', 'com_content'))
 		{

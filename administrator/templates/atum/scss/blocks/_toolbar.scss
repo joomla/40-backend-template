@@ -18,8 +18,8 @@
       margin-left: .5rem;
     }
     .btn-group {
-      margin-right: .35rem;
-      .btn {
+      float: none;
+      .btn:not(.dropdown-toggle) {
         margin-left: 0;
       }
     }
@@ -35,7 +35,8 @@
       color: $body-color;
       background-color: $white-offset;
       border-color: $atum-border-color;
-      [class^="icon-"], [class*=" icon-"] {
+      [class^="icon-"], [class*=" icon-"],
+      [class^="fa-"], [class*=" fa-"] {
         z-index: -1;
         display: inline-block;
         width: 28px;
@@ -101,9 +102,6 @@
       &::after {
         color: $white-offset;
       }
-    }
-    button:last-of-type:not(.float-sm-right) {
-      margin-left: 0;
     }
   }
   &.subhead-fixed {

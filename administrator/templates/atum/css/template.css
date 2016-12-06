@@ -8429,8 +8429,8 @@ iframe {
     .subhead .btn-toolbar > * {
       margin-left: .5rem; }
     .subhead .btn-toolbar .btn-group {
-      margin-right: .35rem; }
-      .subhead .btn-toolbar .btn-group .btn {
+      float: none; }
+      .subhead .btn-toolbar .btn-group .btn:not(.dropdown-toggle) {
         margin-left: 0; }
     .subhead .btn-toolbar .btn-group-sm > .btn,
     .subhead .btn-toolbar .btn-sm,
@@ -8443,7 +8443,9 @@ iframe {
       color: #373a3c;
       background-color: #fcfcfc;
       border-color: #cecece; }
-      .subhead .btn-toolbar .btn-sm [class^="icon-"], .subhead .btn-toolbar .btn-group-sm > .btn [class^="icon-"], .subhead .btn-toolbar .btn-sm [class*=" icon-"], .subhead .btn-toolbar .btn-group-sm > .btn [class*=" icon-"] {
+      .subhead .btn-toolbar .btn-sm [class^="icon-"], .subhead .btn-toolbar .btn-group-sm > .btn [class^="icon-"], .subhead .btn-toolbar .btn-sm [class*=" icon-"], .subhead .btn-toolbar .btn-group-sm > .btn [class*=" icon-"],
+      .subhead .btn-toolbar .btn-sm [class^="fa-"],
+      .subhead .btn-toolbar .btn-group-sm > .btn [class^="fa-"], .subhead .btn-toolbar .btn-sm [class*=" fa-"], .subhead .btn-toolbar .btn-group-sm > .btn [class*=" fa-"] {
         z-index: -1;
         display: inline-block;
         width: 28px;
@@ -8487,8 +8489,6 @@ iframe {
       border-color: #419641; }
       .subhead .btn-toolbar .btn-success.dropdown-toggle::after {
         color: #fcfcfc; }
-    .subhead .btn-toolbar button:last-of-type:not(.float-sm-right) {
-      margin-left: 0; }
   .subhead.subhead-fixed {
     position: fixed;
     top: 0;

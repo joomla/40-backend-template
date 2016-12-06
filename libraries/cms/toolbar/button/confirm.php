@@ -32,13 +32,13 @@ class JToolbarButtonConfirm extends JToolbarButton
 	 * @param   string   $text      Button text
 	 * @param   string   $task      The task associated with the button
 	 * @param   boolean  $list      True to allow use of lists
-	 * @param   boolean  $hideMenu  True to hide the menu on click
+	 * @param   boolean  $group     Does the button belong to a group?
 	 *
 	 * @return  string   HTML string for the button
 	 *
 	 * @since   3.0
 	 */
-	public function fetchButton($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
+	public function fetchButton($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $group = false)
 	{
 		// Store all data to the options array for use with JLayout
 		$options = array();
@@ -46,6 +46,7 @@ class JToolbarButtonConfirm extends JToolbarButton
 		$options['msg']    = JText::_($msg, true);
 		$options['class']  = $this->fetchIconClass($name);
 		$options['doTask'] = $this->_getCommand($options['msg'], $name, $task, $list);
+		$options['group']  = $group;
 
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('joomla.toolbar.confirm');
@@ -62,13 +63,12 @@ class JToolbarButtonConfirm extends JToolbarButton
 	 * @param   string   $text      Button text
 	 * @param   string   $task      The task associated with the button
 	 * @param   boolean  $list      True to allow use of lists
-	 * @param   boolean  $hideMenu  True to hide the menu on click
 	 *
 	 * @return  string  Button CSS Id
 	 *
 	 * @since   3.0
 	 */
-	public function fetchId($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
+	public function fetchId($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true)
 	{
 		return $this->_parent->getName() . '-' . $name;
 	}

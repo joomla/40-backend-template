@@ -91,13 +91,12 @@ class JToolbarButtonStandard extends JToolbarButton
 	 * @param   string   $text      Button text
 	 * @param   string   $task      The task associated with the button
 	 * @param   boolean  $list      True to allow use of lists
-	 * @param   boolean  $hideMenu  True to hide the menu on click
 	 *
 	 * @return  string  Button CSS Id
 	 *
 	 * @since   3.0
 	 */
-	public function fetchId($type = 'Standard', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
+	public function fetchId($type = 'Standard', $name = '', $text = '', $task = '', $list = true)
 	{
 		return $this->_parent->getName() . '-' . $name;
 	}

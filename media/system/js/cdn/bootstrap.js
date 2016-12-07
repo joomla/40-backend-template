@@ -9,7 +9,7 @@
 		var options  = Joomla.getOptions('cdn-bootstrap');
 
 		if (typeof jQuery.fn.popover !== "function") {
-			document.write('<script src="' + options.path +'/media/vendor/bootstrap/js/bootstrap' + options.minified + '.js">\x3C/script>');
+			document.write('<script src="' + options.path +'/media/vendor/bootstrap/js/bootstrap' + options.minified + '.js?' + options.version +'">\x3C/script>');
 		}
 	}
 

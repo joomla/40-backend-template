@@ -52,6 +52,7 @@ class PlgSystemCdn extends JPlugin
 		// Get the debug specific ext
 		$debug = $app->get('debug', 0);
 		$minified = $debug == 1 ? '' : '.min';
+		$mediaVersion = $doc->getMediaVersion();
 
 		// Get the document scripts
 		$scripts = JFactory::getDocument()->_scripts;
@@ -80,9 +81,9 @@ class PlgSystemCdn extends JPlugin
 					$options = [];
 
 					// Add fallback
-					$doc->addScriptOptions('cdn-jquery', ['path' => $path, 'minified' => $minified]);
+					$doc->addScriptOptions('cdn-jquery', ['path' => $path, 'minified' => $minified, 'version' => $mediaVersion]);
 					$addFallBack = [
-						'script' => $path . '/media/system/js/cdn/jquery.js',
+						'script' => $path . '/media/system/js/cdn/jquery.js?' . $mediaVersion,
 						'options' => [],
 					];
 				}
@@ -93,9 +94,9 @@ class PlgSystemCdn extends JPlugin
 					$options = [];
 
 					// Add fallback
-					$doc->addScriptOptions('cdn-jquery-migrate', ['path' => $path, 'minified' => $minified]);
+					$doc->addScriptOptions('cdn-jquery-migrate', ['path' => $path, 'minified' => $minified, 'version' => $mediaVersion]);
 					$addFallBack = [
-						'script' => $path . '/media/system/js/cdn/jquery-migrate.js',
+						'script' => $path . '/media/system/js/cdn/jquery-migrate.js?' . $mediaVersion,
 						'options' => [],
 					];
 				}
@@ -109,9 +110,9 @@ class PlgSystemCdn extends JPlugin
 					$options = [];
 
 					// Add fallback
-					$doc->addScriptOptions('cdn-tether', ['path' => $path, 'minified' => $minified]);
+					$doc->addScriptOptions('cdn-tether', ['path' => $path, 'minified' => $minified, 'version' => $mediaVersion]);
 					$addFallBack = [
-						'script' => $path . '/media/system/js/cdn/tether.js',
+						'script' => $path . '/media/system/js/cdn/tether.js?'. $mediaVersion,
 						'options' => [],
 					];
 				}
@@ -124,9 +125,9 @@ class PlgSystemCdn extends JPlugin
 					$options = [];
 
 					// Add fallback
-					$doc->addScriptOptions('cdn-bootstrap', ['path' => $path, 'minified' => $minified]);
+					$doc->addScriptOptions('cdn-bootstrap', ['path' => $path, 'minified' => $minified, 'version' => $mediaVersion]);
 					$addFallBack = [
-						'script' => $path . '/media/system/js/cdn/bootstrap.js',
+						'script' => $path . '/media/system/js/cdn/bootstrap.js?' . $mediaVersion,
 						'options' => [],
 					];
 				}

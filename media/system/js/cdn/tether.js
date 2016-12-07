@@ -9,7 +9,7 @@
 		var options  = Joomla.getOptions('cdn-tether');
 
 		if (typeof window.Tether !== "function") {
-			document.write('<script src="' + options.path +'/media/vendor/tether/js/tether' + options.minified + '.js">\x3C/script>');
+			document.write('<script src="' + options.path +'/media/vendor/tether/js/tether' + options.minified + '.js?' + options.version +'">\x3C/script>');
 		}
 	}
 

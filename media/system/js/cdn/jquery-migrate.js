@@ -9,7 +9,7 @@
 		var options  = Joomla.getOptions('cdn-jquery-migrate');
 
 		if (typeof jQuery.migrateVersion !== "string") {
-			document.write('<script src="' + options.path +'/media/vendor/jquery/js/jquery-migrate' + options.minified + '.js">\x3C/script>');
+			document.write('<script src="' + options.path +'/media/vendor/jquery/js/jquery-migrate' + options.minified + '.js?' + options.version +'">\x3C/script>');
 		}
 	}
 

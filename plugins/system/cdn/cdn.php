@@ -61,6 +61,7 @@ class PlgSystemCdn extends JPlugin
 
 		// An array for the modified scripts
 		$tempArray = [];
+		$addFallBack = [];
 
 		// Root path
 		$path = JUri::root(true);
@@ -77,12 +78,26 @@ class PlgSystemCdn extends JPlugin
 				{
 					$script = 'https://code.jquery.com/jquery-' . $assets['jquery']['version'] . $minified . '.js';
 					$options = [];
+
+					// Add fallback
+					$doc->addScriptOptions('cdn-jquery', ['path' => $path, 'minified' => $minified]);
+					$addFallBack = [
+						'script' => $path . '/media/system/js/cdn/jquery.js',
+						'options' => [],
+					];
 				}
 
 				if ($script === $path . '/media/vendor/jquery/js/jquery-migrate' . $minified . '.js')
 				{
 					$script = 'https://code.jquery.com/jquery-migrate-' . $assets['jquery-migrate']['version'] . $minified . '.js';
 					$options = [];
+
+					// Add fallback
+					$doc->addScriptOptions('cdn-jquery-migrate', ['path' => $path, 'minified' => $minified]);
+					$addFallBack = [
+						'script' => $path . '/media/system/js/cdn/jquery-migrate.js',
+						'options' => [],
+					];
 				}
 			}
 
@@ -92,6 +107,13 @@ class PlgSystemCdn extends JPlugin
 				{
 					$script = 'https://cdnjs.cloudflare.com/ajax/libs/tether/' . $assets['tether']['version'] . '/js/tether' . $minified . '.js';
 					$options = [];
+
+					// Add fallback
+					$doc->addScriptOptions('cdn-tether', ['path' => $path, 'minified' => $minified]);
+					$addFallBack = [
+						'script' => $path . '/media/system/js/cdn/tether.js',
+						'options' => [],
+					];
 				}
 
 				if ($script === $path . '/media/vendor/bootstrap/js/bootstrap' . $minified . '.js')
@@ -100,10 +122,22 @@ class PlgSystemCdn extends JPlugin
 						. str_replace('~', '', $assets['bootstrap']['version'])
 						. '/js/bootstrap' . $minified . '.js';
 					$options = [];
+
+					// Add fallback
+					$doc->addScriptOptions('cdn-bootstrap', ['path' => $path, 'minified' => $minified]);
+					$addFallBack = [
+						'script' => $path . '/media/system/js/cdn/bootstrap.js',
+						'options' => [],
+					];
 				}
 			}
 
 			$tempArray[$script] = $options;
+
+			if(!empty($addFallBack))
+			{
+				$tempArray[$addFallBack['script']] = $addFallBack['options'];
+			}
 
 			// Unset this script
 			unset($doc->_scripts[$oldRef]);

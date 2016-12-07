@@ -43,6 +43,8 @@ abstract class JHtmlJquery
 			return;
 		}
 
+		JHtml::_('behavior.core');
+
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{

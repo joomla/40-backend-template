@@ -32,6 +32,7 @@
   background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.2) 100%);
   transition: all .5s ease;
   transform: translateX(-250px);
+
   .sidebar-brand {
     position: absolute;
     top: 0;
@@ -40,6 +41,7 @@
     left: 0;
     z-index: -1;
     overflow: hidden;
+
     &::after {
       position: absolute;
       bottom: -135px;
@@ -51,6 +53,7 @@
       transform: rotate(-17deg);
     }
   }
+
   &::before {
     position: absolute;
     top: 0;
@@ -115,6 +118,7 @@
   margin: 0;
   overflow-y: auto;
   list-style: none;
+
   &.second {
     margin-bottom: 0;
   }
@@ -123,20 +127,23 @@
     &:first-of-type > a {
       border-top: 1px solid rgba(0,0,0,.3);
     }
+
     &:last-of-type > a {
       border-bottom: 1px solid rgba(255,255,255,.05);
     }
+
     >.no-dropdown {
       color: $white-offset;
     }
   }
 
   li {
-    line-height: 40px;
-
     a {
       position: relative;
       display: block;
+      padding-top: 9px;
+      padding-right: 25px;
+      padding-bottom: 9px;
       color: $white-offset;
       text-decoration: none;
       cursor: pointer;
@@ -175,14 +182,13 @@
       }
 
     }
+
     a:not([href]):not([tabindex]) {
       color: $white-offset;
     }
+
     ul {
       display: none;
-      li {
-        text-indent: 20px;
-      }
     }
 
     a:hover {
@@ -194,13 +200,16 @@
 
   li li {
     a {
+      padding-left: 20px;
       border-bottom: 1px solid darken($atum-template-color, 3%);
       box-shadow: none;
+
       &:hover {
         background-color: rgba(0,0,0,.05);
         box-shadow: inset 0 1px rgba(0,0,0,.3), inset 0 -1px rgba(0,0,0,.3);
       }
     }
+
     &:last-of-type {
       > a {
         border-bottom: 0;
@@ -223,20 +232,24 @@
 
   .collapse-level-2 {
     background: $atum-level-2-bg;
+
     > li > a {
-      text-indent: 30px;
+      padding-left: 30px;
     }
   }
 
   > .parent .collapse-arrow::after {
     position: absolute;
-    top: 0;
+    top: 50%;
     right: 15px;
+    margin-top: -7px;
     font-family: FontAwesome;
     font-size: .75rem;
+    line-height: $line-height-base;
     color: $white-offset;
     content: "\f0d7";
   }
+
   .open > .collapse-arrow::after {
     content: "\f0d8";
   }
@@ -255,18 +268,23 @@
     z-index: 10;
     overflow: visible;
   }
+
   .sidebar-item-title {
     display: none;
   }
+
   .parent .collapse-arrow::after {
     display: none;
   }
+
   .main-nav {
     width: 55px;
     overflow: visible;
+
     > li {
       position: relative;
       transition: all .5s ease;
+
       .sidebar-item-title {
         position: absolute;
         top: 0;
@@ -275,54 +293,67 @@
         padding: 0 13px;
         font-size: $atum-sidebar-item-title;
         font-weight: bold;
+        line-height: 35px;
         background-color: $atum-template-color;
         border-radius: 0 $border-radius $border-radius 0;
       }
+
       &.parent .sidebar-item-title {
         border-radius: 0 $border-radius 0 0;
       }
+
       &:hover .sidebar-item-title {
         display: block;
         opacity: 1;
       }
+
       &:hover .collapse-arrow::after {
         display: block;
       }
+
       &.parent > .collapse-arrow::after {
         display: none;
       }
+
       .collapse, &:hover .collapse {
         position: absolute;
         top: 100%;
         left: 100%;
         display: block;
       }
+
       &:hover .collapse-level-2 {
         position: relative;
         left: 0;
         display: none;
       }
     }
+
     .collapse-level-1 {
       display: block !important;
       height: auto !important;
       padding: 5px 0 10px;
-      margin-top: -1px;
+      margin-top: -5px;
       text-indent: 0;
       border-bottom-right-radius: $border-radius;
+
       li {
         position: relative;
         font-size: $atum-sidebar-item-title;
         line-height: 30px;
         text-indent: 0;
       }
+
       a {
+        padding: 0;
         color: $white-offset;
         border: 0;
       }
+
       a::before {
         display: none;
       }
+
       .sidebar-item-title {
         position: relative;
         left: 0;
@@ -330,13 +361,16 @@
         font-weight: normal;
         background-color: transparent;
       }
+
       a:hover {
         background-color: $atum-template-color;
         box-shadow: none;
       }
     }
+
     .collapse-level-2 {
       padding-bottom: 5px;
+
       .sidebar-item-title {
         text-indent: 10px;
       }

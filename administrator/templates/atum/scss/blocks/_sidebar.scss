@@ -293,7 +293,7 @@
         padding: 0 13px;
         font-size: $atum-sidebar-item-title;
         font-weight: bold;
-        line-height: 35px;
+        line-height: 30px;
         background-color: $atum-template-color;
         border-radius: 0 $border-radius $border-radius 0;
       }
@@ -304,6 +304,7 @@
 
       &:hover .sidebar-item-title {
         display: block;
+        line-height: 40px;
         opacity: 1;
       }
 
@@ -333,7 +334,7 @@
       display: block !important;
       height: auto !important;
       padding: 5px 0 10px;
-      margin-top: -5px;
+      margin-top: -1px;
       text-indent: 0;
       border-bottom-right-radius: $border-radius;
 
@@ -359,6 +360,7 @@
         left: 0;
         font-size: 1rem;
         font-weight: normal;
+        line-height: 30px !important;
         background-color: transparent;
       }
 

@@ -8237,13 +8237,14 @@ iframe {
       padding: 0 13px;
       font-size: 0.9rem;
       font-weight: bold;
-      line-height: 35px;
+      line-height: 30px;
       background-color: #27283a;
       border-radius: 0 0.25rem 0.25rem 0; }
     .closed .main-nav > li.parent .sidebar-item-title {
       border-radius: 0 0.25rem 0 0; }
     .closed .main-nav > li:hover .sidebar-item-title {
       display: block;
+      line-height: 40px;
       opacity: 1; }
     .closed .main-nav > li:hover .collapse-arrow::after {
       display: block; }
@@ -8281,6 +8282,7 @@ iframe {
       left: 0;
       font-size: 1rem;
       font-weight: normal;
+      line-height: 30px !important;
       background-color: transparent; }
     .closed .main-nav .collapse-level-1 a:hover {
       background-color: #27283a;

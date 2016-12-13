@@ -99,5 +99,7 @@ class ConfigViewApplicationHtml extends ConfigViewCmsHtml
 		JToolbarHelper::cancel('config.cancel.application');
 		JToolbarHelper::divider();
 		JToolbarHelper::help('JHELP_SITE_GLOBAL_CONFIGURATION');
+		JToolbarHelper::divider();
+		JToolbarHelper::guide('media/com_config/application/js/demo.js');
 	}
 }

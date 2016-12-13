@@ -46,7 +46,9 @@ vendors:
     'cropperjs':
                   'version': '0.8.1'
                   'dependencies': ''
-
+    'tether-shepherd':
+                  'version': '^1.8.1'
+                  'dependencies': ''
 
 ### The javascript polyfills
 polyfills:

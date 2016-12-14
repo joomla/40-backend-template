@@ -236,6 +236,77 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 					<?php endif; ?>
 				</div>
 				<?php // End Content ?>
+
+<?php // Custom Elements DEMO ?>
+				<div>
+					<h1> Dropdown </h1>
+					<?php
+					// Initiate Custom Element
+					JHtml::_('jui.dropdown');
+					?>
+					<?php // First Element ?>
+					<div class="element-demo" id="example">
+						<b-dropdown id="first">
+							<button class="b-button">Dropdown</button>
+							<ul>
+								<li><a href="#">Some action</a></li>
+								<li><a href="#">Yet another action</a></li>
+								<hr />
+								<li><a href="#">What else?</a></li>
+							</ul>
+						</b-dropdown>
+					</div>
+
+					<?php // Second Element ?>
+					<b-dropdown id="second">
+						<button class="b-button">Dropdown #2</button>
+						<ul>
+							<li><a href="#">Some action</a></li>
+							<li><a href="#">Yet another action</a></li>
+							<hr />
+							<li><a href="#">What else?</a></li>
+						</ul>
+					</b-dropdown>
+
+					<h1>Tabs</h1>
+					<?php
+					// Initiate Custom Element
+					JHtml::_('jui.tabs');
+					?>
+					<div class="element-demo" id="example">
+						<style>
+							.tab-content {
+								font-size: 1em;
+								line-height: 1.5em;
+								padding: 1em 2em;
+								color: #333;
+							}
+						</style>
+						<b-tabs selected="0" apply-transition="fade-in">
+							<b-tab for="one">One</b-tab>
+							<b-tab for="two">Two</b-tab>
+							<b-tab for="three">Three</b-tab>
+						</b-tabs>
+						<div id="one" class="tab-content">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum, nobis, beatae facere voluptates esse cupiditate sit laboriosam veniam quis facilis laborum distinctio nam ex incidunt architecto molestias eligendi optio? Sunt?
+						</div>
+						<div id="two" class="tab-content">
+							Iste, reiciendis expedita officiis sequi suscipit neque ipsa! Architecto, repellendus, quam totam aliquid voluptates consequatur alias aspernatur temporibus amet dicta a modi optio nesciunt. Dicta, voluptatum in veniam consectetur vero.
+						</div>
+						<div id="three" class="tab-content">
+							Nisi, ipsum fuga nostrum alias quidem deleniti dignissimos provident veniam culpa optio! Soluta, consequatur, minus corporis dolor repellat non at aperiam error nesciunt reiciendis! Omnis vitae itaque quas nostrum molestiae.
+						</div>
+					</div>
+				</div>
+				<?php if (!$this->countModules('status') || (!isset($statusFixed) && $this->countModules('status'))) : ?>
+					<footer class="footer">
+						<p class="text-center">
+							<jdoc:include type="modules" name="footer" style="no" />
+							&copy; <?php echo $sitename; ?> <?php echo date('Y'); ?></p>
+					</footer>
+				<?php endif; ?>
+		</div>
+<?php // End Custom Elements DEMO ?>
 			</section>
 
 			<?php if (!$this->countModules('status')) : ?>

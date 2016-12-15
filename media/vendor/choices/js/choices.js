@@ -1264,7 +1264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (this.config.addItems) {
 	        var isUnique = !activeItems.some(function (item) {
-	          return item.value === value.trim();
+	          return item.value === value.trim() || item.label === value.trim();
 	        });
 
 	        if (this.passedElement.type === 'select-multiple' || this.passedElement.type === 'text') {
@@ -1586,30 +1586,50 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // If enter key is pressed and the input has a value
 	        if (target.value) {
-	          var value = _this17.input.value;
-	          var canAddItem = _this17._canAddItem(activeItems, value);
+	          (function () {
+	            var value = _this17.input.value;
+	            var canAddItem = _this17._canAddItem(activeItems, value);
 
-	          // All is good, add
-	          if (canAddItem.response) {
-	            // Track whether we will end up adding an item
-	            var willAddItem = _this17.isTextElement || _this17.isSelectElement && _this17.config.addItems;
+	            // All is good, add
+	            if (canAddItem.response) {
+	              // Track whether we will end up adding an item
+	              var willAddItem = _this17.isTextElement || _this17.isSelectElement && _this17.config.addItems;
 
-	            if (willAddItem) {
-	              if (hasActiveDropdown) {
-	                _this17.hideDropdown();
+	              if (willAddItem) {
+	                if (hasActiveDropdown) {
+	                  _this17.hideDropdown();
+	                }
+
+	                if (_this17.isTextElement) {
+	                  _this17._addItem(value);
+	                } else {
+	                  var matchingChoices = [];
+	                  var isUnique = void 0;
+	                  var duplicateItems = _this17.config.duplicateItems;
+	                  if (!duplicateItems) {
+	                    matchingChoices = _this17.store.getChoices().filter(function (choice) {
+	                      return choice.label === value.trim();
+	                    });
+	                    isUnique = !_this17.store.getItemsFilteredByActive().some(function (item) {
+	                      return item.label === value.trim();
+	                    });
+	                  }
+	                  if (duplicateItems || matchingChoices.length === 0 && isUnique) {
+	                    _this17._addChoice(true, false, value, value);
+	                  }
+	                  if (duplicateItems || isUnique) {
+	                    if (matchingChoices[0]) {
+	                      _this17._addItem(matchingChoices[0].value, matchingChoices[0].label, matchingChoices[0].id);
+	                    }
+	                  }
+	                  _this17.containerOuter.focus();
+	                }
+
+	                _this17._triggerChange(value);
+	                _this17.clearInput(_this17.passedElement);
 	              }
-
-	              if (_this17.isTextElement) {
-	                _this17._addItem(value);
-	              } else if (_this17.config.addItems) {
-	                _this17._addChoice(true, false, value, value);
-	                _this17.containerOuter.focus();
-	              }
-
-	              _this17._triggerChange(value);
-	              _this17.clearInput(_this17.passedElement);
 	            }
-	          }
+	          })();
 	        }
 
 	        if (target.hasAttribute('data-button')) {

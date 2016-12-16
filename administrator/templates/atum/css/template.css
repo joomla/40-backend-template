@@ -7889,6 +7889,9 @@ legend {
           bottom: 4px;
           transform: translateX(13px) translateY(1.5px) rotate(-45deg); } }
 
+.sidebar-wrapper[data-hidden="1"] + header .menu-collapse {
+  display: none; }
+
 .icon-back::before {
   content: "\e008"; }
 

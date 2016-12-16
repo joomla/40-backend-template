@@ -257,3 +257,7 @@
 
   }
 }
+
+.sidebar-wrapper[data-hidden="1"] + header .menu-collapse {
+  display: none;
+}

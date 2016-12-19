@@ -352,6 +352,7 @@ class JoomlaInstallerScript
 			array('plugin', 'contact', 'editors-xtd', 0),
 			array('plugin', 'fields', 'system', 0),
 			array('plugin', 'gallery', 'fields', 0),
+			array('plugin', 'cdn', 'system', 0),
 
 			// Templates
 			array('template', 'protostar', '', 0),

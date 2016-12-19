@@ -7,7 +7,26 @@ module.exports = function(grunt) {
 		vendorsTxt    = '',
 		vendorsArr    = '',
 		polyFillsUrls = [],
-		xmlVersionStr = /(<version>)(\d+.\d+.\d+)(<\/version>)/;
+		xmlVersionStr = /(<version>)(\d+.\d+.\d+)(<\/version>)/,
+		docblock = '/**\n' +
+			' * @package     Joomla.Library\n' +
+			' * @subpackage  Helper\n' +
+			' *\n' +
+			' * @copyright   Copyright (C) 2005 - ' + new Date().getFullYear() + ' Open Source Matters, Inc. All rights reserved.\n' +
+			' * @license     GNU General Public License version 2 or later; see LICENSE.txt\n' +
+			' */\n',
+		docblock2 = '/**\n' +
+			' * Helper for the vendor provided assets.\n' +
+			' *\n' +
+			' * @since  4.0\n' +
+			' */\n',
+		docblock3 = '\t/**\n\t' +
+			' * Get all the vendor included assets.\n\t' +
+			' *\n\t' +
+			' * @return  void\n\t' +
+			' *\n\t' +
+			' * @since   4.0\n\t' +
+			' */\n';
 
 	// Loop to get some text for the packgage.json
 	for (name in settings.vendors) {
@@ -16,12 +35,22 @@ module.exports = function(grunt) {
 
 	// Loop to get some text for the assets.php
 	for (name in settings.vendors) {
-		vendorsArr += '\'' + name + '\' => array(\'version\' => \'' + settings.vendors[name].version + '\',' + '\'dependencies\' => \'' + settings.vendors[name].dependencies + '\'),\n\t\t\t';
+		/** Build the array for dependencies */
+		var depArray = '';
+		if (settings.vendors[name].dependencies.length > 0){
+			settings.vendors[name].dependencies.forEach(function(item) {
+				"use strict";
+				depArray += '\'' + item + '\', '
+			});
+		}
+		depArray = '[' + depArray + ']';
+
+		vendorsArr += '\'' + name + '\' => [\'version\' => \'' + settings.vendors[name].version + '\',' + '\'dependencies\' => ' + depArray + '],\n\t\t\t';
 	}
 
 	// Build the package.json and assets.php for all 3rd Party assets
 	grunt.file.write('build/assets_tmp/package.json', preText + vendorsTxt.substring(0, vendorsTxt.length - 1) + postText);
-//	grunt.file.write('build/assets_tmp.php', '<?php\ndefined(\'_JEXEC\') or die;\n\nabstract class ExternalAssets{\n\tpublic static function getCoreAssets() {\n\t\t return array(\n\t\t\t' + vendorsArr + '\n\t\t);\n\t}\n}\n');
+	grunt.file.write('build/assets_tmp/assets.php', '<?php\n' + docblock + '\ndefined(\'_JEXEC\') or die;\n\n' + docblock2 + 'abstract class JHelperAssets\n{\n' + docblock3 + '\tpublic static function getCoreAssets()\n\t{\n\t\t return [\n\t\t\t' + vendorsArr + '\n\t\t];\n\t}\n}\n');
 
 	// Project configuration.
 	grunt.initConfig({
@@ -52,13 +81,14 @@ module.exports = function(grunt) {
 					'media/vendor/mediaelement/*',
 					'media/vendor/chosenjs/*',
 					'media/vendor/awesomplete/*',
+					'libraries/cms/helper/assets.php',
 				],
 				expand: true,
 				options: {
 					force: true
 				}
 			},
-			temp: { src: [ 'build/assets_tmp/*', 'build/assets_tmp/tmp', 'build/assets_tmp/package.json' ], expand: true, options: { force: true } }
+			temp: { src: [ 'build/assets_tmp/*', 'build/assets_tmp/tmp', 'build/assets_tmp/package.json', 'build/assets_tmp/assets.php' ], expand: true, options: { force: true } }
 		},
 
 		// Update all the packages to the version specified in assets/package.json
@@ -177,6 +207,9 @@ module.exports = function(grunt) {
 					{ src: ['build/assets_tmp/tmp/jcrop/jcrop-MIT-LICENSE.txt'], dest: 'media/vendor/jcrop/jcrop-MIT-LICENSE.txt'},
 					{ src: ['build/assets_tmp/node_modules/dragula/license'], dest: 'media/vendor/dragula/license'},
 					{ src: ['build/assets_tmp/node_modules/awesomplete/LICENSE'], dest: 'media/vendor/awesomplete/LICENSE'},
+
+					// assets.php
+					{ src: ['build/assets_tmp/assets.php'], dest: 'libraries/cms/helper/assets.php'},
 				]
 			}
 		},
@@ -285,7 +318,7 @@ module.exports = function(grunt) {
 					dest: '<%= folder.adminTemplate %>/css',
 				}]
 			}
-		},
+		}
 	});
 
 	// Load required modules

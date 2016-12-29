@@ -74,6 +74,15 @@ legend {
   width: 100%;
 }
 
+// Validation
+.form-control-danger {
+  border-color: $switcher-color-danger;
+  color: $switcher-color-danger;
+}
+.form-control-success {
+  border-color: $switcher-color-success;
+}
+
 // Possibly temporary until Bootstrap suport it themselves
 .custom-select[multiple] {
   height: auto;

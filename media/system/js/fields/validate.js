@@ -32,13 +32,14 @@ var JFormValidator = function() {
 
 			// Set the element and its label (if exists) invalid state
 			if (state === false) {
+				el.classList.remove('form-control-success');
 				el.classList.add('form-control-danger');
 				el.setAttribute('aria-invalid', 'true');
 				if (label) {
 					label.classList.add('form-control-danger');
 				}
 			} else {
-				if (el.classList.contains('required')) {
+				if (el.classList.contains('required') || el.getAttribute('required')) {
 					el.classList.remove('form-control-danger');
 					el.classList.add('form-control-success');
 					el.setAttribute('aria-invalid', 'false');

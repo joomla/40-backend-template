@@ -10,6 +10,7 @@
 		<field name="title" type="text" label="JGLOBAL_TITLE"
 			description="JFIELD_TITLE_DESC"
 			class="input-xxlarge"
+			validationtext="The title you've entered is invalid"
 			required="true" />
 
 		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL"

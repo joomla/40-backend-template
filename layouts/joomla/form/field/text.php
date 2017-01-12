@@ -69,6 +69,7 @@ $attributes = array(
 	$spellcheck ? '' : 'spellcheck="false"',
 	!empty($inputmode) ? 'inputmode="' . $inputmode . '"' : '',
 	!empty($pattern) ? 'pattern="' . $pattern . '"' : '',
+	!empty($validationtext) ? 'data-validation-text="' . $validationtext . '"' : '',
 );
 ?>
 <input type="text" name="<?php

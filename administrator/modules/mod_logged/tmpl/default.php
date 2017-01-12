@@ -42,7 +42,7 @@ JHtml::_('bootstrap.tooltip');
 					</small>
 				</div>
 				<div class="col-md-6 text-sm-right">
-					<span class="badge badge-default badge-pill float-xs-right hasTooltip" title="<?php echo JHtml::tooltipText('MOD_LOGGED_LAST_ACTIVITY'); ?>">
+					<span class="badge badge-default badge-pill float-right hasTooltip" title="<?php echo JHtml::tooltipText('MOD_LOGGED_LAST_ACTIVITY'); ?>">
 						<span class="small">
 							<span class="icon-calendar"></span>
 							<?php echo JHtml::_('date', $user->time, JText::_('DATE_FORMAT_LC5')); ?>

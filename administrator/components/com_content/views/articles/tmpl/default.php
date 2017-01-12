@@ -205,18 +205,18 @@ $assoc = JLanguageAssociations::isEnabled();
 							?>
 						</td>
 						<td class="hidden-sm-down text-xs-center">
-							<span class="tag tag-info">
+							<span class="badge badge-info">
 								<?php echo (int) $item->hits; ?>
 							</span>
 						</td>
 						<?php if ($this->vote) : ?>
 							<td class="hidden-sm-down text-xs-center">
-								<span class="tag tag-success">
+								<span class="badge badge-success">
 								<?php echo (int) $item->rating_count; ?>
 								</span>
 							</td>
 							<td class="hidden-sm-down text-xs-center">
-								<span class="tag tag-warning">
+								<span class="badge badge-warning">
 								<?php echo (int) $item->rating; ?>
 								</span>
 							</td>

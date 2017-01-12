@@ -117,28 +117,28 @@ JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 						</td>
 						<td class="text-xs-center btns">
 							<?php if ($canManageItems) : ?>
-								<a class="tag<?php echo ($item->count_published > 0) ? ' tag-success' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=1'); ?>">
+								<a class="badge<?php echo ($item->count_published > 0) ? ' badge-success' : ' badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=1'); ?>">
 									<?php echo $item->count_published; ?></a>
 							<?php else : ?>
-								<span class="tag<?php echo ($item->count_published > 0) ? ' tag-success' : ' tag-default'; ?>">
+								<span class="badge<?php echo ($item->count_published > 0) ? ' badge-success' : ' badge-default'; ?>">
 									<?php echo $item->count_published; ?></span>
 							<?php endif; ?>
 						</td>
 						<td class="text-xs-center btns">
 							<?php if ($canManageItems) : ?>
-								<a class="tag<?php echo ($item->count_unpublished > 0) ? ' tag-danger' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=0'); ?>">
+								<a class="badge<?php echo ($item->count_unpublished > 0) ? ' badge-danger' : ' badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=0'); ?>">
 									<?php echo $item->count_unpublished; ?></a>
 							<?php else : ?>
-								<span class="tag<?php echo ($item->count_unpublished > 0) ? ' tag-danger' : ' tag-default'; ?>">
+								<span class="badge<?php echo ($item->count_unpublished > 0) ? ' badge-danger' : ' badge-default'; ?>">
 									<?php echo $item->count_unpublished; ?></span>
 							<?php endif; ?>
 						</td>
 						<td class="text-xs-center btns">
 							<?php if ($canManageItems) : ?>
-								<a class="tag<?php echo ($item->count_trashed > 0) ? ' tag-danger' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=-2'); ?>">
+								<a class="badge<?php echo ($item->count_trashed > 0) ? ' badge-danger' : ' badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=-2'); ?>">
 									<?php echo $item->count_trashed; ?></a>
 							<?php else : ?>
-								<span class="tag<?php echo ($item->count_trashed > 0) ? ' tag-danger' : ' tag-default'; ?>">
+								<span class="badge<?php echo ($item->count_trashed > 0) ? ' badge-danger' : ' badge-default'; ?>">
 									<?php echo $item->count_trashed; ?></span>
 							<?php endif; ?>
 						</td>

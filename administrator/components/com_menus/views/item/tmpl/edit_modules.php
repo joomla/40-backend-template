@@ -106,35 +106,35 @@ echo JLayoutHelper::render('joomla.menu.edit_modules', $this); ?>
 				<td id="menus-<?php echo $module->id; ?>" width="15%" class="text-xs-center">
 					<?php if (is_null($module->menuid)) : ?>
 						<?php if ($module->except) : ?>
-							<span class="tag tag-success">
+							<span class="badge badge-success">
 								<?php echo JText::_('JYES'); ?>
 							</span>
 						<?php else : ?>
-							<span class="tag tag-danger">
+							<span class="badge badge-danger">
 								<?php echo JText::_('JNO'); ?>
 							</span>
 						<?php endif; ?>
 					<?php elseif ($module->menuid > 0) : ?>
-						<span class="tag tag-success">
+						<span class="badge badge-success">
 							<?php echo JText::_('JYES'); ?>
 						</span>
 					<?php elseif ($module->menuid < 0) : ?>
-						<span class="tag tag-danger">
+						<span class="badge badge-danger">
 							<?php echo JText::_('JNO'); ?>
 						</span>
 					<?php else : ?>
-						<span class="tag tag-info">
+						<span class="badge badge-info">
 							<?php echo JText::_('JALL'); ?>
 						</span>
 					<?php endif; ?>
 				</td>
 				<td id="status-<?php echo $module->id; ?>" class="text-xs-center">
 						<?php if ($module->published) : ?>
-							<span class="tag tag-success">
+							<span class="badge badge-success">
 								<?php echo JText::_('JYES'); ?>
 							</span>
 						<?php else : ?>
-							<span class="tag tag-danger">
+							<span class="badge badge-danger">
 								<?php echo JText::_('JNO'); ?>
 							</span>
 						<?php endif; ?>

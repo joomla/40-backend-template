@@ -44,7 +44,7 @@ if (JFactory::getConfig()->get('shared_session', '0'))
 	if ($params->get('show_loggedin_users', 1))
 	{
 		$output[] = '<div class="btn-group">'
-			. '<span class="tag tag-pill tag-default">' . $total_users . '</span>'
+			. '<span class="badge badge-pill badge-default">' . $total_users . '</span>'
 			. JText::plural('MOD_STATUS_TOTAL_USERS', $total_users)
 			. '</div>';
 	}
@@ -55,7 +55,7 @@ else
 	if ($params->get('show_loggedin_users', 1))
 	{
 		$output[] = '<div class="btn-group">'
-			. '<span class="tag tag-pill tag-default">' . $online_num . '</span>'
+			. '<span class="badge badge-pill badge-default">' . $online_num . '</span>'
 			. JText::plural('MOD_STATUS_USERS', $online_num)
 			. '</div>';
 	}
@@ -64,7 +64,7 @@ else
 	if ($params->get('show_loggedin_users_admin', 1))
 	{
 		$output[] = '<div class="btn-group">'
-			. '<span class="tag tag-pill tag-default">' . $count . '</span>'
+			. '<span class="badge badge-pill badge-default">' . $count . '</span>'
 			. JText::plural('MOD_STATUS_BACKEND_USERS', $count)
 			. '</div>';
 	}
@@ -73,7 +73,7 @@ else
 //  Print the inbox message.
 if ($params->get('show_messages', 1))
 {
-	$active   = $unread ? 'tag tag-pill tag-warning' : 'tag tag-pill tag-default';
+	$active   = $unread ? 'badge badge-pill badge-warning' : 'badge badge-pill badge-default';
 	$output[] = '<div class="btn-group">'
 		. ($hideLinks ? '' : '<a href="' . $inboxLink . '">')
 		. '<span class="' . $active . '">' . $unread . '</span>'

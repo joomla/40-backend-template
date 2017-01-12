@@ -138,11 +138,11 @@ $colSpan = $clientId === 1 ? 9 : 10;
 						</td>
 						<td class="hidden-sm-down text-xs-center">
 							<?php if ($item->position) : ?>
-								<span class="tag tag-info">
+								<span class="badge badge-info">
 									<?php echo $item->position; ?>
 								</span>
 							<?php else : ?>
-								<span class="tag tag-default">
+								<span class="badge badge-default">
 									<?php echo JText::_('JNONE'); ?>
 								</span>
 							<?php endif; ?>

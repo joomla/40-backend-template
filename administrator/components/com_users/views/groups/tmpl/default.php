@@ -111,11 +111,11 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php endif; ?>
 						</td>
 						<td class="text-xs-center btns">
-							<a class="tag<?php echo $item->count_enabled > 0 ? ' tag-success' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=users&filter[group_id]=' . (int) $item->id . '&filter[state]=0'); ?>">
+							<a class="badge <?php echo $item->count_enabled > 0 ? 'badge-success' : 'badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=users&filter[group_id]=' . (int) $item->id . '&filter[state]=0'); ?>">
 								<?php echo $item->count_enabled; ?></a>
 						</td>
 						<td class="text-xs-center btns">
-							<a class="tag<?php echo $item->count_disabled > 0 ? ' tag-danger' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=users&filter[group_id]=' . (int) $item->id . '&filter[state]=1'); ?>">
+							<a class="badge <?php echo $item->count_disabled > 0 ? 'badge-danger' : 'badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=users&filter[group_id]=' . (int) $item->id . '&filter[state]=1'); ?>">
 								<?php echo $item->count_disabled; ?></a>
 						</td>
 						<td class="hidden-sm-down text-xs-center">

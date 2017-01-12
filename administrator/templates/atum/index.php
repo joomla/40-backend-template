@@ -116,7 +116,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 									<i class="fa fa-envelope"></i>
 									<?php $countUnread = JFactory::getSession()->get('messages.unread'); ?>
 									<?php if ($countUnread > 0) : ?>
-										<span class="tag tag-pill tag-success"><?php echo $countUnread; ?></span>
+										<span class="badge badge-pill badge-success"><?php echo $countUnread; ?></span>
 									<?php endif; ?>
 								</a>
 							</li>
@@ -144,7 +144,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" title="<?php echo JText::_('TPL_ATUM_POST_INSTALLATION_MESSAGES'); ?>">
 									<i class="fa fa-bell"></i>
 									<?php if (count($messages) > 0) : ?>
-										<span class="tag tag-pill tag-success"><?php echo count($messages); ?></span>
+										<span class="badge badge-pill badge-success"><?php echo count($messages); ?></span>
 									<?php endif; ?>
 								</a>
 								<div class="dropdown-menu dropdown-menu-right dropdown-notifications">

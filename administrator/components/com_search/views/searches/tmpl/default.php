@@ -59,7 +59,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 					</td>
 					<?php if ($this->state->get('show_results')) : ?>
 					<td class="text-xs-center btns">
-						<a class="tag <?php echo $item->returns > 0 ? ' tag-success' : ' tag-default'; ?>" target="_blank" href="<?php echo JUri::root(); ?>index.php?option=com_search&amp;view=search&amp;searchword=<?php echo JFilterOutput::stringURLSafe($item->search_term); ?>">
+						<a class="badge <?php echo $item->returns > 0 ? ' badge-success' : ' badge-default'; ?>" target="_blank" href="<?php echo JUri::root(); ?>index.php?option=com_search&amp;view=search&amp;searchword=<?php echo JFilterOutput::stringURLSafe($item->search_term); ?>">
 							<?php echo $item->returns; ?><span class="icon-out-2"><span class="element-invisible"><?php echo JText::_('JBROWSERTARGET_NEW'); ?></span></span></a>
 					</td>
 					<?php else : ?>

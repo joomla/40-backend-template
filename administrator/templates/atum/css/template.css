@@ -10229,3 +10229,7 @@ iframe {
 
 .chzn-container-single {
   width: auto !important; }
+
+.input-group-btn {
+  -ms-flex-direction: row;
+      flex-direction: row; }

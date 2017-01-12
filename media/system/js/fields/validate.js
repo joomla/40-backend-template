@@ -38,8 +38,8 @@ var JFormValidator = function() {
 
 			    // Display custom message
 			    var message = el.getAttribute('data-validation-text');
-			    console.log(message)
-			    if (message) {
+
+			    if (message && !el.parentNode.querySelector('span.form-control-danger')) {
 				    var elMsg = document.createElement('span');
 				    elMsg.classList.add('form-control-danger');
 				    elMsg.innerHTML = message;
@@ -56,7 +56,7 @@ var JFormValidator = function() {
 				    el.classList.remove('form-control-danger');
 				    el.classList.add('form-control-success');
 				    el.setAttribute('aria-invalid', 'false');
-				    console.log(message)
+
 				    // Remove message
 				    if (message) {
 					    el.parentNode.removeChild(message);

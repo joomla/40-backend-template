@@ -97,6 +97,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 		<header id="header" class="header">
 			<div class="container-fluid">
 				<div class="text-center">
+
 					<?php if (!$hidden) : ?>
 					<div class="menu-collapse">
 						<a id="menu-collapse" class="menu-toggle" href="#">
@@ -104,13 +105,14 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 						</a>
 					</div>
 					<?php endif; ?>
+
 					<a class="navbar-brand" href="<?php echo JUri::root(); ?>" title="<?php echo JText::sprintf('TPL_ATUM_PREVIEW', $sitename); ?>" target="_blank">
 						<?php echo JHtml::_('string.truncate', $sitename, 28, false, false); ?>
 						<span class="icon-out-2 small"></span>
 					</a>
-					<nav>
-						<ul class="nav navbar-nav">
 
+					<nav>
+						<ul class="nav">
 							<li class="nav-item">
 								<a class="nav-link dropdown-toggle" href="<?php echo JRoute::_('index.php?option=com_messages'); ?>" title="<?php echo JText::_('TPL_ATUM_PRIVATE_MESSAGES'); ?>">
 									<i class="fa fa-envelope"></i>
@@ -120,7 +122,6 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 									<?php endif; ?>
 								</a>
 							</li>
-
 							<?php
 								/*
 								 * @TODO: Remove FOF call as it's being removed in core
@@ -166,7 +167,6 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 								</div>
 							</li>
 							<?php endif; ?>
-
 							<li class="nav-item dropdown header-profile">
 								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
 									<i class="fa fa-user"></i>
@@ -182,9 +182,9 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 										. JSession::getFormToken() . '=1') ?>"><?php echo JText::_('TPL_ATUM_LOGOUT'); ?></a>
 								</div>
 							</li>
-
 						</ul>
 					</nav>
+
 				</div>
 			</div>
 		</header>

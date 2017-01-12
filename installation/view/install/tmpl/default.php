@@ -14,11 +14,12 @@ defined('_JEXEC') or die;
 	<h3><?php echo JText::_('INSTL_INSTALLING'); ?></h3>
 	<hr class="hr-condensed" />
 
-	<progress class="progress progress-striped progress-animated" value="0" max="100" id="install_progress">
-		<div class="progress progress-striped progress-animated">
-			<span class="progress-bar" style="width: 0%;"></span>
-		</div>
-	</progress>
+	<div id="install_progress" class="progress">
+		<div
+			role="progressbar"
+			class="progress-bar progress-bar-striped progress-bar-animated"
+			style="width: 0%;"></div>
+	</div>
 
 	<table class="table">
 		<tbody>

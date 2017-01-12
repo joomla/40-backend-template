@@ -97,12 +97,12 @@ JS
 						<?php if ($lang->published) echo 'checked="checked"'; ?>
 					/>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<label for="admin-language-cb<?php echo $i; ?>">
 						<?php echo $lang->name; ?>
 					</label>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<?php echo $lang->language; ?>
 				</td>
 			</tr>
@@ -138,12 +138,12 @@ JS
 						<?php if ($lang->published) echo 'checked="checked"'; ?>
 					/>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<label for="site-language-cb<?php echo $i; ?>">
 						<?php echo $lang->name; ?>
 					</label>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<?php echo $lang->language; ?>
 				</td>
 			</tr>

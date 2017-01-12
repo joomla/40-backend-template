@@ -61,16 +61,16 @@ echo JLayoutHelper::render('joomla.menu.edit_modules', $this); ?>
 			<th>
 				<?php echo JText::_('COM_MENUS_HEADING_ASSIGN_MODULE');?>
 			</th>
-			<th class="text-xs-center">
+			<th class="text-center">
 				<?php echo JText::_('COM_MENUS_HEADING_LEVELS'); ?>
 			</th>
-			<th class="text-xs-center">
+			<th class="text-center">
 				<?php echo JText::_('COM_MENUS_HEADING_POSITION'); ?>
 			</th>
-			<th class="text-xs-center">
+			<th class="text-center">
 				<?php echo JText::_('COM_MENUS_HEADING_DISPLAY'); ?>
 			</th>
-			<th class="text-xs-center">
+			<th class="text-center">
 				<?php echo JText::_('COM_MENUS_HEADING_PUBLISHED_ITEMS'); ?>
 			</th>
 		</tr>
@@ -97,13 +97,13 @@ echo JLayoutHelper::render('joomla.menu.edit_modules', $this); ?>
 					<a href="#moduleEdit<?php echo $module->id; ?>Modal" role="button" data-toggle="modal" title="<?php echo JText::_('COM_MENUS_EDIT_MODULE_SETTINGS'); ?>" id="title-<?php echo $module->id; ?>">
 						<?php echo $this->escape($module->title); ?></a>
 				</td>
-				<td id="access-<?php echo $module->id; ?>" width="15%" class="text-xs-center">
+				<td id="access-<?php echo $module->id; ?>" width="15%" class="text-center">
 					<?php echo $this->escape($module->access_title); ?>
 				</td>
-				<td id="position-<?php echo $module->id; ?>" width="15%" class="text-xs-center">
+				<td id="position-<?php echo $module->id; ?>" width="15%" class="text-center">
 					<?php echo $this->escape($module->position); ?>
 				</td>
-				<td id="menus-<?php echo $module->id; ?>" width="15%" class="text-xs-center">
+				<td id="menus-<?php echo $module->id; ?>" width="15%" class="text-center">
 					<?php if (is_null($module->menuid)) : ?>
 						<?php if ($module->except) : ?>
 							<span class="badge badge-success">
@@ -128,7 +128,7 @@ echo JLayoutHelper::render('joomla.menu.edit_modules', $this); ?>
 						</span>
 					<?php endif; ?>
 				</td>
-				<td id="status-<?php echo $module->id; ?>" class="text-xs-center">
+				<td id="status-<?php echo $module->id; ?>" class="text-center">
 						<?php if ($module->published) : ?>
 							<span class="badge badge-success">
 								<?php echo JText::_('JYES'); ?>

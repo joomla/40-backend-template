@@ -49,7 +49,7 @@ $opposite_strings  = LanguagesHelper::parseFile($opposite_filename);
 			<table class="table table-striped" id="overrideList">
 				<thead>
 					<tr>
-						<th width="1%" class="text-xs-center">
+						<th width="1%" class="text-center">
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
 						<th width="30%">
@@ -78,7 +78,7 @@ $opposite_strings  = LanguagesHelper::parseFile($opposite_filename);
 				<?php $i = 0; ?>
 				<?php foreach ($this->items as $key => $text) : ?>
 					<tr class="row<?php echo $i % 2; ?>" id="overriderrow<?php echo $i; ?>">
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo JHtml::_('grid.id', $i, $key); ?>
 						</td>
 						<td>

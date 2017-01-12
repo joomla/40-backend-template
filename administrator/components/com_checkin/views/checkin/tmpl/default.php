@@ -44,7 +44,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php $i = 0; ?>
 					<?php foreach ($this->items as $table => $count) : ?>
 						<tr class="row<?php echo $i % 2; ?>">
-							<td class="text-xs-center"><?php echo JHtml::_('grid.id', $i, $table); ?></td>
+							<td class="text-center"><?php echo JHtml::_('grid.id', $i, $table); ?></td>
 							<td>
 								<label for="cb<?php echo $i ?>">
 									<?php echo JText::sprintf('COM_CHECKIN_TABLE', $table); ?>

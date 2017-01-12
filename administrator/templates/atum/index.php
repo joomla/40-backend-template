@@ -96,7 +96,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 		<?php // Header ?>
 		<header id="header" class="header">
 			<div class="container-fluid">
-				<div class="text-xs-center">
+				<div class="text-center">
 					<?php if (!$hidden) : ?>
 					<div class="menu-collapse">
 						<a id="menu-collapse" class="menu-toggle" href="#">
@@ -150,7 +150,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 								<div class="dropdown-menu dropdown-menu-right dropdown-notifications">
 									<div class="list-group">
 										<?php if (empty($messages)) : ?>
-										<p class="list-group-item text-xs-center">
+										<p class="list-group-item text-center">
 											<b><?php echo JText::_('COM_POSTINSTALL_LBL_NOMESSAGES_TITLE'); ?></b>
 										</p>
 										<?php endif; ?>

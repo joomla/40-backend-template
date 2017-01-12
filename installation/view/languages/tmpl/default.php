@@ -69,7 +69,7 @@ $version = new JVersion;
 		<table class="table table-striped table-sm">
 			<thead>
 					<tr>
-						<th width="1%" class="text-xs-center">
+						<th width="1%" class="text-center">
 							&nbsp;
 						</th>
 						<th>
@@ -78,7 +78,7 @@ $version = new JVersion;
 						<th width="15%">
 							<?php echo JText::_('INSTL_LANGUAGES_COLUMN_HEADER_LANGUAGE_TAG'); ?>
 						</th>
-						<th width="5%" class="text-xs-center">
+						<th width="5%" class="text-center">
 							<?php echo JText::_('INSTL_LANGUAGES_COLUMN_HEADER_VERSION'); ?>
 						</th>
 					</tr>
@@ -100,7 +100,7 @@ $version = new JVersion;
 						<td>
 							<?php echo $language->code; ?>
   						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 						<?php // Display a Note if language pack version is not equal to Joomla version ?>
 						<?php if (substr($language->version, 0, 3) != $version::RELEASE || substr($language->version, 0, 5) != $currentShortVersion) : ?>
 							<span class="badge badge-warning hasTooltip" title="<?php echo JText::_('JGLOBAL_LANGUAGE_VERSION_NOT_PLATFORM'); ?>"><?php echo $language->version; ?></span>

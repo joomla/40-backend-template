@@ -111,7 +111,7 @@ else // XTD Image plugin
 							<select class="custom-select" size="1" id="f_align">
 								<option value="" selected="selected"><?php echo JText::_('COM_MEDIA_NOT_SET') ?></option>
 								<option value="left"><?php echo JText::_('JGLOBAL_LEFT') ?></option>
-								<option value="text-xs-center"><?php echo JText::_('JGLOBAL_CENTER') ?></option>
+								<option value="text-center"><?php echo JText::_('JGLOBAL_CENTER') ?></option>
 								<option value="right"><?php echo JText::_('JGLOBAL_RIGHT') ?></option>
 =======
 							<select size="1" id="f_align">

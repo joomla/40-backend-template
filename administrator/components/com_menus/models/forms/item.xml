@@ -19,6 +19,7 @@
 			description="COM_MENUS_ITEM_FIELD_TITLE_DESC"
 			class="input-xxlarge"
 			size="40"
+			validationtext="Hello barbie there's no party"
 			required="true"/>
 
 		<field

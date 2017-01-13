@@ -8882,11 +8882,11 @@ legend {
 .modal label {
   width: 100%; }
 
-.form-control-danger {
+.invalid {
   border-color: #bc6564;
   color: #bc6564; }
 
-.form-control-success {
+.valid {
   border-color: #64bd63; }
 
 .custom-select[multiple] {

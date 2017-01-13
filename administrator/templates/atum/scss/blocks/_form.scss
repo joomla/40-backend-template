@@ -75,11 +75,11 @@ legend {
 }
 
 // Validation
-.form-control-danger {
+.invalid {
   border-color: $switcher-color-danger;
   color: $switcher-color-danger;
 }
-.form-control-success {
+.valid {
   border-color: $switcher-color-success;
 }
 

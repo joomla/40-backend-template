@@ -91,13 +91,25 @@ $sitename = $app->get('sitename');
 			<?php // End Content ?>
 		</div>
 	</div>
-	<div class="navbar navbar-fixed-bottom hidden-sm-down">
-		<p class="float-sm-right">
-			&copy; <?php echo date('Y'); ?> <?php echo $sitename; ?>
-		</p>
-		<a class="login-joomla hasTooltip" href="https://www.joomla.org" target="_blank" title="<?php echo JHtml::tooltipText('TPL_ATUM_ISFREESOFTWARE'); ?>"><span class="icon-joomla"></span></a>
-		<a href="<?php echo JUri::root(); ?>" target="_blank" class="float-sm-left"><span class="icon-out-2"></span> <?php echo JText::_('COM_LOGIN_RETURN_TO_SITE_HOME_PAGE'); ?></a>
-	</div>
+
+	
+	
+	<nav class="navbar fixed-bottom hidden-xs-down">
+		<ul class="nav nav-fill">
+			<li class="nav-item">
+				<a href="<?php echo JUri::root(); ?>" target="_blank" class="float-left"><span class="icon-out-2"></span> <?php echo JText::_('COM_LOGIN_RETURN_TO_SITE_HOME_PAGE'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="login-joomla hasTooltip" href="https://www.joomla.org" target="_blank" title="<?php echo JHtml::tooltipText('TPL_ATUM_ISFREESOFTWARE'); ?>"><span class="icon-joomla"></span></a>
+			</li>
+			<li class="nav-item">	
+				<span class="text-white float-right">&copy; <?php echo date('Y'); ?> <?php echo $sitename; ?></span>
+			</li>
+		</ul>
+	</nav>
+	
+	
+
 	<jdoc:include type="modules" name="debug" style="none" />
 <script>
 	document.addEventListener('DOMContentLoaded', function() {

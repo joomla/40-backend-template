@@ -9528,32 +9528,16 @@ iframe {
       text-indent: 10px; }
 
 .status {
-  padding: 2px 10px 4px;
+  padding: 5px 10px;
   margin-left: 250px;
   color: #626262;
   background: #ebebeb;
   border-top: 1px solid #d4d4d4;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
   transition: all .5s ease; }
-  .status .btn-group {
-    margin-top: 5px; }
-    .status .btn-group .tag,
-    .status .btn-group [class*="fa-"] {
-      margin-right: 5px; }
-  .status .btn-group::after {
-    margin: 0 10px;
-    content: "";
-    border-left: 1px solid #999; }
-  .status .btn-group.logout::after,
-  .status .btn-group.details::after {
-    margin: 0;
-    content: "";
-    border-left: 0; }
   .status p {
     margin: 0; }
-  .status p,
-  .status .btn-group,
-  .status .btn-group > a {
+  .status p, .status a {
     font-size: .9rem;
     color: #555; }
 

@@ -249,15 +249,15 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 
 			<?php if ($this->countModules('status')) : ?>
 				<?php // Begin Status Module ?>
-				<div id="status" class="status navbar navbar-fixed-bottom hidden-sm-down">
-					<div class="btn-group details float-sm-right">
-						<p>
+				<nav id="status" class="status navbar fixed-bottom hidden-sm-down">
+					<ul class="nav d-flex justify-content-start">
+						<jdoc:include type="modules" name="status" style="no" />
+						<li class="ml-auto">
 							<jdoc:include type="modules" name="footer" style="no" />
 							&copy; <?php echo date('Y'); ?> <?php echo $sitename; ?>
-						</p>
-					</div>
-					<jdoc:include type="modules" name="status" style="no" />
-				</div>
+						</li>
+					</ul>
+				</nav>
 				<?php // End Status Module ?>
 			<?php endif; ?>
 

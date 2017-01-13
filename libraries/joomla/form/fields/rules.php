@@ -244,7 +244,7 @@ class JFormFieldRules extends JFormField
 
 		// Building tab nav
 		$html[] = '<div class="col-md-3">';
-		$html[] = '<ul class="nav nav-pills nav-stacked">';
+		$html[] = '<ul class="nav nav-pills flex-column">';
 
 		foreach ($groups as $group)
 		{

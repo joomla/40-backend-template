@@ -89,7 +89,6 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 				</a>
 			</div>
 			<jdoc:include type="modules" name="menu" style="none" />
-			<div class="sidebar-brand"></div>
 		</div>
 		<?php endif; ?>
 
@@ -241,7 +240,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 
 			<?php if (!$this->countModules('status')) : ?>
 				<footer class="footer">
-					<p align="center">
+					<p class="text-center">
 						<jdoc:include type="modules" name="footer" style="no" />
 						&copy; <?php echo $sitename; ?> <?php echo date('Y'); ?></p>
 				</footer>

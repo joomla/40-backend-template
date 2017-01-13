@@ -18,8 +18,8 @@ $prev = $useftp ? 'ftp' : 'database';
 ?>
 <?php echo JHtml::_('InstallationHtml.helper.stepbar'); ?>
 <form action="index.php" method="post" id="adminForm" class="form-validate">
-	<div class="btn-toolbar">
-		<div class="btn-group float-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a class="btn btn-secondary" href="#" onclick="return Install.goToPage('<?php echo $prev; ?>');" rel="prev" title="<?php echo JText::_('JPREVIOUS'); ?>"><span class="fa fa-arrow-left"></span> <?php echo JText::_('JPREVIOUS'); ?></a>
 			<a class="btn btn-primary" href="#" onclick="Install.submitform();" rel="next" title="<?php echo JText::_('INSTL_SUMMARY_INSTALL'); ?>"><span class="fa fa-arrow-right icon-white"></span> <?php echo JText::_('INSTL_SUMMARY_INSTALL'); ?></a>
 		</div>
@@ -319,23 +319,13 @@ $prev = $useftp ? 'ftp' : 'database';
 							<?php echo $setting->label; ?>
 						</td>
 						<td>
-<<<<<<< HEAD
 							<span class="badge badge-success disabled">
-								<?php echo JText::_(($setting->recommended) ? 'JON' : 'JOFF'); ?>
-							</span>
-						</td>
-						<td>
-							<span class="badge badge-<?php echo ($setting->state === $setting->recommended) ? 'success' : 'warning'; ?>">
-								<?php echo JText::_(($setting->state) ? 'JON' : 'JOFF'); ?>
-=======
-							<span class="label label-success disabled">
 								<?php echo JText::_($setting->recommended ? 'JON' : 'JOFF'); ?>
 							</span>
 						</td>
 						<td>
-							<span class="label label-<?php echo ($setting->state === $setting->recommended) ? 'success' : 'warning'; ?>">
+							<span class="badge badge-<?php echo ($setting->state === $setting->recommended) ? 'success' : 'warning'; ?>">
 								<?php echo JText::_($setting->state ? 'JON' : 'JOFF'); ?>
->>>>>>> joomla/master
 							</span>
 						</td>
 					</tr>
@@ -349,8 +339,8 @@ $prev = $useftp ? 'ftp' : 'database';
 			</table>
 		</div>
 	</div>
-	<div class="btn-toolbar">
-		<div class="btn-group float-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a class="btn btn-secondary" href="#" onclick="return Install.goToPage('<?php echo $prev; ?>');" rel="prev" title="<?php echo JText::_('JPREVIOUS'); ?>"><span class="fa fa-arrow-left"></span> <?php echo JText::_('JPREVIOUS'); ?></a>
 			<a class="btn btn-primary" href="#" onclick="Install.submitform();" rel="next" title="<?php echo JText::_('INSTL_SUMMARY_INSTALL'); ?>"><span class="fa fa-arrow-right icon-white"></span> <?php echo JText::_('INSTL_SUMMARY_INSTALL'); ?></a>
 		</div>

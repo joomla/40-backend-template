@@ -23,8 +23,8 @@ JS
 ?>
 <?php echo JHtml::_('InstallationHtml.helper.stepbarlanguages'); ?>
 <form action="index.php" method="post" id="adminForm" class="form-validate">
-	<div class="btn-toolbar">
-		<div class="btn-group float-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a
 				class="btn btn-secondary"
 				href="#"
@@ -150,8 +150,8 @@ JS
 		<?php endforeach; ?>
 		</tbody>
 	</table>
-	<div class="btn-toolbar">
-		<div class="btn-group float-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a
 				class="btn btn-secondary"
 				href="#"

@@ -9537,8 +9537,8 @@ iframe {
   transition: all .5s ease; }
   .status p {
     margin: 0; }
-  .status p, .status a {
-    font-size: .9rem;
+  .status li, .status a {
+    font-size: 14px;
     color: #555; }
 
 .sidebar-wrapper[data-hidden="1"] ~ .status {

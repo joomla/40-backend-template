@@ -13,8 +13,8 @@
     margin: 0;
   }
 
-  p, a {
-    font-size: .9rem;
+  li, a {
+    font-size: $font-size-root;
     color: #555;
   }
 }

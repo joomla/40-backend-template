@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 var_dump('TEST');
 ?>
 <form action="index.php" method="post" id="languageForm">
-	<div class="btn-toolbar">
-		<div class="btn-group float-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a href="#" class="btn btn-primary" onclick="Install.submitform();" title="<?php echo JText::_('JCHECK_AGAIN'); ?>"><span class="icon-refresh icon-white"></span> <?php echo JText::_('JCHECK_AGAIN'); ?></a>
 		</div>
 	</div>
@@ -103,8 +103,8 @@ var_dump('TEST');
 			</table>
 		</div>
 	</div>
-	<div class="btn-toolbar">
-		<div class="btn-group float-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a href="#" class="btn btn-primary" onclick="Install.submitform();" title="<?php echo JText::_('JCHECK_AGAIN'); ?>"><span class="icon-refresh icon-white"></span> <?php echo JText::_('JCHECK_AGAIN'); ?></a>
 		</div>
 	</div>

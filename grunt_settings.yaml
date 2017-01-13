@@ -44,7 +44,7 @@ vendors:
                   'version': '5.22.2'
                   'dependencies': ''
     'cropperjs':
-                  'version': '0.8.1'
+                  'version': '1.0.0-beta'
                   'dependencies': ''
 
 ## DO NOT EDIT THE NEXT LINES UNLESS YOU KNOW WHAT YOU ARE DOING ##

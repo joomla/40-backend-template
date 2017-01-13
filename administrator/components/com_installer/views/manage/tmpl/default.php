@@ -116,14 +116,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<td class="hidden-sm-down text-center">
 							<?php echo $item->folder_translated; ?>
 						</td>
-<<<<<<< HEAD
 						<td class="hidden-sm-down text-center">
-=======
-						<td class="hidden-phone">
 							<?php echo $item->package_id ?: '&#160;'; ?>
 						</td>
-						<td class="hidden-phone">
->>>>>>> joomla/master
+						<td class="hidden-sm-down text-center">
 							<?php echo $item->extension_id; ?>
 						</td>
 					</tr>

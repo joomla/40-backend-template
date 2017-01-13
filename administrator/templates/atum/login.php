@@ -74,7 +74,7 @@ $sitename = $app->get('sitename');
 	<?php // Container ?>
 	<div class="container">
 		<div class="login-logo">
-			<img class="card-img-top" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/images/logo.png" alt="<?php echo $sitename; ?>" />
+			<img class="card-img-top" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/images/logo.svg" alt="<?php echo $sitename; ?>" />
 		</div>
 		<div id="content">
 			<noscript>
@@ -91,31 +91,25 @@ $sitename = $app->get('sitename');
 			<?php // End Content ?>
 		</div>
 	</div>
-
-	
-	
 	<nav class="navbar fixed-bottom hidden-xs-down">
 		<ul class="nav nav-fill">
 			<li class="nav-item">
-				<a href="<?php echo JUri::root(); ?>" target="_blank" class="float-left"><span class="icon-out-2"></span> <?php echo JText::_('COM_LOGIN_RETURN_TO_SITE_HOME_PAGE'); ?></a>
+				<a href="<?php echo JUri::root(); ?>" target="_blank" class="float-left"><span class="fa fa-external-link"></span> <?php echo JText::_('COM_LOGIN_RETURN_TO_SITE_HOME_PAGE'); ?></a>
 			</li>
 			<li class="nav-item">
-				<a class="login-joomla hasTooltip" href="https://www.joomla.org" target="_blank" title="<?php echo JHtml::tooltipText('TPL_ATUM_ISFREESOFTWARE'); ?>"><span class="icon-joomla"></span></a>
+				<a class="login-joomla hasTooltip" href="https://www.joomla.org" target="_blank" title="<?php echo JHtml::tooltipText('TPL_ATUM_ISFREESOFTWARE'); ?>"><span class="fa fa-joomla"></span></a>
 			</li>
 			<li class="nav-item">	
 				<span class="text-white float-right">&copy; <?php echo date('Y'); ?> <?php echo $sitename; ?></span>
 			</li>
 		</ul>
 	</nav>
-	
-	
-
 	<jdoc:include type="modules" name="debug" style="none" />
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		var formTmp = document.querySelector('.login-initial');
-		if (formTmp) formTmp.style.display = 'block';
-	});
-</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var formTmp = document.querySelector('.login-initial');
+			if (formTmp) formTmp.style.display = 'block';
+		});
+	</script>
 </body>
 </html>

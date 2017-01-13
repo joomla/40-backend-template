@@ -50,9 +50,8 @@ $sitename    = htmlspecialchars($app->get('sitename', ''), ENT_QUOTES, 'UTF-8');
 $cpanel      = ($option === 'com_cpanel');
 $hidden      = JFactory::getApplication()->input->get('hidemainmenu');
 $showSubmenu = false;
-$logoLg      = $this->baseurl . '/templates/' . $this->template . '/images/logo.png';
-$logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-icon-only.png';
-
+$logoLg      = $this->baseurl . '/templates/' . $this->template . '/images/logo.svg';
+$logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-icon.svg';
 
 ?>
 <!DOCTYPE html>

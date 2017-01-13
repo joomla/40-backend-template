@@ -71,7 +71,7 @@ $attributes = array(
 	!empty($pattern) ? 'pattern="' . $pattern . '"' : '',
 
 	// @TODO add a proper string here!!!
-	!empty($validationtext) ? 'data-validation-text="' . $validationtext . '"' : 'data-validation-text="This value is not valid"',
+	!empty($validationtext) ? 'data-validation-text="' . $validationtext . '"' : '',
 );
 ?>
 <input type="text" name="<?php

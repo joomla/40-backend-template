@@ -20,11 +20,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<div id="j-main-container" class="j-main-container">
 		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 		<div class="clearfix"></div>
-		<?php if (empty($this->items)) : ?>
-			<div class="alert alert-warning alert-no-items">
-				<?php echo JText::_('COM_CHECKIN_NO_ITEMS'); ?>
-			</div>
-		<?php else : ?>
+		<?php if ($this->total > 0) : ?>
 			<table id="global-checkin" class="table table-striped">
 				<thead>
 					<tr>

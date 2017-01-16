@@ -3229,7 +3229,7 @@ tbody.collapse.show {
     .card-deck .card {
       display: -ms-flexbox;
       display: flex;
-      -ms-flex: 1 0 0px;
+      -ms-flex: 1 0 0;
           flex: 1 0 0;
       -ms-flex-direction: column;
           flex-direction: column; }
@@ -3245,7 +3245,7 @@ tbody.collapse.show {
     -ms-flex-flow: row wrap;
         flex-flow: row wrap; }
     .card-group .card {
-      -ms-flex: 1 0 0px;
+      -ms-flex: 1 0 0;
           flex: 1 0 0; }
       .card-group .card + .card {
         margin-left: 0;

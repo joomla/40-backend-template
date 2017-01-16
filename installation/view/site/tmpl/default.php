@@ -12,11 +12,6 @@ defined('_JEXEC') or die;
 /* @var InstallationViewDefault $this */
 ?>
 <?php echo JHtml::_('InstallationHtml.helper.stepbar'); ?>
-<div class="btn-toolbar justify-content-end">
-	<div class="btn-group">
-		<a href="#" class="btn btn-primary" onclick="Install.submitform();" rel="next" title="<?php echo JText::_('JNEXT'); ?>"><span class="fa fa-arrow-right icon-white"></span> <?php echo JText::_('JNEXT'); ?></a>
-	</div>
-</div>
 <form action="index.php" method="post" id="languageForm">
 	<div class="form-group">
 		<label for="jform_language"><?php echo JText::_('INSTL_SELECT_LANGUAGE_TITLE'); ?></label>
@@ -70,11 +65,14 @@ defined('_JEXEC') or die;
 			</div>
 		</div>
 	</div>
-	<div class="btn-toolbar justify-content-end">
-		<div class="btn-group">
-			<a href="#" class="btn btn-primary" onclick="Install.submitform();" rel="next" title="<?php echo JText::_('JNEXT'); ?>"><span class="fa fa-arrow-right icon-white"></span> <?php echo JText::_('JNEXT'); ?></a>
-		</div>
-	</div>
+	<ul class="nav nav-tabs nav-justified install-nav-footer">
+		<li class="nav-item">
+			<a class="nav-button prev-button disabled" rel="prev" title="<?php echo JText::_('JPREVIOUS'); ?>"><span class="fa fa-arrow-left"></span> <?php echo JText::_('JPREVIOUS'); ?></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-button next-button" href="#" onclick="Install.submitform();" rel="next" title="<?php echo JText::_('JNEXT'); ?>"><span class="fa fa-arrow-right icon-white"></span> <?php echo JText::_('JNEXT'); ?></a>
+		</li>
+	</ul>
 	<input type="hidden" name="task" value="site" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

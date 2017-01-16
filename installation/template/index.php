@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+$logoLg      = $this->baseurl . '/templates/' . $this->template . '/images/logo.svg';
+
 /** @var JDocumentHtml $this */
 
 // Add Stylesheets
@@ -69,18 +71,19 @@ $this->addScriptOptions('system.installation', array('url' => JRoute::_('index.p
 	<body data-basepath="<?php echo JUri::root(true); ?>">
 		<?php // Header ?>
 		<div class="header">
-			<img src="<?php echo $this->baseurl ?>/template/images/joomla.png" alt="Joomla" />
-			<hr>
-			<h5>
-				<?php // Fix wrong display of Joomla!® in RTL language ?>
-				<?php $joomla  = '<a href="https://www.joomla.org" target="_blank">Joomla!</a><sup>' . (JFactory::getLanguage()->isRtl() ? '&#x200E;' : '') . '</sup>'; ?>
-				<?php $license = '<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" target="_blank">' . JText::_('INSTL_GNU_GPL_LICENSE') . '</a>'; ?>
-				<?php echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla, $license); ?>
-			</h5>
+			<div class="container container-header">
+				<img src="<?php echo $this->baseurl ?>/template/images/logo.svg" alt="Joomla" style="max-width: 320px; margin-top: 10px; margin-bottom: 10px"/>
+				<!-- <hr> -->
+				<h5 style="font-size: 1rem;">
+					<?php // Fix wrong display of Joomla!® in RTL language ?>
+					<?php $joomla  = '<a href="https://www.joomla.org" target="_blank">Joomla!</a><sup>' . (JFactory::getLanguage()->isRtl() ? '&#x200E;' : '') . '</sup>'; ?>
+					<?php $license = '<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" target="_blank">' . JText::_('INSTL_GNU_GPL_LICENSE') . '</a>'; ?>
+					<?php echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla, $license); ?>
+				</h5>
+			</div>
 		</div>
 		<?php // Container ?>
 		<div class="container">
-			<jdoc:include type="message" />
 			<div id="javascript-warning">
 				<noscript>
 					<div class="alert alert-danger">
@@ -89,9 +92,9 @@ $this->addScriptOptions('system.installation', array('url' => JRoute::_('index.p
 				</noscript>
 			</div>
 			<div id="container-installation">
+				<jdoc:include type="message" />
 				<jdoc:include type="component" />
 			</div>
-			<hr>
 		</div>
 	</body>
 </html>

@@ -70,7 +70,7 @@ $this->addScriptOptions('system.installation', array('url' => JRoute::_('index.p
 		<?php // Header ?>
 		<div class="header">
 			<div class="container container-header">
-				<img src="<?php echo $this->baseurl ?>/template/images/logo.svg" alt="Joomla" style="max-width: 320px; margin-top: 10px; margin-bottom: 10px"/>
+				<img src="<?php echo $this->baseurl ?>/template/images/logo.svg" alt="Joomla" class="logo"/>
 				<!-- <hr> -->
 				<h5 style="font-size: 1rem;">
 					<?php // Fix wrong display of Joomla!® in RTL language ?>

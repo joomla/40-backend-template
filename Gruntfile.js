@@ -186,6 +186,7 @@ module.exports = function(grunt) {
 		scsslint: {
 			allFiles: [
 				'<%= folder.adminTemplate %>/scss',
+				'<%= folder.installTemplate %>/scss',
 			],
 			options: {
 				config: 'scss-lint.yml',

@@ -8,8 +8,6 @@
 
 defined('_JEXEC') or die;
 
-$logoLg      = $this->baseurl . '/templates/' . $this->template . '/images/logo.svg';
-
 /** @var JDocumentHtml $this */
 
 // Add Stylesheets
@@ -84,6 +82,9 @@ $this->addScriptOptions('system.installation', array('url' => JRoute::_('index.p
 		</div>
 		<?php // Container ?>
 		<div class="container">
+			<div class="system-message">
+				<jdoc:include type="message" />
+			</div>
 			<div id="javascript-warning">
 				<noscript>
 					<div class="alert alert-danger">
@@ -91,10 +92,10 @@ $this->addScriptOptions('system.installation', array('url' => JRoute::_('index.p
 					</div>
 				</noscript>
 			</div>
-			<div id="container-installation">
-				<jdoc:include type="message" />
+			<div id="container-installation" class="install-form">
 				<jdoc:include type="component" />
 			</div>
+			<hr>
 		</div>
 	</body>
 </html>

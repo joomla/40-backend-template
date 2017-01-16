@@ -107,7 +107,7 @@ class InstallationHtmlHelper
 		}
 		else
 		{
-			$tab = '<a class="nav-link' . $active . '" href="#" onclick="return Install.goToPage(\'' . $id . '\')">' . $tab . '</a>';
+			$tab = '<a class="nav-link completed' . $active . '" href="#" onclick="return Install.goToPage(\'' . $id . '\')">' . $tab . '</a>';
 		}
 
 		return '<li class="nav-item step" id="' . $id . '">' . $tab . '</li>';

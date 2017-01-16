@@ -23,31 +23,6 @@ JS
 ?>
 <?php echo JHtml::_('InstallationHtml.helper.stepbarlanguages'); ?>
 <form action="index.php" method="post" id="adminForm" class="form-validate">
-	<div class="btn-toolbar justify-content-end">
-		<div class="btn-group">
-			<a
-				class="btn btn-secondary"
-				href="#"
-				onclick="return Install.goToPage('languages');"
-				rel="prev"
-				title="<?php echo JText::_('JPREVIOUS'); ?>">
-				<span class="fa fa-arrow-left"></span>
-				<?php echo JText::_('JPREVIOUS'); ?>
-			</a>
-			<?php // Check if there are languages in the list, if not you cannot move forward ?>
-			<?php if ($this->items->administrator) : ?>
-				<a
-					class="btn btn-primary"
-					href="#"
-					onclick="Install.submitform();"
-					rel="next"
-					title="<?php echo JText::_('JNEXT'); ?>">
-					<span class="fa fa-arrow-right icon-white"></span>
-					<?php echo JText::_('JNEXT'); ?>
-				</a>
-			<?php endif; ?>
-		</div>
-	</div>
 	<h3><?php echo JText::_('INSTL_DEFAULTLANGUAGE_MULTILANGUAGE_TITLE'); ?></h3>
 	<hr class="hr-condensed" />
 	<p><?php echo JText::_('INSTL_DEFAULTLANGUAGE_MULTILANGUAGE_DESC'); ?></p>
@@ -150,10 +125,10 @@ JS
 		<?php endforeach; ?>
 		</tbody>
 	</table>
-	<div class="btn-toolbar justify-content-end">
-		<div class="btn-group">
-			<a
-				class="btn btn-secondary"
+	<ul class="nav nav-tabs nav-justified install-nav-footer">
+		<li class="nav-item">
+			<a 
+				class="nav-button prev-button" 
 				href="#"
 				onclick="return Install.goToPage('languages');"
 				rel="prev"
@@ -161,20 +136,19 @@ JS
 				<span class="fa fa-arrow-left"></span>
 				<?php echo JText::_('JPREVIOUS'); ?>
 			</a>
-			<?php // Check if there are languages in the list, if not you cannot move forward ?>
-			<?php if ($this->items->administrator) : ?>
-				<a
-					class="btn btn-primary"
-					href="#"
-					onclick="Install.submitform();"
-					rel="next"
-					title="<?php echo JText::_('JNEXT'); ?>">
-					<span class="fa fa-arrow-right icon-white"></span>
-					<?php echo JText::_('JNEXT'); ?>
-				</a>
-			<?php endif; ?>
-		</div>
-	</div>
+		</li>
+		<li class="nav-item">
+			<a  
+				class="nav-button next-button" 
+				href="#"
+				onclick="Install.submitform();"
+				rel="next"
+				title="<?php echo JText::_('JNEXT'); ?>">
+				<span class="fa fa-arrow-right icon-white"></span>
+				<?php echo JText::_('JNEXT'); ?>
+			</a>
+		</li>
+	</ul>
 	<input type="hidden" name="task" value="setdefaultlanguage" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

@@ -19,7 +19,7 @@ $prev = $useftp ? 'ftp' : 'database';
 <?php echo JHtml::_('InstallationHtml.helper.stepbar'); ?>
 <form action="index.php" method="post" id="adminForm" class="form-validate">
 	<h3><?php echo JText::_('INSTL_FINALISATION'); ?></h3>
-	<hr class="hr-condensed" />
+	<hr>
 
 	<div class="form-group">
 		<?php echo $this->form->getLabel('sample_file'); ?>
@@ -30,7 +30,7 @@ $prev = $useftp ? 'ftp' : 'database';
 	</div>
 
 	<h3><?php echo JText::_('INSTL_STEP_SUMMARY_LABEL'); ?></h3>
-	<hr class="hr-condensed" />
+	<hr>
 
 	<div class="form-group" id="summary_email">
 		<?php echo $this->form->getLabel('summary_email'); ?>
@@ -49,7 +49,7 @@ $prev = $useftp ? 'ftp' : 'database';
 	<div class="row">
 		<div class="col-md-6">
 			<h3><?php echo JText::_('INSTL_SITE'); ?></h3>
-			<hr class="hr-condensed" />
+			<hr>
 			<table class="table table-striped table-sm">
 				<tbody>
 					<tr>
@@ -114,7 +114,7 @@ $prev = $useftp ? 'ftp' : 'database';
 		</div>
 		<div class="col-md-6">
 			<h3><?php echo JText::_('INSTL_DATABASE'); ?></h3>
-			<hr class="hr-condensed" />
+			<hr>
 			<table class="table table-striped table-sm">
 				<tbody>
 					<tr>
@@ -170,7 +170,7 @@ $prev = $useftp ? 'ftp' : 'database';
 							<?php echo JText::_('INSTL_DATABASE_OLD_PROCESS_LABEL'); ?>
 						</td>
 						<td>
-							<span class="badge badge-<?php echo ($this->options['db_old'] == 'remove') ? 'important' : 'success'; ?>">
+							<span class="badge badge-<?php echo ($this->options['db_old'] == 'remove') ? 'danger' : 'primary'; ?>">
 								<?php echo JText::_(($this->options['db_old'] == 'remove') ? 'INSTL_DATABASE_FIELD_VALUE_REMOVE' : 'INSTL_DATABASE_FIELD_VALUE_BACKUP'); ?>
 							</span>
 						</td>
@@ -188,7 +188,7 @@ $prev = $useftp ? 'ftp' : 'database';
 	<div class="row">
 		<div class="col-md-6">
 			<h3><?php echo JText::_('INSTL_FTP'); ?></h3>
-			<hr class="hr-condensed" />
+			<hr>
 			<table class="table table-striped table-sm">
 				<tbody>
 					<tr>
@@ -258,7 +258,7 @@ $prev = $useftp ? 'ftp' : 'database';
 	<div class="row">
 		<div class="col-md-6">
 			<h3><?php echo JText::_('INSTL_PRECHECK_TITLE'); ?></h3>
-			<hr class="hr-condensed" />
+			<hr>
 			<p class="install-text">
 				<?php echo JText::_('INSTL_PRECHECK_DESC'); ?>
 			</p>
@@ -289,7 +289,7 @@ $prev = $useftp ? 'ftp' : 'database';
 		</div>
 		<div class="col-md-6">
 			<h3><?php echo JText::_('INSTL_PRECHECK_RECOMMENDED_SETTINGS_TITLE'); ?></h3>
-			<hr class="hr-condensed" />
+			<hr>
 			<p class="install-text"><?php echo JText::_('INSTL_PRECHECK_RECOMMENDED_SETTINGS_DESC'); ?></p>
 			<table class="table table-striped table-sm">
 				<thead>

@@ -13,55 +13,69 @@ defined('_JEXEC') or die;
 ?>
 <?php echo JHtml::_('InstallationHtml.helper.stepbar'); ?>
 <form action="index.php" method="post" id="languageForm">
-	<div class="form-group">
-		<label for="jform_language"><?php echo JText::_('INSTL_SELECT_LANGUAGE_TITLE'); ?></label>
-		<?php echo $this->form->getInput('language'); ?>
+	<div class="row">
+		<div class="col-md-11 col-lg-6 container">
+			<div class="form-group">
+				<label for="jform_language"><?php echo JText::_('INSTL_SELECT_LANGUAGE_TITLE'); ?></label>
+				<?php echo $this->form->getInput('language'); ?>
+			</div>
+			<input type="hidden" name="task" value="setlanguage" />
+			<?php echo JHtml::_('form.token'); ?>
+		</div>
 	</div>
-	<input type="hidden" name="task" value="setlanguage" />
-	<?php echo JHtml::_('form.token'); ?>
 </form>
 <form action="index.php" method="post" id="adminForm" class="form-validate">
 	<h3><?php echo JText::_('INSTL_SITE'); ?></h3>
-	<hr class="hr-condensed" />
+	<hr>
 	<div class="row">
-		<div class="col-md-6">
-			<div class="form-group">
-				<?php echo $this->form->getLabel('site_name'); ?>
-				<?php echo $this->form->getInput('site_name'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_SITE_NAME_DESC'); ?></p>
+		<div class="col-md-11 col-lg-6 container">
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('site_name'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('site_name'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_SITE_NAME_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('site_metadesc'); ?>
-				<?php echo $this->form->getInput('site_metadesc'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_SITE_METADESC_TITLE_LABEL'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('site_metadesc'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('site_metadesc'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-trigger="hover" data-content="<?php echo JText::_('INSTL_SITE_METADESC_TITLE_LABEL'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('site_offline'); ?>
-				<?php echo $this->form->getInput('site_offline'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_SITE_OFFLINE_TITLE_LABEL'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('site_offline'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('site_offline'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-trigger="hover" data-content="<?php echo JText::_('INSTL_SITE_OFFLINE_TITLE_LABEL'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="form-group">
-				<?php echo $this->form->getLabel('admin_email'); ?>
-				<?php echo $this->form->getInput('admin_email'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_ADMIN_EMAIL_DESC'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('admin_email'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('admin_email'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_ADMIN_EMAIL_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('admin_user'); ?>
-				<?php echo $this->form->getInput('admin_user'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_ADMIN_USER_DESC'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('admin_user'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('admin_user'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_ADMIN_USER_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('admin_password'); ?>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('admin_password'); ?></div>
 				<?php // Disables autocomplete ?> <input type="password" style="display:none">
-				<?php echo $this->form->getInput('admin_password'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_ADMIN_PASSWORD_DESC'); ?></p>
+				<div class="col-md-11"><?php echo $this->form->getInput('admin_password'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_ADMIN_PASSWORD_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('admin_password2'); ?>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('admin_password2'); ?></div>
 				<?php // Disables autocomplete ?> <input type="password" style="display:none">
-				<?php echo $this->form->getInput('admin_password2'); ?>
+				<div class="col-md-11"><?php echo $this->form->getInput('admin_password2'); ?></div>
 			</div>
 		</div>
 	</div>

@@ -14,46 +14,58 @@ defined('_JEXEC') or die;
 <?php echo JHtml::_('InstallationHtml.helper.stepbar'); ?>
 <form action="index.php" method="post" id="adminForm" class="form-validate">
 	<h3><?php echo JText::_('INSTL_DATABASE'); ?></h3>
-	<hr class="hr-condensed" />
+	<hr>
 	<div class="row">
-		<div class="col-md-6">
-			<div class="form-group">
-				<?php echo $this->form->getLabel('db_type'); ?>
-				<?php echo $this->form->getInput('db_type'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_DATABASE_TYPE_DESC'); ?></p>
+		<div class="col-md-11 col-lg-6 container">
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('db_type'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('db_type'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_DATABASE_TYPE_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('db_host'); ?>
-				<?php echo $this->form->getInput('db_host'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_DATABASE_HOST_DESC'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('db_host'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('db_host'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_DATABASE_HOST_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('db_user'); ?>
-				<?php echo $this->form->getInput('db_user'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_DATABASE_USER_DESC'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('db_user'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('db_user'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_DATABASE_USER_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('db_pass'); ?>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('db_pass'); ?></div>
 				<?php // Disables autocomplete ?> <input type="password" style="display:none">
-				<?php echo $this->form->getInput('db_pass'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_DATABASE_PASSWORD_DESC'); ?></p>
+				<div class="col-md-11"><?php echo $this->form->getInput('db_pass'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_DATABASE_PASSWORD_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('db_name'); ?>
-				<?php echo $this->form->getInput('db_name'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_DATABASE_NAME_DESC'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('db_name'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('db_name'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_DATABASE_NAME_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="form-group">
-				<?php echo $this->form->getLabel('db_prefix'); ?>
-				<?php echo $this->form->getInput('db_prefix'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_DATABASE_PREFIX_DESC'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('db_prefix'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('db_prefix'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_DATABASE_PREFIX_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
-			<div class="form-group">
-				<?php echo $this->form->getLabel('db_old'); ?>
-				<?php echo $this->form->getInput('db_old'); ?>
-				<p class="form-text text-muted small"><?php echo JText::_('INSTL_DATABASE_OLD_PROCESS_DESC'); ?></p>
+			<div class="form-group row align-items-center">
+				<div class="col-md-12"><?php echo $this->form->getLabel('db_old'); ?></div>
+				<div class="col-md-11"><?php echo $this->form->getInput('db_old'); ?></div>
+				<div class="col-md-1">
+					<a class="hasPopover text-muted" data-toggle="popover" data-content="<?php echo JText::_('INSTL_DATABASE_OLD_PROCESS_DESC'); ?>"><i class="fa fa-question-circle"></i></a>
+				</div>
 			</div>
 		</div>
 	</div>

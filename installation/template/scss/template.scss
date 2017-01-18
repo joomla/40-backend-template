@@ -1,43 +1,56 @@
 // Install template.scss
 
+@import "../../../administrator/templates/atum/scss/variables";
+@import "../../../media/vendor/bootstrap/scss/bootstrap";
+@import "../../../administrator/templates/atum/scss/blocks/switcher";
+
 body {
   background-color: #eee;
- }
+}
+
 .container {
   position: relative;
   z-index: 1060;
   max-width: 992px;
 }
+
 .header {
   padding: 20px 0 120px;
   color: #fff;
   background-color: #20252e;
   background-repeat: no-repeat;
+
   .logo {
     max-width: 320px;
     margin-top: 10px;
     margin-bottom: 10px;
   }
+
   a {
     color: #00afff;
   }
 }
+
 .install-form {
   padding: 0 50px;
   margin-top: -5.3rem;
   margin-bottom: 4rem;
   background-color: #fff;
+
   form {
     margin: 30px 0;
   }
 }
+
 .nav-tabs {
   a {
     display: block;
   }
 }
+
 .install-nav-header {
   margin: 0 -50px;
+
   .nav-link, .nav-link.active, .nav-link.disabled {
     margin-bottom: 0;
     line-height: 4rem;
@@ -47,19 +60,26 @@ body {
     border-top: 5px solid #4a5567;
     border-radius: 0;
   }
-  .nav-link.active, .nav-link.active:hover, .nav-link.completed {
+
+  .nav-link.active,
+  .nav-link.active:hover,
+  .nav-link.completed {
     color: #fff;
     background-color: #262d38;
     border: 0;
     border-top: 5px solid #00afff;
   }
-  .nav-link:focus, .nav-link:hover {
+
+  .nav-link:focus,
+  .nav-link:hover {
     border-color: #f9a541 #262d38 #262d38;
   }
+
   .nav-link.disabled:hover {
     color: #818a91;
     border-top: 5px solid #4a5567;
   }
+
   .nav-item + .nav-item {
     box-shadow: -1px 0 0 #20252e;
   }
@@ -70,18 +90,22 @@ body {
   text-align: center;
   background: #fafafa;
   border-top: 1px solid #ddd;
+
   .nav-link {
     margin-bottom: 0;
     border: 0;
   }
+
   .nav-button {
     font-weight: bold;
     line-height: 4rem;
     text-transform: uppercase;
+
     &.disabled {
       opacity: .3;
     }
   }
+
   .nav-item + .nav-item {
     border-left: 1px solid #ddd;
   }

@@ -1,5 +1,5 @@
 /**
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -7,7 +7,7 @@
  * Field switcher
  */
 
-(function() {
+;(function() {
 	"use strict";
 
 	document.addEventListener('DOMContentLoaded', function() {
@@ -24,8 +24,7 @@
 				nodes[1].parentNode.classList.add('active');
 				parent.nextElementSibling.querySelector('.switcher-label-' + nodes[1].value).classList.add('active');
 			}
-			else
-			{
+			else {
 				parent.nextElementSibling.querySelector('.switcher-label-' + nodes[0].value).classList.add('active');
 			}
 

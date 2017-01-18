@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  mod_menu
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -11,13 +11,16 @@ defined('_JEXEC') or die;
 
 use Joomla\Utilities\ArrayHelper;
 
-/* @var $menu JAdminCSSMenu */
+/* @var  $this    JAdminCSSMenu */
+/* @var  $params  Joomla\Registry\Registry */
 
+$recovery = (boolean) $params->get('recovery', 0);
 $shownew  = (boolean) $params->get('shownew', 1);
 $showhelp = (boolean) $params->get('showhelp', 1);
 $user     = JFactory::getUser();
 $lang     = JFactory::getLanguage();
 
+$rootClass = $recovery ? 'class:' : null;
 /**
  * Site Submenu
  */
@@ -45,7 +48,7 @@ if ($user->authorise('core.admin'))
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM_INFORMATION'), 'index.php?option=com_admin&view=sysinfo'));
 }
 
-$menu->getParent();
+$this->getParent();
 
 /**
  * Users Submenu
@@ -87,7 +90,7 @@ if ($user->authorise('core.manage', 'com_users'))
 		$menu->getParent();
 	}
 
-	$menu->addChild(
+	$this->addChild(
 		new JMenuNode(
 			JText::_('MOD_MENU_COM_USERS_NOTE_CATEGORIES'), 'index.php?option=com_categories&view=categories&extension=com_users'),
 		$createUser
@@ -109,7 +112,7 @@ if ($user->authorise('core.manage', 'com_users'))
 		$menu->addChild(new JMenuNode(JText::_('MOD_MENU_MASS_MAIL_USERS'), 'index.php?option=com_users&view=mail'));
 	}
 
-	$menu->getParent();
+	$this->getParent();
 }
 
 /**
@@ -131,7 +134,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 	$menuTypes = ModMenuHelper::getMenus();
 	$menuTypes = JArrayHelper::sortObjects($menuTypes, 'title', 1, false);
 
-	foreach ($menuTypes as $menuType)
+	foreach ($menuTypes as $mti => $menuType)
 	{
 		if (!$user->authorise('core.manage', 'com_menus.menu.' . (int) $menuType->id))
 		{
@@ -156,14 +159,20 @@ if ($user->authorise('core.manage', 'com_menus'))
 		}
 		elseif ($menuType->image && JHtml::_('image', 'mod_languages/' . $menuType->image . '.gif', null, null, true, true))
 		{
-			$titleicon = ' <span>' . JHtml::_('image', 'mod_languages/' . $menuType->image . '.gif', $alt, array('title' => $menuType->title_native), true) . '</span>';
+			$titleicon = ' <span>' .
+				JHtml::_('image', 'mod_languages/' . $menuType->image . '.gif', $alt, array('title' => $menuType->title_native), true) . '</span>';
 		}
 		else
 		{
 			$titleicon = ' <span class="label" title="' . $menuType->title_native . '">' . $menuType->sef . '</span>';
 		}
 
-		$menu->addChild(
+		if (isset($menuTypes[$mti - 1]) && $menuTypes[$mti - 1]->client_id != $menuType->client_id)
+		{
+			$this->addSeparator();
+		}
+
+		$this->addChild(
 			new JMenuNode(
 				$menuType->title, 'index.php?option=com_menus&view=items&menutype=' . $menuType->menutype, null, null, null, $titleicon
 			),
@@ -173,7 +182,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 		$menu->getParent();
 	}
 
-	$menu->getParent();
+	$this->getParent();
 }
 
 /**
@@ -217,7 +226,7 @@ if ($user->authorise('core.manage', 'com_content'))
 
 	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_CONTENT_FEATURED'), 'index.php?option=com_content&view=featured'));
 
-	$menu->getParent();
+	$this->getParent();
 }
 
 /**
@@ -244,7 +253,7 @@ if ($components)
 				$menu->addChild(new JMenuNode($sub->text, $sub->link));
 			}
 
-			$menu->getParent();
+			$this->getParent();
 		}
 		else
 		{
@@ -252,7 +261,7 @@ if ($components)
 		}
 	}
 
-	$menu->getParent();
+	$this->getParent();
 }
 
 /**
@@ -311,7 +320,7 @@ if ($im || $mm || $pm || $tm || $lm)
 		$menu->getParent();
 	}
 
-	$menu->getParent();
+	$this->getParent();
 }
 
 /**

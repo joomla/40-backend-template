@@ -21,7 +21,7 @@ $this->setHtml5(true);
 // Load the JavaScript behaviors
 JHtml::_('bootstrap.framework');
 
-JHtml::_('bootstrap.popover');
+JHtml::_('bootstrap.popover', 'body', array('selector' => '.hasPopover'));
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.core');

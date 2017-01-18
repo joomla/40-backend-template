@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 
 // Add Stylesheets
 JHtml::_('stylesheet', 'installation/template/css/template.css');
-JHtml::_('stylesheet', 'media/vendor/font-awesome/css/font-awesome.min.css');
 
 // Output as HTML5
 $this->setHtml5(true);

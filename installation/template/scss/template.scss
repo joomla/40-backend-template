@@ -1,8 +1,15 @@
-// Install template.scss
-
+// Variables
 @import "../../../administrator/templates/atum/scss/variables";
+
+// Bootstrap
 @import "../../../media/vendor/bootstrap/scss/bootstrap";
+
+// FontAwesome
+@import "../../../media/vendor/font-awesome/scss/font-awesome";
+
+// Switcher
 @import "../../../administrator/templates/atum/scss/blocks/switcher";
+
 
 body {
   background-color: #eee;

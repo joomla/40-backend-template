@@ -76,7 +76,7 @@
 			name="site_offline"
 			type="radio"
 			id="site_offline"
-			class="btn-group"
+			class="switcher"
 			default="0"
 			label="INSTL_SITE_OFFLINE_LABEL"
 			filter="integer"

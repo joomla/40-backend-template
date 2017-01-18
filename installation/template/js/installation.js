@@ -19,6 +19,9 @@ var Installation = function(_container, _base) {
 
         // Create and append the loading layer.
         Joomla.loadingLayer("load");
+
+	    initElements();
+	    joomlaSwitcher();
     }
 
     /**

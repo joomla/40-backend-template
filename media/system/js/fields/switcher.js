@@ -6,19 +6,17 @@
 /**
  * Field switcher
  */
-
 ;(function() {
 	"use strict";
 
-	document.addEventListener('DOMContentLoaded', function() {
-
+	window.joomlaSwitcher = function () {
 		var switcher = document.querySelectorAll('.js-switcher');
 
 		for (var i = 0; i < switcher.length; i++) {
 
 			// Add the initial active class
 			var nodes  = switcher[i].querySelectorAll('input'),
-				parent = nodes[1].parentNode;
+			    parent = nodes[1].parentNode;
 
 			if (nodes[1].checked) {
 				nodes[1].parentNode.classList.add('active');
@@ -31,8 +29,8 @@
 			// Add the active class on click
 			switcher[i].addEventListener('click', function(event) {
 				var el     = event.target,
-					parent = el.parentNode,
-					spans  = parent.nextElementSibling.querySelectorAll('span');
+				    parent = el.parentNode,
+				    spans  = parent.nextElementSibling.querySelectorAll('span');
 
 				for (var i = 0; i < spans.length; i++) {
 					spans[i].classList.remove('active');
@@ -50,6 +48,9 @@
 			});
 
 		}
-	});
+	};
 
+	document.addEventListener('DOMContentLoaded', function() {
+		joomlaSwitcher();
+	});
 })();

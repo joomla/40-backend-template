@@ -11,7 +11,6 @@ defined('_JEXEC') or die;
 /** @var JDocumentHtml $this */
 
 // Add Stylesheets
-//JHtml::_('bootstrap.loadCss', true, $this->direction);
 JHtml::_('stylesheet', 'installation/template/css/template.css');
 JHtml::_('stylesheet', 'media/vendor/font-awesome/css/font-awesome.min.css');
 

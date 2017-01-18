@@ -348,7 +348,7 @@ $prev = $useftp ? 'ftp' : 'database';
 <script type="text/javascript">
 	jQuery('input[name="jform[summary_email]"]').each(function(index, el) {
         jQuery(el).parent().on('click', function() {
-            Install.toggle('email_passwords', 'summary_email', 0);
+            Install.toggle('email_passwords', 'summary_email', 1);
         });
         Install.toggle('email_passwords', 'summary_email', 1);
     });

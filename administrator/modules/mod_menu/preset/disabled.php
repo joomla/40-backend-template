@@ -17,14 +17,14 @@ $user = JFactory::getUser();
 /**
  * Site SubMenu
  */
-$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), null, 'class:cog fa-fw'));
+$this->addChild(new JMenuNode(JText::_('MOD_MENU_SYSTEM'), null, 'class:cog fa-fw'));
 
 /**
  * Users Submenu
  */
 if ($user->authorise('core.manage', 'com_users'))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_USERS'), null, 'class:users fa-fw'));
+	$this->addChild(new JMenuNode(JText::_('MOD_MENU_COM_USERS'), null, 'class:users fa-fw'));
 }
 
 /**
@@ -32,7 +32,7 @@ if ($user->authorise('core.manage', 'com_users'))
  */
 if ($user->authorise('core.manage', 'com_menus'))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_MENUS'), null, 'class:list fa-fw'));
+	$this->addChild(new JMenuNode(JText::_('MOD_MENU_MENUS'), null, 'class:list fa-fw'));
 }
 
 /**
@@ -40,7 +40,7 @@ if ($user->authorise('core.manage', 'com_menus'))
  */
 if ($user->authorise('core.manage', 'com_media'))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_MEDIA_MANAGER'), null, 'class:file-picture-o fa-fw'));
+	$this->addChild(new JMenuNode(JText::_('MOD_MENU_MEDIA_MANAGER'), null, 'class:file-picture-o fa-fw'));
 }
 
 /**
@@ -48,7 +48,7 @@ if ($user->authorise('core.manage', 'com_media'))
  */
 if ($user->authorise('core.manage', 'com_content'))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_CONTENT'), null, 'class:file-text-o fa-fw'));
+	$this->addChild(new JMenuNode(JText::_('MOD_MENU_COM_CONTENT'), null, 'class:file-text-o fa-fw'));
 }
 
 /**
@@ -61,7 +61,7 @@ $components = ModMenuHelper::getComponents(true);
 // Check if there are any components, otherwise, don't display the components menu item
 if ($components)
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COMPONENTS'), null, 'class:cube fa-fw'));
+	$this->addChild(new JMenuNode(JText::_('MOD_MENU_COMPONENTS'), null, 'class:cube fa-fw'));
 }
 
 /**
@@ -75,7 +75,7 @@ $lm = $user->authorise('core.manage', 'com_languages');
 
 if ($im || $mm || $pm || $tm || $lm)
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'class:cubes fa-fw'));
+	$this->addChild(new JMenuNode(JText::_('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'class:cubes fa-fw'));
 }
 
 /**
@@ -83,10 +83,10 @@ if ($im || $mm || $pm || $tm || $lm)
  */
 if ($params->get('showhelp', 1))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_HELP'), null, 'class:info-circle fa-fw'));
+	$this->addChild(new JMenuNode(JText::_('MOD_MENU_HELP'), null, 'class:info-circle fa-fw'));
 }
 
 /*
  * User Submenu
  */
-$menu->addChild(new JMenuNode($user->username, null, 'class:user fa-fw'));
+$this->addChild(new JMenuNode($user->username, null, 'class:user fa-fw'));

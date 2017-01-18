@@ -248,7 +248,10 @@ module.exports = function(grunt) {
 				],
 			},
 			dist: {
-				src: '<%= folder.adminTemplate %>/css/template.css'
+				src: [
+					'<%= folder.adminTemplate %>/css/template.css',
+					'<%= folder.installTemplate %>/css/template.css'
+				]
 			}
 		},
 

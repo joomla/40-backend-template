@@ -12,6 +12,22 @@
 	document.addEventListener('DOMContentLoaded', function() {
 		var wrapper = document.getElementById('wrapper');
 
+		/** http://stackoverflow.com/questions/18663941/finding-closest-element-without-jquery */
+		function closest(el, selector) {
+			var parent;
+
+			// traverse parents
+			while (el) {
+				parent = el.parentElement;
+				if (parent && parent['matches'](selector)) {
+					return parent;
+				}
+				el = parent;
+			}
+
+			return null;
+		}
+
 		/**
 		 * Bootstrap tooltips
 		 */
@@ -19,48 +35,63 @@
 			html: true
 		});
 
+		// Fix toolbar and footer width for edit views
+		if (document.getElementById('wrapper').classList.contains('wrapper0')) {
+			document.querySelector('.subhead').style.left = 0;
+			document.getElementById('status').style.marginLeft = 0;
+		}
 		if (document.getElementById('sidebar-wrapper') && !document.getElementById('sidebar-wrapper').getAttribute('data-hidden')) {
-			/**
-			 * Sidebar
-			 */
-			var sidebar = document.getElementById('sidebar-wrapper');
-			var menu    = sidebar.querySelector('#menu');
-			// Apply 2nd level collapse
-			var first = Array.prototype.slice.call(menu.querySelector('.collapse-level-1'));
-			first.forEach(function(){
-				this.classList.remove('collapse-level-1').add('collapse-level-2');
-			});
+			/** Sidebar */
+			var sidebar       = document.getElementById('sidebar-wrapper'),
+			    menu          = sidebar.querySelector('#menu'),
+			    logo          = document.getElementById('main-brand'),
+			    logoSm        = document.getElementById('main-brand-sm'),
+			    menuToggle    = document.getElementById('header').querySelector('.menu-toggle'),
+			    wrapperClosed = document.querySelector('#wrapper.closed'),
+			    // Apply 2nd level collapse
+			    first         = menu.querySelectorAll('.collapse-level-1');
 
-			var navs = menu.querySelectorAll('.nav');
-
-			for (var i = 0; i < navs.length; i++) {
-				var parents = navs[i];
-				for (var j = 0; j < parents.length; j++) {
-					var aTags = parents[j];
-					for (var k = 0; k < aTags.length; k++) {
-						aTags[k].classList.remove('data-parent');
+			for (var i = 0; i < first.length; i++) {
+				var second = first[i].querySelectorAll('.collapse-level-1');
+				for (var j = 0; j < second.length; j++) {
+					if (second[j]) {
+						second[j].classList.remove('collapse-level-1');
+						second[j].classList.add('collapse-level-2');
 					}
 				}
 			}
 
-			var animateWrapper = function() {
-				var logo       = document.getElementById('main-brand');
-				var logoSm     = document.getElementById('main-brand-sm');
-				var menuToggle = document.getElementById('header').querySelector('.menu-toggle');
-				var isClosed   = wrapper.classList.contains('closed');
+			var menuClose = function() {
+				sidebar.querySelector('.collapse').classList.remove('in');
+				sidebar.querySelector('.collapse-arrow').classList.add('collapsed');
+				menuToggle.classList.add('active');
+				wrapper.classList.add('closed');
+				logoSm.classList.remove('hidden-xs-up');
+				logo.classList.add('hidden-xs-up');
+			};
 
-				if (isClosed) {
-					wrapper.classList.remove('closed');
-					menuToggle.classList.remove('active');
-					logoSm.classList.add('hidden-xs-up');
-					logo.classList.remove('hidden-xs-up');
-				} else {
-					sidebar.querySelector('.collapse').classList.remove('in');
-					sidebar.querySelector('.collapse-arrow').classList.add('collapsed');
-					menuToggle.classList.add('active');
-					wrapper.classList.add('closed');
-					logoSm.classList.remove('hidden-xs-up');
-					logo.classList.add('hidden-xs-up');
+			var menuOpen = function() {
+				wrapper.classList.remove('closed');
+				menuToggle.classList.remove('active');
+				logoSm.classList.add('hidden-xs-up');
+				logo.classList.remove('hidden-xs-up');
+			};
+
+			/** Localstorage to remember the menu state (open/close) */
+			var saveState = function () {
+				if (typeof(Storage) !== 'undefined') {
+					// Set the state of the menu in localStorage
+					localStorage.setItem('adminMenuState', wrapper.classList.contains('closed'));
+				}
+			};
+
+			var animateWrapper = function(keepOpen) {
+				if (window.outerWidth > 767) {
+					if (wrapper.classList.contains('closed') || keepOpen && keepOpen === true) {
+						menuOpen();
+					} else {
+						menuClose();
+					}
 				}
 			};
 
@@ -68,21 +99,48 @@
 			document.getElementById('menu-collapse').addEventListener('click', function(e) {
 				e.preventDefault();
 				animateWrapper();
+				saveState();
 			});
 
-			var doAnimate = function () {
-				if (wrapper.classList.contains('closed') && window.outerWidth > 767) {
-					animateWrapper();
-				}
-			};
+			if (wrapperClosed) {
+				wrapperClosed[i].addEventListener('click', animateWrapper(true));
+			}
 
-			var classses = ["#wrapper.closed .sidebar-wrapper [data-toggle='collapse']"];
-			classses.forEach(function(item) {
-				var tmp = document.querySelectorAll(item);
-				for (var i = 0; i < tmp.length; i++) {
-					tmp[i].addEventListener('click', doAnimate);
+			for (var i = 0; i < sidebar.length; i++) {
+				sidebar[i].addEventListener('click', animateWrapper(true));
+			}
+
+			/**
+			 * Sidebar Accordion
+			 */
+			jQuery('.main-nav li.parent > a').on('click', function() {
+				var $self  = jQuery(this),
+				    parent = $self.parent('li');
+
+				$self.removeAttr('href');
+
+				if (parent.hasClass('open')) {
+					parent.removeClass('open');
+					parent.find('li').removeClass('open');
+					parent.find('ul').stop(true, false).slideUp();
+				}
+				else {
+					var siblings = parent.siblings('li');
+					parent.addClass('open');
+					parent.children('ul').stop(true, false).slideDown();
+					siblings.children('ul').stop(true, false).slideUp();
+					siblings.removeClass('open');
+					siblings.find('li').removeClass('open');
+					siblings.find('ul').stop(true, false).slideUp();
 				}
 			});
+
+			/** Accessibility */
+			var allLiEl = sidebar.querySelectorAll('ul[role="menubar"] li');
+			for (var i = 0; i < allLiEl.length; i++) {
+				// We care for enter and space
+				allLiEl[i].addEventListener('keyup', function(e) { if (e.keyCode == 32 || e.keyCode == 13 ) e.target.querySelector('a').click(); });
+			}
 
 			// Set the height of the menu to prevent overlapping
 			var setMenuHeight = function() {
@@ -106,43 +164,44 @@
 					allLinks[i].classList.add('active');
 					if (!allLinks[i].parentNode.classList.contains('parent')) {
 						var parentLink = closest(allLinks[i], '.panel-collapse');
-						parentLink.parentNode.querySelector('a.collapse-arrow').classList.add('active');
+						/** Auto Expand First Level */
+						if (parentLink){
+							parentLink.parentNode.querySelector('a.collapse-arrow').classList.add('active');
+							if (!wrapper.classList.contains('closed')) {
+									parentLink.classList.add('in');
+							}
+						}
+						/** Auto Expand Second Level */
+						if (allLinks[i].parentNode.parentNode.parentNode.classList.contains('parent')) {
+							var parentLink2 = closest(parentLink, '.panel-collapse');
+							if (parentLink2){
+								parentLink2.parentNode.parentNode.parentNode.querySelector('a.collapse-arrow').classList.add('active');
+								if (!wrapper.classList.contains('closed')) {
+									parentLink2.classList.add('in');
+								}
+							}
+						}
 					}
 				}
 			}
 
-		} else {
-			document.getElementById('sidebar-wrapper').style.display = 'none';
-			document.getElementById('sidebar-wrapper').style.width = '0';
-			document.getElementsByClassName('wrapper')[0].style.paddingLeft = '0';
-		}
-
-		/** http://stackoverflow.com/questions/18663941/finding-closest-element-without-jquery */
-		function closest(el, selector) {
-			var matchesFn;
-
-			// find vendor prefix
-			['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
-				if (typeof document.body[fn] == 'function') {
-					matchesFn = fn;
-					return true;
+			if (typeof(Storage) !== 'undefined') {
+				if (localStorage.getItem('adminMenuState') == "true") {
+					menuClose();
 				}
-				return false;
-			});
-
-			var parent;
-
-			// traverse parents
-			while (el) {
-				parent = el.parentElement;
-				if (parent && parent[matchesFn](selector)) {
-					return parent;
-				}
-				el = parent;
 			}
 
-			return null;
+		} else {
+			if (document.getElementById('sidebar-wrapper')) {
+				document.getElementById('sidebar-wrapper').style.display = 'none';
+				document.getElementById('sidebar-wrapper').style.width = '0';
+			}
+
+			if (document.getElementsByClassName('wrapper').length)
+				document.getElementsByClassName('wrapper')[0].style.paddingLeft = '0';
 		}
+
+
 
 		/**
 		 * Turn radios into btn-group
@@ -269,7 +328,7 @@
 			if (subhead) {
 				navTop = document.querySelector('.subhead').offsetHeight;
 
-				if (document.getElementById('sidebar-wrapper').style.display === 'none') {
+				if (document.getElementById('sidebar-wrapper') && document.getElementById('sidebar-wrapper').style.display === 'none') {
 					subhead.style.left = 0;
 				}
 
@@ -285,13 +344,13 @@
 			var subhead = document.getElementById('subhead');
 
 			if (subhead) {
-				var scrollTop = (window.pageYOffset || subhead.scrollTop)  - (subhead.clientTop || 0);
+				var scrollTop = (window.pageYOffset || subhead.scrollTop)  - (subhead.clientTop || 40);
 
 				if (scrollTop >= navTop && !isFixed) {
 					isFixed = true;
 					subhead.classList.add('subhead-fixed');
 
-					if (document.getElementById('sidebar-wrapper').style.display === 'none') {
+					if (document.getElementById('sidebar-wrapper') && document.getElementById('sidebar-wrapper').style.display === 'none') {
 						subhead.style.left = 0;
 					}
 				} else if (scrollTop <= navTop && isFixed) {
@@ -300,35 +359,5 @@
 				}
 			}
 		}
-
-		// Custom select colour states
-		var colourSelects = document.querySelectorAll('.custom-select-color-state');
-		for (var i = 0; i < colourSelects.length; i++)
-		{
-			// Add class on page load
-			var selectBox = colourSelects[i];
-			if (selectBox.value == 1)
-			{
-				selectBox.classList.add('custom-select-success');
-			}
-			else if (selectBox.value == 0)
-			{
-				selectBox.classList.add('custom-select-danger');
-			}
-
-			// Add class when value is changed
-			selectBox.addEventListener('change', function(){
-				this.classList.remove('custom-select-success', 'custom-select-danger');
-				if (this.value == 1)
-				{
-					this.classList.add('custom-select-success');
-				}
-				else if (this.value == 0 || this.value == parseInt(-2))
-				{
-					this.classList.add('custom-select-danger');
-				}
-			});
-		}
-
 	});
 })();

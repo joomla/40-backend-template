@@ -3,18 +3,21 @@
  * @package     Joomla.Administrator
  * @subpackage  mod_menu
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Tree based class to render the admin menu
  *
  * @since  1.5
  */
-class JAdminCssMenu extends JObject
+class JAdminCssMenu
 {
 	/**
 	 * CSS string to add to document head
@@ -49,8 +52,8 @@ class JAdminCssMenu extends JObject
 	 */
 	public function __construct()
 	{
-		$this->_root = new JMenuNode('ROOT');
-		$this->_current = & $this->_root;
+		$this->_root    = new JMenuNode('ROOT');
+		$this->_current = &$this->_root;
 	}
 
 	/**
@@ -84,10 +87,17 @@ class JAdminCssMenu extends JObject
 	/**
 	 * Method to get the parent
 	 *
+	 * @param   bool  $clear  Whether to clear the existing menu items or just reset the pointer to root element
+	 *
 	 * @return  void
 	 */
-	public function reset()
+	public function reset($clear = false)
 	{
+		if ($clear)
+		{
+			$this->_root = new JMenuNode('ROOT');
+		}
+
 		$this->_current = &$this->_root;
 	}
 
@@ -116,7 +126,7 @@ class JAdminCssMenu extends JObject
 		// Recurse through children if they exist
 		while ($this->_current->hasChildren())
 		{
-			echo "<ul id='menu' class='nav navbar-nav nav-stacked main-nav clearfix'>\n";
+			echo "<div role=\"navigation\" aria-label=\"Main menu\"><ul id='menu' class='nav navbar-nav nav-stacked main-nav clearfix' tabindex='0' role=\"menubar\">\n";
 
 			foreach ($this->_current->getChildren() as $child)
 			{
@@ -124,7 +134,7 @@ class JAdminCssMenu extends JObject
 				$this->renderLevel($depth++);
 			}
 
-			echo "</ul>\n";
+			echo "</ul></div>\n";
 		}
 
 		if ($this->_css)
@@ -156,7 +166,8 @@ class JAdminCssMenu extends JObject
 		$unique = self::$counter;
 
 		// Print the item
-		echo '<li' . $class . '>';
+		$ariaPopup = $this->_current->hasChildren() ? 'aria-haspopup="true"' : '';
+		echo '<li' . $class . ' role="menuitem" tabindex="0" ' . $ariaPopup . '>';
 
 		// Print a link if it exists
 		$linkClass = array();
@@ -164,8 +175,8 @@ class JAdminCssMenu extends JObject
 
 		if ($this->_current->hasChildren())
 		{
-			$linkClass[] = 'collapse-arrow collapsed';
-			$dataToggle = ' data-toggle="collapse" data-parent="#menu"';
+			$linkClass[] = 'collapse-arrow';
+			$dataToggle = '';
 
 			// If the menu item has children, override the href
 			$this->_current->link = '#collapse' . $unique;
@@ -199,12 +210,12 @@ class JAdminCssMenu extends JObject
 		elseif ($this->_current->link != null && $this->_current->target == null)
 		{
 			echo "<a" . $linkClass . $dataToggle . " href=\"" . $this->_current->link . "\">" . $iconClass
-				. '<span class="sidebar-item-title">' . $this->_current->title . "</span></a>";
+				. '<span class="sidebar-item-title" >' . $this->_current->title . "</span></a>";
 		}
 		elseif ($this->_current->title != null)
 		{
 			echo "<a" . $linkClass . $dataToggle . ">" . $iconClass
-				. '<span class="sidebar-item-title">' . $this->_current->title . "</span></a>";
+				. '<span class="sidebar-item-title" >' . $this->_current->title . "</span></a>";
 		}
 		else
 		{
@@ -214,7 +225,7 @@ class JAdminCssMenu extends JObject
 		// Recurse through children if they exist
 		while ($this->_current->hasChildren())
 		{
-			echo '<ul id="collapse' . $unique . '" class="nav panel-collapse collapse-level-1 collapse">' . "\n";
+			echo '<ul id="collapse' . $unique . '" class="nav panel-collapse collapse-level-1 collapse" role="menu" aria-hidden="true">' . "\n";
 
 			foreach ($this->_current->getChildren() as $child)
 			{
@@ -283,6 +294,144 @@ class JAdminCssMenu extends JObject
 
 		return $html;
 	}
+
+	/**
+	 * Populate the menu items in the menu object for disabled state
+	 *
+	 * @param   Registry  $params   Menu configuration parameters
+	 * @param   bool      $enabled  Whether the menu should be enabled or disabled
+	 *
+	 * @return  void
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function load($params, $enabled)
+	{
+		$menutype = $params->get('menutype', '*');
+
+		$this->reset(true);
+
+		if ($menutype == '*')
+		{
+			require_once __DIR__ . '/preset/' . ($enabled ? 'enabled.php' : 'disabled.php');
+		}
+		else
+		{
+			$items = ModMenuHelper::getMenuItems($menutype);
+			$app   = JFactory::getApplication();
+			$me    = JFactory::getUser();
+
+			$authMenus   = $me->authorise('core.manage', 'com_menus');
+			$authModules = $me->authorise('core.manage', 'com_modules');
+
+			if ($enabled && $params->get('check') && ($authMenus || $authModules))
+			{
+				$elements = ArrayHelper::getColumn($items, 'element');
+
+				$rMenu   = $authMenus && !in_array('com_menus', $elements);
+				$rModule = $authModules && !in_array('com_modules', $elements);
+
+				if ($rMenu || $rModule)
+				{
+					$recovery = $app->getUserStateFromRequest('mod_menu.recovery', 'recover_menu', 0, 'int');
+
+					if ($recovery)
+					{
+						$app->enqueueMessage(JText::_('MOD_MENU_WARNING_IMPORTANT_ITEMS_INACCESSIBLE_RECOVERY'), 'info');
+
+						$params->set('recovery', true);
+
+						// In recovery mode, load the preset inside a special root node.
+						$this->addChild(new JMenuNode(JText::_('MOD_MENU_RECOVERY_MENU_ROOT'), '#'), true);
+
+						require_once __DIR__ . '/preset/enabled.php';
+
+						$this->getParent();
+					}
+					elseif ($rMenu && $rModule)
+					{
+						$app->enqueueMessage(JText::_('MOD_MENU_WARNING_IMPORTANT_ITEMS_INACCESSIBLE'), 'warning');
+					}
+					else
+					{
+						$app->enqueueMessage(JText::_('MOD_MENU_WARNING_IMPORTANT_ITEMS_INACCESSIBLE_' . ($rMenu ? 'MENUS' : 'MODULES')), 'warning');
+					}
+				}
+			}
+
+			// Menu items for dynamic db driven setup to load here
+			$this->loadItems($items, $enabled);
+		}
+	}
+
+	/**
+	 * Load the menu items from an array
+	 *
+	 * @param   array  $items    Menu items loaded from database
+	 * @param   bool   $enabled  Whether the menu should be enabled or disabled
+	 *
+	 * @return  void
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	protected function loadItems($items, $enabled = true)
+	{
+		foreach ($items as $item)
+		{
+			if ($item->type == 'separator')
+			{
+				$this->addSeparator();
+
+				continue;
+			}
+
+			$container  = $item->params->get('components_container');
+			$components = $container ? ModMenuHelper::getComponents(true, true) : array();
+
+			if ($item->type == 'heading' && !count($components) && !count($item->submenu))
+			{
+				// Exclude if it is a heading type menu item, and has no children.
+			}
+			elseif (!$enabled)
+			{
+				$this->addChild(new JMenuNode($item->text, $item->link, 'disabled'));
+			}
+			else
+			{
+				$this->addChild(new JMenuNode($item->text, $item->link, $item->parent_id == 1 ? null : 'class:'), true);
+
+				$this->loadItems($item->submenu);
+
+				// Add a separator between dynamic menu items and components menu items
+				if (count($item->submenu) && count($components))
+				{
+					$this->addSeparator();
+				}
+
+				// Adding component submenu the old way, this assumes 2-level menu only
+				foreach ($components as &$component)
+				{
+					if (empty($component->submenu))
+					{
+						$this->addChild(new JMenuNode($component->text, $component->link, $component->img));
+					}
+					else
+					{
+						$this->addChild(new JMenuNode($component->text, $component->link, $component->img), true);
+
+						foreach ($component->submenu as $sub)
+						{
+							$this->addChild(new JMenuNode($sub->text, $sub->link, $sub->img));
+						}
+
+						$this->getParent();
+					}
+				}
+
+				$this->getParent();
+			}
+		}
+	}
 }
 
 /**
@@ -291,7 +440,7 @@ class JAdminCssMenu extends JObject
  * @see    JAdminCssMenu
  * @since  1.5
  */
-class JMenuNode extends JObject
+class JMenuNode
 {
 	/**
 	 * Node Title
@@ -414,15 +563,15 @@ class JMenuNode extends JObject
 
 		if (!is_null($this->_parent))
 		{
-			unset($this->_parent->children[$hash]);
+			unset($this->_parent->_children[$hash]);
 		}
 
 		if (!is_null($parent))
 		{
-			$parent->_children[$hash] = & $this;
+			$parent->_children[$hash] = &$this;
 		}
 
-		$this->_parent = & $parent;
+		$this->_parent = &$parent;
 	}
 
 	/**

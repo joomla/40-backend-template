@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_plugins
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -51,10 +51,10 @@ JFactory::getDocument()->addScriptDeclaration("
 							?>
 						</h3>
 						<div class="info-labels mb-1">
-							<span class="tag tag-default hasTooltip" title="<?php echo JHtml::tooltipText('COM_PLUGINS_FIELD_FOLDER_LABEL', 'COM_PLUGINS_FIELD_FOLDER_DESC'); ?>">
+							<span class="badge badge-default hasTooltip" title="<?php echo JHtml::tooltipText('COM_PLUGINS_FIELD_FOLDER_LABEL', 'COM_PLUGINS_FIELD_FOLDER_DESC'); ?>">
 								<?php echo $this->form->getValue('folder'); ?>
 							</span> /
-							<span class="tag tag-default hasTooltip" title="<?php echo JHtml::tooltipText('COM_PLUGINS_FIELD_ELEMENT_LABEL', 'COM_PLUGINS_FIELD_ELEMENT_DESC'); ?>">
+							<span class="badge badge-default hasTooltip" title="<?php echo JHtml::tooltipText('COM_PLUGINS_FIELD_ELEMENT_LABEL', 'COM_PLUGINS_FIELD_ELEMENT_DESC'); ?>">
 								<?php echo $this->form->getValue('element'); ?>
 							</span>
 						</div>
@@ -62,6 +62,7 @@ JFactory::getDocument()->addScriptDeclaration("
 							<?php
 							$this->fieldset    = 'description';
 							$short_description = JText::_($this->item->xml->description);
+							$this->fieldset    = 'description';
 							$long_description  = JLayoutHelper::render('joomla.edit.fieldset', $this);
 
 							if (!$long_description)

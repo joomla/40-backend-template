@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_menus
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -71,8 +71,8 @@ abstract class MenusHtmlMenus
 				{
 					$text    = strtoupper($item->lang_sef);
 					$url     = JRoute::_('index.php?option=com_menus&task=item.edit&id=' . (int) $item->id);
-					$tooltip = $item->title . '<br>' . JText::sprintf('COM_MENUS_MENU_SPRINTF', $item->menu_title);
-					$classes = 'hasPopover tag tag-association tag-' . $item->lang_sef;
+					$tooltip = htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8') . '<br>' . JText::sprintf('COM_MENUS_MENU_SPRINTF', $item->menu_title);
+					$classes = 'hasPopover badge badge-association badge-' . $item->lang_sef;
 
 					$item->link = '<a href="' . $url . '" title="' . $item->language_title . '" class="' . $classes
 						. '" data-content="' . $tooltip . '" data-placement="top">'
@@ -234,7 +234,7 @@ abstract class MenusHtmlMenus
 	 *
 	 * @return  string  The Html code
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   3.7.0
 	 */
 	public static function visibility($params)
 	{
@@ -251,6 +251,6 @@ abstract class MenusHtmlMenus
 
 		$show_menu = $registry->get('menu_show');
 
-		return ($show_menu === 0) ? '<span class="tag tag-default">' . JText::_('COM_MENUS_LABEL_HIDDEN') . '</span>' : '';
+		return ($show_menu === 0) ? '<span class="badge badge-default">' . JText::_('COM_MENUS_LABEL_HIDDEN') . '</span>' : '';
 	}
 }

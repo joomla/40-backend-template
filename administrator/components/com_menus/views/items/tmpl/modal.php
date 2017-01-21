@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_menus
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $app = JFactory::getApplication();
 
-if ($app->isSite())
+if ($app->isClient('site'))
 {
 	JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
 }
@@ -41,7 +41,6 @@ jQuery(document).ready(function($) {
 });");
 ?>
 <div class="container-popup">
-
 	<form action="<?php echo JRoute::_('index.php?option=com_menus&view=items&layout=modal&tmpl=component&' . JSession::getFormToken() . '=1'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
 
 		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
@@ -54,7 +53,7 @@ jQuery(document).ready(function($) {
 			<table class="table table-striped table-sm">
 				<thead>
 					<tr>
-						<th width="1%" class="nowrap text-xs-center">
+						<th width="1%" class="nowrap text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 						</th>
 						<th class="title">
@@ -63,7 +62,7 @@ jQuery(document).ready(function($) {
 						<th class="nowrap hidden-sm-down">
 							<?php echo JHtml::_('searchtools.sort', 'COM_MENUS_HEADING_MENU', 'menutype_title', $listDirn, $listOrder); ?>
 						</th>
-						<th width="5%" class="text-xs-center nowrap hidden-sm-down">
+						<th width="5%" class="text-center nowrap hidden-sm-down">
 							<?php echo JHtml::_('searchtools.sort', 'COM_MENUS_HEADING_HOME', 'a.home', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-sm-down">
@@ -104,7 +103,7 @@ jQuery(document).ready(function($) {
 						}
 						?>
 						<tr class="row<?php echo $i % 2; ?>">
-							<td class="text-xs-center">
+							<td class="text-center">
 								<?php echo JHtml::_('MenusHtml.Menus.state', $item->published, $i, 0); ?>
 							</td>
 							<td>
@@ -119,9 +118,9 @@ jQuery(document).ready(function($) {
 									<?php echo $this->escape($item->title); ?></a>
 								<span class="small">
 									<?php if (empty($item->note)) : ?>
-										<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+										<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
 									<?php else : ?>
-										<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note));?>
+										<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note)); ?>
 									<?php endif; ?>
 								</span>
 								<div title="<?php echo $this->escape($item->path); ?>">
@@ -133,7 +132,7 @@ jQuery(document).ready(function($) {
 							<td class="small hidden-sm-down">
 								<?php echo $this->escape($item->menutype_title); ?>
 							</td>
-							<td class="text-xs-center hidden-sm-down">
+							<td class="text-center hidden-sm-down">
 								<?php if ($item->type == 'component') : ?>
 									<?php if ($item->language == '*' || $item->home == '0') : ?>
 										<?php echo JHtml::_('jgrid.isdefault', $item->home, $i, 'items.', ($item->language != '*' || !$item->home) && 0); ?>
@@ -150,7 +149,7 @@ jQuery(document).ready(function($) {
 								<?php echo $this->escape($item->access_level); ?>
 							</td>
 							<td class="small hidden-sm-down">
-								<?php if ($item->language == ''):?>
+								<?php if ($item->language == '') : ?>
 									<?php echo JText::_('JDEFAULT'); ?>
 								<?php elseif ($item->language == '*') : ?>
 									<?php echo JText::alt('JALL', 'language'); ?>

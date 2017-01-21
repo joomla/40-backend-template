@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_content
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -22,10 +22,23 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
 $columns   = 10;
 
+if (strpos($listOrder, 'publish_up') !== false)
+{
+	$orderingColumn = 'publish_up';
+}
+elseif (strpos($listOrder, 'publish_down') !== false)
+{
+	$orderingColumn = 'publish_down';
+}
+else
+{
+	$orderingColumn = 'created';
+}
+
 if ($saveOrder)
 {
-	$saveOrderingUrl = 'index.php?option=com_content&task=articles.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	$saveOrderingUrl = 'index.php?option=com_content&task=articles.saveOrderAjax&tmpl=component' . JSession::getFormToken() . '=1';
+	JHtml::_('draggablelist.draggable');
 }
 
 $assoc = JLanguageAssociations::isEnabled();
@@ -45,50 +58,50 @@ $assoc = JLanguageAssociations::isEnabled();
 			<table class="table table-striped" id="articleList">
 				<thead>
 					<tr>
-						<th width="1%" class="nowrap text-xs-center hidden-sm-down">
+						<th width="1%" class="nowrap text-center hidden-sm-down">
 							<?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
 						</th>
-						<th width="1%" class="text-xs-center">
+						<th width="1%" class="text-center">
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
-						<th width="1%" style="min-width:85px" class="nowrap text-xs-center">
+						<th width="1%" style="min-width:85px" class="nowrap text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 						</th>
 						<th>
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="10%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 						</th>
 						<?php if ($assoc) : ?>
 							<?php $columns++; ?>
-							<th width="5%" class="nowrap hidden-sm-down text-xs-center">
+							<th width="5%" class="nowrap hidden-sm-down text-center">
 								<?php echo JHtml::_('searchtools.sort', 'COM_CONTENT_HEADING_ASSOCIATION', 'association', $listDirn, $listOrder); ?>
 							</th>
-						<?php endif;?>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
+						<?php endif; ?>
+						<th width="10%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort',  'JAUTHOR', 'a.created_by', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="10%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
-							<?php echo JHtml::_('searchtools.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
+						<th width="10%" class="nowrap hidden-sm-down text-center">
+							<?php echo JHtml::_('searchtools.sort', 'COM_CONTENT_HEADING_DATE_' . strtoupper($orderingColumn), 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
 						</th>
-						<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="3%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 						</th>
 						<?php if ($this->vote) : ?>
 							<?php $columns++; ?>
-							<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+							<th width="3%" class="nowrap hidden-sm-down text-center">
 								<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_VOTES', 'rating_count', $listDirn, $listOrder); ?>
 							</th>
 							<?php $columns++; ?>
-							<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+							<th width="3%" class="nowrap hidden-sm-down text-center">
 								<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_RATINGS', 'rating', $listDirn, $listOrder); ?>
 							</th>
-						<?php endif;?>
-						<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+						<?php endif; ?>
+						<th width="3%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
@@ -99,7 +112,7 @@ $assoc = JLanguageAssociations::isEnabled();
 						</td>
 					</tr>
 				</tfoot>
-				<tbody>
+				<tbody <?php if ($saveOrder) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
 				<?php foreach ($this->items as $i => $item) :
 					$item->max_ordering = 0;
 					$ordering   = ($listOrder == 'a.ordering');
@@ -109,8 +122,8 @@ $assoc = JLanguageAssociations::isEnabled();
 					$canEditOwn = $user->authorise('core.edit.own',   'com_content.article.' . $item->id) && $item->created_by == $userId;
 					$canChange  = $user->authorise('core.edit.state', 'com_content.article.' . $item->id) && $canCheckin;
 					?>
-					<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
-						<td class="order nowrap text-xs-center hidden-sm-down">
+					<tr class="row<?php echo $i % 2; ?>" data-dragable-group="<?php echo $item->catid; ?>">
+						<td class="order nowrap text-center hidden-sm-down">
 							<?php
 							$iconClass = '';
 							if (!$canChange)
@@ -129,25 +142,25 @@ $assoc = JLanguageAssociations::isEnabled();
 								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
 							<?php endif; ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<div class="btn-group">
 								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 								<?php echo JHtml::_('contentadministrator.featured', $item->featured, $i, $canChange); ?>
 							</div>
 						</td>
 						<td class="has-context">
-							<div class="float-xs-left break-word">
+							<div class="float-left break-word">
 								<?php if ($item->checked_out) : ?>
 									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
 								<?php endif; ?>
-								<?php if ($item->language == '*'):?>
+								<?php if ($item->language == '*') : ?>
 									<?php $language = JText::alt('JALL', 'language'); ?>
-								<?php else:?>
+								<?php else : ?>
 									<?php $language = $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
-								<?php endif;?>
+								<?php endif; ?>
 								<?php if ($canEdit || $canEditOwn) : ?>
 									<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_content&task=article.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 										<?php echo $this->escape($item->title); ?></a>
@@ -158,21 +171,21 @@ $assoc = JLanguageAssociations::isEnabled();
 									<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
 								</span>
 								<div class="small">
-									<?php echo JText::_('JCATEGORY') . ": " . $this->escape($item->category_title); ?>
+									<?php echo JText::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
 								</div>
 							</div>
 						</td>
-						<td class="small hidden-sm-down text-xs-center">
+						<td class="small hidden-sm-down text-center">
 							<?php echo $this->escape($item->access_level); ?>
 						</td>
 						<?php if ($assoc) : ?>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
 							<?php if ($item->association) : ?>
 								<?php echo JHtml::_('contentadministrator.association', $item->id); ?>
 							<?php endif; ?>
 						</td>
-						<?php endif;?>
-						<td class="small hidden-sm-down text-xs-center">
+						<?php endif; ?>
+						<td class="small hidden-sm-down text-center">
 							<?php if ($item->created_by_alias) : ?>
 								<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id=' . (int) $item->created_by); ?>" title="<?php echo JText::_('JAUTHOR'); ?>">
 								<?php echo $this->escape($item->author_name); ?></a>
@@ -182,30 +195,33 @@ $assoc = JLanguageAssociations::isEnabled();
 								<?php echo $this->escape($item->author_name); ?></a>
 							<?php endif; ?>
 						</td>
-						<td class="small hidden-sm-down text-xs-center">
+						<td class="small hidden-sm-down text-center">
 							<?php echo JLayoutHelper::render('joomla.content.language', $item); ?>
 						</td>
-						<td class="nowrap small hidden-sm-down text-xs-center">
-							<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
+						<td class="nowrap small hidden-sm-down text-center">
+							<?php
+							$date = $item->{$orderingColumn};
+							echo $date > 0 ? JHtml::_('date', $date, JText::_('DATE_FORMAT_LC4')) : '-';
+							?>
 						</td>
-						<td class="hidden-sm-down text-xs-center">
-							<span class="tag tag-info">
+						<td class="hidden-sm-down text-center">
+							<span class="badge badge-info">
 								<?php echo (int) $item->hits; ?>
 							</span>
 						</td>
 						<?php if ($this->vote) : ?>
-							<td class="hidden-sm-down text-xs-center">
-								<span class="tag tag-success">
+							<td class="hidden-sm-down text-center">
+								<span class="badge badge-success">
 								<?php echo (int) $item->rating_count; ?>
 								</span>
 							</td>
-							<td class="hidden-sm-down text-xs-center">
-								<span class="tag tag-warning">
+							<td class="hidden-sm-down text-center">
+								<span class="badge badge-warning">
 								<?php echo (int) $item->rating; ?>
 								</span>
 							</td>
 						<?php endif; ?>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
 							<?php echo (int) $item->id; ?>
 						</td>
 					</tr>
@@ -226,7 +242,7 @@ $assoc = JLanguageAssociations::isEnabled();
 					$this->loadTemplate('batch_body')
 				); ?>
 			<?php endif; ?>
-		<?php endif;?>
+		<?php endif; ?>
 
 		<?php echo $this->pagination->getListFooter(); ?>
 

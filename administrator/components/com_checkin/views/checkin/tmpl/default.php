@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_checkin
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -18,13 +18,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_checkin'); ?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-main-container" class="j-main-container">
-		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('filterButton' => false))); ?>
+		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 		<div class="clearfix"></div>
-		<?php if (empty($this->items)) : ?>
-			<div class="alert alert-warning alert-no-items">
-				<?php echo JText::_('COM_CHECKIN_NO_ITEMS'); ?>
-			</div>
-		<?php else : ?>
+		<?php if ($this->total > 0) : ?>
 			<table id="global-checkin" class="table table-striped">
 				<thead>
 					<tr>
@@ -42,23 +38,23 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				</tfoot>
 				<tbody>
 					<?php $i = 0; ?>
-					<?php foreach ($this->items as $table => $count): ?>
+					<?php foreach ($this->items as $table => $count) : ?>
 						<tr class="row<?php echo $i % 2; ?>">
-							<td class="text-xs-center"><?php echo JHtml::_('grid.id', $i, $table); ?></td>
+							<td class="text-center"><?php echo JHtml::_('grid.id', $i, $table); ?></td>
 							<td>
 								<label for="cb<?php echo $i ?>">
 									<?php echo JText::sprintf('COM_CHECKIN_TABLE', $table); ?>
 								</label>
 							</td>
 							<td>
-								<span class="tag tag-default"><?php echo $count; ?></span>
+								<span class="badge badge-default"><?php echo $count; ?></span>
 							</td>
 						</tr>
 						<?php $i++; ?>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-		<?php endif;?>
+		<?php endif; ?>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<?php echo JHtml::_('form.token'); ?>

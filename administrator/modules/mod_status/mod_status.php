@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  mod_status
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -23,6 +23,8 @@ $query = $db->getQuery(true)
 
 $db->setQuery($query);
 $unread = (int) $db->loadResult();
+// Set the unread message count as a session variable so we can access it in the template
+JFactory::getSession()->set('messages.unread', $unread);
 
 $count = 0;
 

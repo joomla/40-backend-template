@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_tags
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -79,10 +79,10 @@ class TagsViewTag extends JViewLegacy
 
 		/**
 		 * Prepare the toolbar.
-		 * If it is new we get: `tag tag-add add`
-		 * else we get `tag tag-edit edit`
+		 * If it is new we get: `badge badge-add add`
+		 * else we get `badge badge-edit edit`
 		 */
-		JToolbarHelper::title($title, 'tag tag-' . ($isNew ? 'add add' : 'edit edit'));
+		JToolbarHelper::title($title, 'badge badge-' . ($isNew ? 'add add' : 'edit edit'));
 
 		// For new records, check the create permission.
 		if ($isNew)
@@ -130,7 +130,7 @@ class TagsViewTag extends JViewLegacy
 				'btn-success'
 			);
 
-			if ($this->state->params->get('save_history', 0) && $itemEditable)
+			if (JComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $itemEditable)
 			{
 				JToolbarHelper::versions('com_tags.tag', $this->item->id);
 			}

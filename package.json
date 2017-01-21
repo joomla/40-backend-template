@@ -7,7 +7,7 @@
     "url": "https://github.com/joomla/40-backend-template.git"
   },
   "dependencies": {
-    "autoprefixer": "^6.5.3",
+    "autoprefixer": "^6.6.1",
     "grunt": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-concat": "latest",
@@ -16,9 +16,9 @@
     "grunt-contrib-uglify": "latest",
     "grunt-fetch-pages": "^2.0.0",
     "grunt-postcss": "0.8.0",
-    "grunt-sass": "^1.2.1",
+    "grunt-sass": "^2.0.0",
     "grunt-scss-lint": "^0.5.0",
-    "grunt-shell": "latest",
+    "grunt-shell": "latest"
   },
   "license": "GPL-2.0+"
 }

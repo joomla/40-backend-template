@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  mod_multilangstatus
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -22,15 +22,14 @@ JFactory::getDocument()->addScriptDeclaration("
 ");
 ?>
 
-<div class="btn-group multilanguage">
+<li class="px-2 multilanguage">
 	<a data-toggle="modal"
 		href="#multiLangModal"
 		title="<?php echo JText::_('MOD_MULTILANGSTATUS'); ?>"
 		role="button">
-		<span class="icon-comment"></span><?php echo JText::_('MOD_MULTILANGSTATUS'); ?>
+		<span class="mr-1 icon-comment"></span><?php echo JText::_('MOD_MULTILANGSTATUS'); ?>
 	</a>
-	<span class="btn-group separator"></span>
-</div>
+</li>
 
 <?php echo JHtml::_(
 	'bootstrap.renderModal',

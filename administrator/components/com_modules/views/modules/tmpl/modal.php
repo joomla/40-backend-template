@@ -3,13 +3,13 @@
  * @package     Joomla.Administrator
  * @subpackage  com_modules
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
-if (JFactory::getApplication()->isSite())
+if (JFactory::getApplication()->isClient('site'))
 {
 	JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
 }
@@ -41,17 +41,11 @@ modulePosIns = function(position) {
 
 		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 
-		<div class="clearfix"></div>
-
-		<?php if (empty($this->items)) : ?>
-		<div class="alert alert-warning alert-no-items">
-			<?php echo JText::_('COM_MODULES_MSG_MANAGE_NO_MODULES'); ?>
-		</div>
-		<?php else : ?>
+		<?php if ($this->total > 0) : ?>
 		<table class="table table-striped" id="moduleList">
 			<thead>
 				<tr>
-					<th width="1%" class="nowrap text-xs-center">
+					<th width="1%" class="nowrap text-center">
 						<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 					</th>
 					<th class="title">
@@ -95,7 +89,7 @@ modulePosIns = function(position) {
 				foreach ($this->items as $i => $item) :
 				?>
 				<tr class="row<?php echo $i % 2; ?>">
-					<td class="text-xs-center">
+					<td class="text-center">
 						<span class="<?php echo $iconStates[$this->escape($item->published)]; ?>"></span>
 					</td>
 					<td class="has-context">
@@ -127,7 +121,7 @@ modulePosIns = function(position) {
 			<?php endforeach; ?>
 			</tbody>
 		</table>
-		<?php endif;?>
+		<?php endif; ?>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />

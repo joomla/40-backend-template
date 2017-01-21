@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_content
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -18,9 +18,21 @@ $user      = JFactory::getUser();
 $userId    = $user->get('id');
 $listOrder = str_replace(' ' . $this->state->get('list.direction'), '', $this->state->get('list.fullordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
-$canOrder  = $user->authorise('core.edit.state', 'com_content.article');
 $saveOrder = $listOrder == 'fp.ordering';
 $columns   = 10;
+
+if (strpos($listOrder, 'publish_up') !== false)
+{
+	$orderingColumn = 'publish_up';
+}
+elseif (strpos($listOrder, 'publish_down') !== false)
+{
+	$orderingColumn = 'publish_down';
+}
+else
+{
+	$orderingColumn = 'created';
+}
 
 if ($saveOrder)
 {
@@ -43,44 +55,44 @@ if ($saveOrder)
 			<table class="table table-striped" id="articleList">
 				<thead>
 					<tr>
-						<th width="1%" class="nowrap text-xs-center hidden-sm-down">
+						<th width="1%" class="nowrap text-center hidden-sm-down">
 							<?php echo JHtml::_('searchtools.sort', '', 'fp.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
 						</th>
-						<th width="1%" class="text-xs-center">
+						<th width="1%" class="text-center">
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
-						<th width="1%" style="min-width:85px" class="nowrap text-xs-center">
+						<th width="1%" style="min-width:85px" class="nowrap text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 						</th>
 						<th>
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="10%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="10%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JAUTHOR', 'a.created_by', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="10%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-sm-down text-xs-center">
-							<?php echo JHtml::_('searchtools.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
+						<th width="10%" class="nowrap hidden-sm-down text-center">
+							<?php echo JHtml::_('searchtools.sort', 'COM_CONTENT_HEADING_DATE_' . strtoupper($orderingColumn), 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
 						</th>
-						<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="3%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 						</th>
 						<?php if ($this->vote) : ?>
 							<?php $columns++; ?>
-							<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+							<th width="3%" class="nowrap hidden-sm-down text-center">
 								<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_VOTES', 'rating_count', $listDirn, $listOrder); ?>
 							</th>
 							<?php $columns++; ?>
-							<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+							<th width="3%" class="nowrap hidden-sm-down text-center">
 								<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_RATINGS', 'rating', $listDirn, $listOrder); ?>
 							</th>
-						<?php endif;?>
-						<th width="3%" class="nowrap hidden-sm-down text-xs-center">
+						<?php endif; ?>
+						<th width="3%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
@@ -104,7 +116,7 @@ if ($saveOrder)
 					$canChange  = $user->authorise('core.edit.state', 'com_content.article.' . $item->id) && $canCheckin;
 					?>
 					<tr class="row<?php echo $i % 2; ?>">
-						<td class="order nowrap text-xs-center hidden-sm-down">
+						<td class="order nowrap text-center hidden-sm-down">
 							<?php
 							$iconClass = '';
 
@@ -124,17 +136,17 @@ if ($saveOrder)
 								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
 							<?php endif; ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<div class="btn-group">
 								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 								<?php echo JHtml::_('contentadministrator.featured', $item->featured, $i, $canChange); ?>
 							</div>
 						</td>
 						<td class="has-context">
-							<div class="float-xs-left break-word">
+							<div class="float-left break-word">
 								<?php if ($item->checked_out) : ?>
 									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
 								<?php endif; ?>
@@ -153,14 +165,14 @@ if ($saveOrder)
 								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
 							</span>
 								<div class="small">
-									<?php echo JText::_('JCATEGORY') . ": " . $this->escape($item->category_title); ?>
+									<?php echo JText::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
 								</div>
 							</div>
 						</td>
-						<td class="small hidden-sm-down text-xs-center">
+						<td class="small hidden-sm-down text-center">
 							<?php echo $this->escape($item->access_level); ?>
 						</td>
-						<td class="small hidden-sm-down text-xs-center">
+						<td class="small hidden-sm-down text-center">
 							<?php if ($item->created_by_alias) : ?>
 								<?php echo $this->escape($item->author_name); ?>
 								<p class="smallsub"> <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->created_by_alias)); ?></p>
@@ -168,30 +180,33 @@ if ($saveOrder)
 								<?php echo $this->escape($item->author_name); ?>
 							<?php endif; ?>
 						</td>
-						<td class="small hidden-sm-down text-xs-center">
+						<td class="small hidden-sm-down text-center">
 							<?php echo JLayoutHelper::render('joomla.content.language', $item); ?>
 						</td>
-						<td class="nowrap small hidden-sm-down text-xs-center">
-							<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
+						<td class="nowrap small hidden-sm-down text-center">
+							<?php
+							$date = $item->{$orderingColumn};
+							echo $date > 0 ? JHtml::_('date', $date, JText::_('DATE_FORMAT_LC4')) : '-';
+							?>
 						</td>
-						<td class="text-xs-center hidden-sm-down">
-							<span class="tag tag-info">
+						<td class="hidden-sm-down text-center">
+							<span class="badge badge-info">
 							<?php echo (int) $item->hits; ?>
 							</span>
 						</td>
 						<?php if ($this->vote) : ?>
-							<td class="hidden-sm-down text-xs-center">
-								<span class="tag tag-success" >
+							<td class="hidden-sm-down text-center">
+								<span class="badge badge-success" >
 								<?php echo (int) $item->rating_count; ?>
 								</span>
 							</td>
-							<td class="hidden-sm-down text-xs-center">
-								<span class="tag tag-warning" >
+							<td class="hidden-sm-down text-center">
+								<span class="badge badge-warning" >
 								<?php echo (int) $item->rating; ?>
 								</span>
 							</td>
 						<?php endif; ?>
-						<td class="text-xs-center hidden-sm-down">
+						<td class="text-center hidden-sm-down">
 							<?php echo (int) $item->id; ?>
 						</td>
 					</tr>

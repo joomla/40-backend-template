@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  Layout
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -31,10 +31,14 @@ $filters = $data['view']->filterForm->getGroup('filter');
 <?php if (!empty($filters['filter_search'])) : ?>
 	<?php if ($searchButton) : ?>
 		<label for="filter_search" class="element-invisible">
-			<?php echo JText::_('JSEARCH_FILTER'); ?>
+			<?php if (isset($filters['filter_search']->label)) : ?>
+				<?php echo JText::_($filters['filter_search']->label); ?>
+			<?php else : ?>
+				<?php echo JText::_('JSEARCH_FILTER'); ?>
+			<?php endif; ?>
 		</label>
 		<div class="btn-toolbar" role="toolbar">
-			<div class="btn-group">
+			<div class="btn-group mr-2">
 				<div class="input-group">
 					<?php echo $filters['filter_search']->input; ?>
 					<?php if ($filters['filter_search']->description) : ?>
@@ -43,6 +47,9 @@ $filters = $data['view']->filterForm->getGroup('filter');
 					<span class="input-group-btn">
 						<button type="submit" class="btn btn-secondary hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
 							<span class="icon-search"></span>
+						</button>
+						<button type="button" class="btn btn-secondary hasTooltip js-stools-btn-clear" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>">
+							<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 						</button>
 					</span>
 				</div>
@@ -54,11 +61,6 @@ $filters = $data['view']->filterForm->getGroup('filter');
 					</button>
 				</div>
 			<?php endif; ?>
-			<div class="btn-group">
-				<button type="button" class="btn btn-secondary hasTooltip js-stools-btn-clear" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>">
-					<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
-				</button>
-			</div>
 		</div>
 	<?php endif; ?>
 <?php endif;

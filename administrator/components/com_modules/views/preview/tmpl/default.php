@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_modules
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -22,7 +22,7 @@ JFactory::getDocument()->addScriptDeclaration(
 );
 ?>
 
-<table class="text-xs-center" width="90%">
+<table class="text-center" width="90%">
 	<tr>
 		<td class="contentheading" colspan="2" id="td-title"></td>
 	</tr>

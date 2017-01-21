@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  Templates.Atum
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -17,9 +17,6 @@ $this->direction = $doc->direction;
 
 // Add JavaScript Frameworks
 JHtml::_('bootstrap.framework');
-
-// Add template js
-JHtml::_('script', 'template.js', array('version' => 'auto', 'relative' => true));
 
 // Add Stylesheets
 JHtml::_('stylesheet', 'template' . ($this->direction === 'rtl' ? '-rtl' : '') . '.css', array('version' => 'auto', 'relative' => true));

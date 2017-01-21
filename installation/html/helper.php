@@ -2,7 +2,7 @@
 /**
  * @package    Joomla.Installation
  *
- * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -26,7 +26,7 @@ class InstallationHtmlHelper
 	{
 		// Determine if the configuration file path is writable.
 		$path   = JPATH_CONFIGURATION . '/configuration.php';
-		$useftp = (file_exists($path)) ? !is_writable($path) : !is_writable(JPATH_CONFIGURATION . '/');
+		$useftp = file_exists($path) ? !is_writable($path) : !is_writable(JPATH_CONFIGURATION . '/');
 
 		$tabs   = array();
 		$tabs[] = 'site';
@@ -94,7 +94,7 @@ class InstallationHtmlHelper
 		$input  = JFactory::getApplication()->input;
 		$num    = static::getTabNumber($id, $tabs);
 		$view   = static::getTabNumber($input->getWord('view'), $tabs);
-		$tab    = '<span class="tag tag-default">' . $num . '</span> ' . JText::_('INSTL_STEP_' . strtoupper($id) . '_LABEL');
+		$tab    = '<span class="badge badge-default">' . $num . '</span> ' . JText::_('INSTL_STEP_' . strtoupper($id) . '_LABEL');
 		$active = $num == $view ? ' active' : '';
 
 		if ($view + 1 == $num)

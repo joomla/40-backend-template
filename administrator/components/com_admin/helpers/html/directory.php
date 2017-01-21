@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_admin
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -27,10 +27,10 @@ abstract class JHtmlDirectory
 	{
 		if ($writable)
 		{
-			return '<span class="tag tag-success">' . JText::_('COM_ADMIN_WRITABLE') . '</span>';
+			return '<span class="badge badge-success">' . JText::_('COM_ADMIN_WRITABLE') . '</span>';
 		}
 
-		return '<span class="tag tag-danger">' . JText::_('COM_ADMIN_UNWRITABLE') . '</span>';
+		return '<span class="badge badge-danger">' . JText::_('COM_ADMIN_UNWRITABLE') . '</span>';
 	}
 
 	/**

@@ -50,9 +50,8 @@ $sitename    = htmlspecialchars($app->get('sitename', ''), ENT_QUOTES, 'UTF-8');
 $cpanel      = ($option === 'com_cpanel');
 $hidden      = JFactory::getApplication()->input->get('hidemainmenu');
 $showSubmenu = false;
-$logoLg      = $this->baseurl . '/templates/' . $this->template . '/images/logo.png';
-$logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-icon-only.png';
-
+$logoLg      = $this->baseurl . '/templates/' . $this->template . '/images/logo.svg';
+$logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-icon.svg';
 
 ?>
 <!DOCTYPE html>
@@ -64,57 +63,137 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 </head>
 
 <body class="admin <?php echo $option . ' view-' . $view . ' layout-' . $layout . ' task-' . $task . ' itemid-' . $itemid; ?>">
+
 	<noscript>
 		<div class="alert alert-danger" role="alert">
 			<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT'); ?>
 		</div>
 	</noscript>
+
 	<?php // Wrapper ?>
-	<div id="wrapper" class="wrapper closed">
+	<div id="wrapper" class="wrapper<?php echo $hidden ? '0' : ''; ?>">
 
 		<?php // Sidebar ?>
-		<div id="sidebar-wrapper" class="sidebar-wrapper" <?php echo $hidden ? 'data-hidden="' . $hidden . '"' :''; ?>>
-			<div id="main-brand-sm" class="main-brand">
+		<?php if (!$hidden) : ?>
+			<div id="sidebar-wrapper" class="sidebar-wrapper" <?php echo $hidden ? 'data-hidden="' . $hidden . '"' :''; ?>>
+			<div id="main-brand-sm" class="main-brand  hidden-xs-up">
 				<a href="<?php echo JRoute::_('index.php'); ?>" aria-label="<?php echo JText::_('TPL_BACK_TO_CONTROL_PANEL'); ?>">
 					<img src="<?php echo $logoSm; ?>" class="logo" alt="<?php echo $sitename;?>" />
 				</a>
 			</div>
-			<div id="main-brand" class="main-brand hidden-xs-up">
+
+			<div id="main-brand" class="main-brand">
 				<a href="<?php echo JRoute::_('index.php'); ?>" aria-label="<?php echo JText::_('TPL_BACK_TO_CONTROL_PANEL'); ?>">
 					<img src="<?php echo $logoLg; ?>" class="logo" alt="<?php echo $sitename;?>" />
 				</a>
 			</div>
 			<jdoc:include type="modules" name="menu" style="none" />
 		</div>
+		<?php endif; ?>
 
 		<?php // Header ?>
 		<header id="header" class="header">
 			<div class="container-fluid">
-				<div class="row flex-items-xs-middle">
-					<div class="col-xs">
-						<div class="menu-collapse">
-							<a id="menu-collapse" class="menu-toggle" href="#">
-								<span></span>
-							</a>
-						</div>
-					</div>
+				<div class="text-center">
 
-					<div class="col-xs text-xs-center">
-						<jdoc:include type="modules" name="title" />
-					</div>
-
-					<div class="col-xs text-xs-right">
-						<a class="navbar-brand" href="<?php echo JUri::root(); ?>" title="<?php echo JText::sprintf('TPL_ATUM_PREVIEW', $sitename); ?>" target="_blank"><?php echo JHtml::_('string.truncate', $sitename, 28, false, false); ?>
-							<span class="icon-out-2 small"></span>
+					<?php if (!$hidden) : ?>
+					<div class="menu-collapse">
+						<a id="menu-collapse" class="menu-toggle" href="#">
+							<span></span>
 						</a>
 					</div>
+					<?php endif; ?>
+
+					<a class="navbar-brand" href="<?php echo JUri::root(); ?>" title="<?php echo JText::sprintf('TPL_ATUM_PREVIEW', $sitename); ?>" target="_blank">
+						<?php echo JHtml::_('string.truncate', $sitename, 28, false, false); ?>
+						<span class="icon-out-2 small"></span>
+					</a>
+
+					<nav>
+						<ul class="nav">
+							<li class="nav-item">
+								<a class="nav-link dropdown-toggle" href="<?php echo JRoute::_('index.php?option=com_messages'); ?>" title="<?php echo JText::_('TPL_ATUM_PRIVATE_MESSAGES'); ?>">
+									<i class="fa fa-envelope"></i>
+									<?php $countUnread = JFactory::getSession()->get('messages.unread'); ?>
+									<?php if ($countUnread > 0) : ?>
+										<span class="badge badge-pill badge-success"><?php echo $countUnread; ?></span>
+									<?php endif; ?>
+								</a>
+							</li>
+							<?php
+								/*
+								 * @TODO: Remove FOF call as it's being removed in core
+								 */
+								try
+								{
+									$messagesModel = FOFModel::getTmpInstance('Messages', 'PostinstallModel')->eid(700);
+									$messages      = $messagesModel->getItemList();
+								}
+								catch (RuntimeException $e)
+								{
+									$messages = array();
+
+									// Still render the error message from the Exception object
+									JFactory::getApplication()->enqueueMessage($e->getMessage(), 'danger');
+								}
+								$lang->load('com_postinstall', JPATH_ADMINISTRATOR, 'en-GB', true);
+							?>
+							<?php if ($user->authorise('core.manage', 'com_postinstall')) : ?>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" title="<?php echo JText::_('TPL_ATUM_POST_INSTALLATION_MESSAGES'); ?>">
+									<i class="fa fa-bell"></i>
+									<?php if (count($messages) > 0) : ?>
+										<span class="badge badge-pill badge-success"><?php echo count($messages); ?></span>
+									<?php endif; ?>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right dropdown-notifications">
+									<div class="list-group">
+										<?php if (empty($messages)) : ?>
+										<p class="list-group-item text-center">
+											<b><?php echo JText::_('COM_POSTINSTALL_LBL_NOMESSAGES_TITLE'); ?></b>
+										</p>
+										<?php endif; ?>
+										<?php foreach ($messages as $message) : ?>
+										<a href="<?php echo JRoute::_('index.php?option=com_postinstall&amp;eid=700'); ?>" class="list-group-item list-group-item-action">
+											<h5 class="list-group-item-heading"><?php echo JHtml::_('string.truncate', JText::_($message->title_key), 28, false, false); ?></h5>
+											<p class="list-group-item-text small">
+												<?php echo JHtml::_('string.truncate', JText::_($message->description_key), 120, false, false); ?>
+											</p>
+										</a>
+										<?php endforeach; ?>
+									</div>
+								</div>
+							</li>
+							<?php endif; ?>
+							<li class="nav-item dropdown header-profile">
+								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+									<i class="fa fa-user"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<div class="dropdown-item header-profile-user">
+										<i class="fa fa-user"></i>
+										<?php echo $user->name; ?>
+									</div>
+									<a class="dropdown-item" href="<?php echo JRoute::_('index.php?option=com_admin&amp;task=profile.edit&amp;id=' 
+										. $user->id); ?>"><?php echo JText::_('TPL_ATUM_EDIT_ACCOUNT'); ?></a>
+									<a class="dropdown-item" href="<?php echo JRoute::_('index.php?option=com_login&task=logout&' 
+										. JSession::getFormToken() . '=1') ?>"><?php echo JText::_('TPL_ATUM_LOGOUT'); ?></a>
+								</div>
+							</li>
+						</ul>
+					</nav>
+
 				</div>
 			</div>
 		</header>
+		<div class="container-title">
+			<div class="container-fluid">
+				<jdoc:include type="modules" name="title" />
+			</div>
+		</div>
 
 		<?php // container-fluid ?>
 		<div class="container-fluid container-main">
-
 			<?php if (!$cpanel) : ?>
 				<?php // Subheader ?>
 				<a class="btn btn-subhead hidden-md-up" data-toggle="collapse" data-target=".subhead-collapse"><?php echo JText::_('TPL_ATUM_TOOLBAR'); ?>
@@ -147,7 +226,6 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 						<?php else : ?>
 						<div class="col-md-12">
 							<?php endif; ?>
-							<jdoc:include type="message" />
 							<jdoc:include type="component" />
 						</div>
 					</div>
@@ -161,7 +239,7 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 
 			<?php if (!$this->countModules('status')) : ?>
 				<footer class="footer">
-					<p align="center">
+					<p class="text-center">
 						<jdoc:include type="modules" name="footer" style="no" />
 						&copy; <?php echo $sitename; ?> <?php echo date('Y'); ?></p>
 				</footer>
@@ -169,17 +247,21 @@ $logoSm      = $this->baseurl . '/templates/' . $this->template . '/images/logo-
 
 			<?php if ($this->countModules('status')) : ?>
 				<?php // Begin Status Module ?>
-				<div id="status" class="status navbar navbar-fixed-bottom hidden-sm-down">
-					<div class="btn-group details float-sm-right">
-						<p>
+				<nav id="status" class="status navbar fixed-bottom hidden-sm-down">
+					<ul class="nav d-flex justify-content-start">
+						<jdoc:include type="modules" name="status" style="no" />
+						<li class="ml-auto">
 							<jdoc:include type="modules" name="footer" style="no" />
 							&copy; <?php echo date('Y'); ?> <?php echo $sitename; ?>
-						</p>
-					</div>
-					<jdoc:include type="modules" name="status" style="no" />
-				</div>
+						</li>
+					</ul>
+				</nav>
 				<?php // End Status Module ?>
 			<?php endif; ?>
+
+			<div class="notify-alerts">
+				<jdoc:include type="message" />
+			</div>
 
 		</div>
 

@@ -62,7 +62,7 @@ function modChrome_well($module, &$params, &$attribs)
 		$headerClass    = ($headerClass) ? ' ' . htmlspecialchars($headerClass) : '';
 
 		echo '<div class="' . $moduleClass . '">';
-		echo '<' . $moduleTag . ' class="cpanel-module card card-block' . $moduleClassSfx . '" data-moduleid="' . $module->id . '">';
+		echo '<' . $moduleTag . ' class="cpanel-module mb-3 card card-block' . $moduleClassSfx . '" data-moduleid="' . $module->id . '">';
 
 			if ($canEdit)
 			{

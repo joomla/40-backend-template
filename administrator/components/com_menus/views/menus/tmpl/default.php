@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_menus
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -23,7 +23,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 $modMenuId = (int) $this->get('ModMenuId');
 
 $script = array();
-$script[] = "jQuery(document).ready(function() {";
+$script[] = 'jQuery(document).ready(function() {';
 
 foreach ($this->items as $item) :
 	if ($user->authorise('core.edit', 'com_menus')) :
@@ -39,7 +39,7 @@ $script[] = '		setTimeout(function(){';
 $script[] = '			window.parent.location.reload();';
 $script[] = '		},1000);';
 $script[] = '	});';
-$script[] = "});";
+$script[] = '});';
 
 JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 ?>
@@ -61,23 +61,23 @@ JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 						<th>
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap text-xs-center">
+						<th width="10%" class="nowrap text-center">
 							<span class="icon-publish"></span>
 							<span class="hidden-sm-down"><?php echo JText::_('COM_MENUS_HEADING_PUBLISHED_ITEMS'); ?></span>
 						</th>
-						<th width="10%" class="nowrap text-xs-center">
+						<th width="10%" class="nowrap text-center">
 							<span class="icon-unpublish"></span>
 							<span class="hidden-sm-down"><?php echo JText::_('COM_MENUS_HEADING_UNPUBLISHED_ITEMS'); ?></span>
 						</th>
-						<th width="10%" class="nowrap text-xs-center">
+						<th width="10%" class="nowrap text-center">
 							<span class="icon-trash"></span>
 							<span class="hidden-sm-down"><?php echo JText::_('COM_MENUS_HEADING_TRASHED_ITEMS'); ?></span>
 						</th>
-						<th width="10%" class="nowrap text-xs-center">
+						<th width="10%" class="nowrap text-center">
 							<span class="icon-cube"></span>
 							<span class="hidden-sm-down"><?php echo JText::_('COM_MENUS_HEADING_LINKED_MODULES'); ?></span>
 						</th>
-						<th width="5%" class="nowrap hidden-sm-down text-xs-center">
+						<th width="5%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
@@ -95,7 +95,7 @@ JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 					$canManageItems = $user->authorise('core.manage', 'com_menus.menu.' . (int) $item->id);
 				?>
 					<tr class="row<?php echo $i % 2; ?>">
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td>
 						<td>
@@ -115,41 +115,41 @@ JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 								<?php endif; ?>
 							</div>
 						</td>
-						<td class="text-xs-center btns">
+						<td class="text-center btns">
 							<?php if ($canManageItems) : ?>
-								<a class="tag<?php echo ($item->count_published > 0) ? ' tag-success' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=1'); ?>">
+								<a class="badge<?php echo ($item->count_published > 0) ? ' badge-success' : ' badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=1'); ?>">
 									<?php echo $item->count_published; ?></a>
 							<?php else : ?>
-								<span class="tag<?php echo ($item->count_published > 0) ? ' tag-success' : ' tag-default'; ?>">
+								<span class="badge<?php echo ($item->count_published > 0) ? ' badge-success' : ' badge-default'; ?>">
 									<?php echo $item->count_published; ?></span>
 							<?php endif; ?>
 						</td>
-						<td class="text-xs-center btns">
+						<td class="text-center btns">
 							<?php if ($canManageItems) : ?>
-								<a class="tag<?php echo ($item->count_unpublished > 0) ? ' tag-danger' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=0'); ?>">
+								<a class="badge<?php echo ($item->count_unpublished > 0) ? ' badge-danger' : ' badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=0'); ?>">
 									<?php echo $item->count_unpublished; ?></a>
 							<?php else : ?>
-								<span class="tag<?php echo ($item->count_unpublished > 0) ? ' tag-danger' : ' tag-default'; ?>">
+								<span class="badge<?php echo ($item->count_unpublished > 0) ? ' badge-danger' : ' badge-default'; ?>">
 									<?php echo $item->count_unpublished; ?></span>
 							<?php endif; ?>
 						</td>
-						<td class="text-xs-center btns">
+						<td class="text-center btns">
 							<?php if ($canManageItems) : ?>
-								<a class="tag<?php echo ($item->count_trashed > 0) ? ' tag-danger' : ' tag-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=-2'); ?>">
+								<a class="badge<?php echo ($item->count_trashed > 0) ? ' badge-danger' : ' badge-default'; ?>" href="<?php echo JRoute::_('index.php?option=com_menus&view=items&menutype=' . $item->menutype . '&filter[published]=-2'); ?>">
 									<?php echo $item->count_trashed; ?></a>
 							<?php else : ?>
-								<span class="tag<?php echo ($item->count_trashed > 0) ? ' tag-danger' : ' tag-default'; ?>">
+								<span class="badge<?php echo ($item->count_trashed > 0) ? ' badge-danger' : ' badge-default'; ?>">
 									<?php echo $item->count_trashed; ?></span>
 							<?php endif; ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php if (isset($this->modules[$item->menutype])) : ?>
 								<div class="dropdown">
 									<a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
 										<?php echo JText::_('COM_MENUS_MODULES'); ?>
 										<span class="caret"></span>
 									</a>
-									<div class="dropdown-menu">
+									<div class="dropdown-menu dropdown-menu-right">
 										<?php foreach ($this->modules[$item->menutype] as &$module) : ?>
 											<?php if ($canEdit) : ?>
 												<?php $link = JRoute::_('index.php?option=com_modules&task=module.edit&id=' . $module->id . '&return=' . $return . '&tmpl=component&layout=modal'); ?>
@@ -175,17 +175,17 @@ JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 													'url'         => $link,
 													'height'      => '400px',
 													'width'       => '800px',
-													'bodyHeight'  => '70',
-													'modalWidth'  => '80',
+													'bodyHeight'  => 70,
+													'modalWidth'  => 80,
 													'footer'      => '<a type="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true"'
 															. ' onclick="jQuery(\'#moduleEdit' . $module->id . 'Modal iframe\').contents().find(\'#closeBtn\').click();">'
-															. JText::_("JLIB_HTML_BEHAVIOR_CLOSE") . '</a>'
+															. JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
 															. '<button type="button" class="btn btn-primary" aria-hidden="true"'
 															. ' onclick="jQuery(\'#moduleEdit' . $module->id . 'Modal iframe\').contents().find(\'#saveBtn\').click();">'
-															. JText::_("JSAVE") . '</button>'
+															. JText::_('JSAVE') . '</button>'
 															. '<button type="button" class="btn btn-success" aria-hidden="true"'
 															. ' onclick="jQuery(\'#moduleEdit' . $module->id . 'Modal iframe\').contents().find(\'#applyBtn\').click();">'
-															. JText::_("JAPPLY") . '</button>',
+															. JText::_('JAPPLY') . '</button>',
 												)
 											); ?>
 									<?php endif; ?>
@@ -204,29 +204,29 @@ JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 											'url'         => $link,
 											'height'      => '400px',
 											'width'       => '800px',
-											'bodyHeight'  => '70',
-											'modalWidth'  => '80',
+											'bodyHeight'  => 70,
+											'modalWidth'  => 80,
 											'footer'      => '<a type="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true"'
 													. ' onclick="jQuery(\'#moduleAddModal iframe\').contents().find(\'#closeBtn\').click();">'
-													. JText::_("JLIB_HTML_BEHAVIOR_CLOSE") . '</a>'
+													. JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
 													. '<button type="button" class="btn btn-primary" aria-hidden="true"'
 													. ' onclick="jQuery(\'#moduleAddModal iframe\').contents().find(\'#saveBtn\').click();">'
-													. JText::_("JSAVE") . '</button>'
+													. JText::_('JSAVE') . '</button>'
 													. '<button type="button" class="btn btn-success" aria-hidden="true"'
 													. ' onclick="jQuery(\'#moduleAddModal iframe\').contents().find(\'#applyBtn\').click();">'
-													. JText::_("JAPPLY") . '</button>',
+													. JText::_('JAPPLY') . '</button>',
 										)
 									); ?>
 							<?php endif; ?>
 						</td>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
 							<?php echo $item->id; ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-		<?php endif;?>
+		<?php endif; ?>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />

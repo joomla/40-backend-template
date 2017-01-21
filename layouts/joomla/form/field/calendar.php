@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  Layout
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -104,18 +104,20 @@ JHtml::_('stylesheet', 'system/fields/calendar-vanilla' . $cssFileExt, array(), 
 	<?php if (!$readonly && !$disabled) : ?>
 	<div class="input-group">
 		<?php endif; ?>
-		<input type="text" name="<?php
-		echo $name; ?>" value="<?php
-		echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"<?php echo $attributes; ?>
-		<?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?> data-alt-value="<?php
-		echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8') ?>" autocomplete="off"/>
+		<input
+			type="text"
+			name="<?php echo $name; ?>"
+			value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
+			<?php echo  $attributes; ?>
+			<?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
+			data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>" autocomplete="off">
 		<span class="input-group-btn">
-			<button type="button" class="<?php echo ($readonly || $disabled) ? 'hidden ' : ''; ?>btn btn-secondary"
+			<button type="button" class="<?php echo ($readonly || $disabled) ? "hidden " : ''; ?>btn btn-secondary"
 				id="<?php echo  $id; ?>_btn"
 				data-inputfield="<?php echo $id; ?>"
 				data-dayformat="<?php echo $format; ?>"
 				data-button="<?php echo $id; ?>_btn"
-				data-firstday="<?php echo JFactory::getLanguage()->getFirstDay();?>"
+				data-firstday="<?php echo JFactory::getLanguage()->getFirstDay(); ?>"
 				data-weekend="<?php echo JFactory::getLanguage()->getWeekEnd(); ?>"
 				data-today-btn="<?php echo $todaybutton; ?>"
 				data-week-numbers="<?php echo $weeknumbers; ?>"
@@ -125,7 +127,7 @@ JHtml::_('stylesheet', 'system/fields/calendar-vanilla' . $cssFileExt, array(), 
 				data-only-months-nav="<?php echo $singleheader; ?>"
 				<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
 				<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
-			><span class="fa fa-calendar"></span></button>
+			><i class="fa fa-calendar"></i></button>
 		</span>
 		<?php if (!$readonly && !$disabled) : ?>
 	</div>

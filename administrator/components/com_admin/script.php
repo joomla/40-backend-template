@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_admin
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -112,14 +112,13 @@ class JoomlaInstallerScript
 	 */
 	protected function updateDatabase()
 	{
-		$db = JFactory::getDbo();
-
-		if (strpos($db->name, 'mysql') !== false)
+		if (JFactory::getDbo()->getServerType() === 'mysql')
 		{
 			$this->updateDatabaseMysql();
 		}
 
 		$this->uninstallEosPlugin();
+		$this->removeJedUpdateserver();
 	}
 
 	/**
@@ -203,6 +202,49 @@ class JoomlaInstallerScript
 	}
 
 	/**
+	 * Remove the never used JED Updateserver
+	 *
+	 * @return  void
+	 *
+	 * @since   3.7.0
+	 */
+	protected function removeJedUpdateserver()
+	{
+		$db = JFactory::getDbo();
+
+		try
+		{
+			// Get the update site ID of the JED Update server
+			$id = $db->setQuery(
+				$db->getQuery(true)
+					->select('update_site_id')
+					->from($db->quoteName('#__update_sites'))
+					->where($db->quoteName('location') . ' = ' . $db->quote('https://update.joomla.org/jed/list.xml'))
+			)->loadResult();
+
+			// Delete from update sites
+			$db->setQuery(
+				$db->getQuery(true)
+					->delete($db->quoteName('#__update_sites'))
+					->where($db->quoteName('update_site_id') . ' = ' . $id)
+			)->execute();
+
+			// Delete from update sites extensions
+			$db->setQuery(
+				$db->getQuery(true)
+					->delete($db->quoteName('#__update_sites_extensions'))
+					->where($db->quoteName('update_site_id') . ' = ' . $id)
+			)->execute();
+		}
+		catch (Exception $e)
+		{
+			echo JText::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />';
+
+			return;
+		}
+	}
+
+	/**
 	 * Update the manifest caches
 	 *
 	 * @return  void
@@ -243,6 +285,7 @@ class JoomlaInstallerScript
 			array('component', 'com_postinstall', '', 1),
 			array('component', 'com_joomlaupdate', '', 1),
 			array('component', 'com_fields', '', 1),
+			array('component', 'com_associations', '', 1),
 
 			// Libraries
 			array('library', 'phputf8', '', 0),
@@ -351,7 +394,22 @@ class JoomlaInstallerScript
 			array('plugin', 'menu', 'editors-xtd', 0),
 			array('plugin', 'contact', 'editors-xtd', 0),
 			array('plugin', 'fields', 'system', 0),
+			array('plugin', 'calendar', 'fields', 0),
+			array('plugin', 'checkboxes', 'fields', 0),
+			array('plugin', 'color', 'fields', 0),
+			array('plugin', 'editor', 'fields', 0),
 			array('plugin', 'gallery', 'fields', 0),
+			array('plugin', 'imagelist', 'fields', 0),
+			array('plugin', 'integer', 'fields', 0),
+			array('plugin', 'list', 'fields', 0),
+			array('plugin', 'media', 'fields', 0),
+			array('plugin', 'radio', 'fields', 0),
+			array('plugin', 'sql', 'fields', 0),
+			array('plugin', 'text', 'fields', 0),
+			array('plugin', 'textarea', 'fields', 0),
+			array('plugin', 'url', 'fields', 0),
+			array('plugin', 'user', 'fields', 0),
+			array('plugin', 'usergrouplist', 'fields', 0),
 
 			// Templates
 			array('template', 'protostar', '', 0),
@@ -1174,6 +1232,11 @@ class JoomlaInstallerScript
 			'/libraries/joomla/registry/format/json.php',
 			'/libraries/joomla/registry/format/php.php',
 			'/libraries/joomla/registry/format/xml.php',
+			'/libraries/joomla/github/users.php',
+			'/media/system/js/validate-jquery-uncompressed.js',
+			'/templates/beez3/html/message.php',
+			'/libraries/fof/platform/joomla.php',
+			'/libraries/fof/readme.txt',
 			// Joomla 3.3.1
 			'/administrator/templates/isis/html/message.php',
 			// Joomla 3.3.6
@@ -1500,7 +1563,7 @@ class JoomlaInstallerScript
 			// Joomla! 3.6.3
 			'/media/editors/codemirror/mode/jade/jade.js',
 			'/media/editors/codemirror/mode/jade/jade.min.js',
-			// Joomla __DEPLOY_VERSION__
+			// Joomla 3.7.0
 			'/libraries/joomla/user/authentication.php',
 			'/libraries/platform.php',
 			'/libraries/joomla/data/data.php',
@@ -1551,6 +1614,20 @@ class JoomlaInstallerScript
 			'/media/jui/css/bootstrap-tooltip-extended.css',
 			'/media/jui/css/bootstrap-responsive.css',
 			'/media/jui/css/bootstrap-responsive.min.css',
+			'/administrator/components/com_cache/layouts/joomla/searchtools/default/bar.php',
+			'/administrator/components/com_cache/layouts/joomla/searchtools/default.php',
+			'/administrator/components/com_languages/layouts/joomla/searchtools/default/bar.php',
+			'/administrator/components/com_languages/layouts/joomla/searchtools/default.php',
+			'/administrator/components/com_menus/layouts/joomla/searchtools/default/bar.php',
+			'/administrator/components/com_menus/layouts/joomla/searchtools/default.php',
+			'/administrator/components/com_modules/layouts/joomla/searchtools/default/bar.php',
+			'/administrator/components/com_modules/layouts/joomla/searchtools/default.php',
+			'/administrator/components/com_templates/layouts/joomla/searchtools/default/bar.php',
+			'/administrator/components/com_templates/layouts/joomla/searchtools/default.php',
+			// Joomla __DEPLOY_VERSION__
+			'/administrator/modules/mod_menu/tmpl/default_enabled.php',
+			'/administrator/modules/mod_menu/tmpl/default_disabled.php',
+			'/administrator/templates/hathor/html/mod_menu/default_enabled.php',
 		);
 
 		// TODO There is an issue while deleting folders using the ftp mode
@@ -1660,12 +1737,31 @@ class JoomlaInstallerScript
 			'/libraries/simplepie',
 			// Joomla! 3.6.3
 			'/media/editors/codemirror/mode/jade',
-			// Joomla! __DEPLOY_VERSION__
+			// Joomla! 3.7.0
 			'/libraries/joomla/data',
 			'/templates/beez3',
 			'/administrator/templates/isis',
 			'/administrator/templates/hathor',
 			'/media/jui/less',
+			'/administrator/components/com_cache/layouts/joomla/searchtools/default',
+			'/administrator/components/com_cache/layouts/joomla/searchtools',
+			'/administrator/components/com_cache/layouts/joomla',
+			'/administrator/components/com_cache/layouts',
+			'/administrator/components/com_languages/layouts/joomla/searchtools/default',
+			'/administrator/components/com_languages/layouts/joomla/searchtools',
+			'/administrator/components/com_languages/layouts/joomla',
+			'/administrator/components/com_languages/layouts',
+			'/administrator/components/com_menus/layouts/joomla/searchtools/default',
+			'/administrator/components/com_menus/layouts/joomla/searchtools',
+			'/administrator/components/com_modules/layouts/joomla/searchtools/default',
+			'/administrator/components/com_modules/layouts/joomla/searchtools',
+			'/administrator/components/com_modules/layouts/joomla',
+			'/administrator/components/com_templates/layouts/joomla/searchtools/default',
+			'/administrator/components/com_templates/layouts/joomla/searchtools',
+			'/administrator/components/com_templates/layouts/joomla',
+			'/administrator/components/com_templates/layouts',
+			// Joomla! __DEPLOY_VERSION__
+			'/administrator/templates/hathor/html/mod_menu',
 		);
 
 		jimport('joomla.filesystem.file');
@@ -1736,6 +1832,7 @@ class JoomlaInstallerScript
 			'com_ajax',
 			'com_postinstall',
 			'com_fields',
+			'com_associations',
 		);
 
 		foreach ($newComponents as $component)
@@ -1801,12 +1898,10 @@ class JoomlaInstallerScript
 
 		try
 		{
-			switch ($db->name)
+			switch ($db->getServerType())
 			{
 				// MySQL database, use TRUNCATE (faster, more resilient)
-				case 'pdomysql':
 				case 'mysql':
-				case 'mysqli':
 					$db->truncateTable('#__session');
 					break;
 
@@ -1889,7 +1984,7 @@ class JoomlaInstallerScript
 		}
 
 		// Step 1: Drop indexes later to be added again with column lengths limitations at step 2
-		$fileName1 = JPATH_ROOT . "/administrator/components/com_admin/sql/others/mysql/utf8mb4-conversion-01.sql";
+		$fileName1 = JPATH_ROOT . '/administrator/components/com_admin/sql/others/mysql/utf8mb4-conversion-01.sql';
 
 		if (is_file($fileName1))
 		{
@@ -1913,7 +2008,7 @@ class JoomlaInstallerScript
 		}
 
 		// Step 2: Perform the index modifications and conversions
-		$fileName2 = JPATH_ROOT . "/administrator/components/com_admin/sql/others/mysql/utf8mb4-conversion-02.sql";
+		$fileName2 = JPATH_ROOT . '/administrator/components/com_admin/sql/others/mysql/utf8mb4-conversion-02.sql';
 
 		if (is_file($fileName2))
 		{

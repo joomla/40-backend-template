@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_finder
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -49,7 +49,7 @@ JFactory::getDocument()->addScriptDeclaration('
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th width="1%" class="nowrap text-xs-center">
+					<th width="1%" class="nowrap text-center">
 						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th width="1%" class="nowrap">
@@ -88,10 +88,10 @@ JFactory::getDocument()->addScriptDeclaration('
 				$canChange  = $user->authorise('core.edit.state', 'com_finder') && $canCheckin;
 				?>
 				<tr class="row<?php echo $i % 2; ?>">
-					<td class="text-xs-center">
+					<td class="text-center">
 						<?php echo JHtml::_('grid.id', $i, $item->filter_id); ?>
 					</td>
-					<td class="text-xs-center nowrap">
+					<td class="text-center nowrap">
 						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'filters.', $canChange); ?>
 					</td>
 					<td>

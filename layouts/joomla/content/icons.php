@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  Layout
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -19,7 +19,7 @@ $canEdit = $displayData['params']->get('access-edit');
 	<?php if (empty($displayData['print'])) : ?>
 
 		<?php if ($canEdit || $displayData['params']->get('show_print_icon') || $displayData['params']->get('show_email_icon')) : ?>
-			<div class="btn-group float-xs-right">
+			<div class="btn-group float-right">
 				<a class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" href="#"> <span class="icon-cog"></span><span class="caret"></span> </a>
 				<?php // Note the actions class is deprecated. Use dropdown-menu instead. ?>
 				<ul class="dropdown-menu">
@@ -38,7 +38,7 @@ $canEdit = $displayData['params']->get('access-edit');
 
 	<?php else : ?>
 
-		<div class="float-xs-right">
+		<div class="float-right">
 			<?php echo JHtml::_('icon.print_screen', $displayData['item'], $displayData['params']); ?>
 		</div>
 

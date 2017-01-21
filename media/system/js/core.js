@@ -106,7 +106,7 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	 *
 	 * @type {{}}
 	 *
-	 * @since __DEPLOY_VERSION__
+	 * @since 3.7.0
 	 */
 	Joomla.optionsStorage = Joomla.optionsStorage || null;
 
@@ -118,7 +118,7 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	 *
 	 * @return mixed
 	 *
-	 * @since __DEPLOY_VERSION__
+	 * @since 3.7.0
 	 */
 	Joomla.getOptions = function( key, def ) {
 		// Load options if they not exists
@@ -134,13 +134,13 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	 *
 	 * @param {Object|undefined} options   The options object to load. Eg {"com_foobar" : {"option1": 1, "option2": 2}}
 	 *
-	 * @since __DEPLOY_VERSION__
+	 * @since 3.7.0
 	 */
 	Joomla.loadOptions = function( options ) {
 		// Load form the script container
 		if (!options) {
 			var elements = document.querySelectorAll('.joomla-script-options.new'),
-				str, element, option;
+			    str, element, option;
 
 			for (var i = 0, l = elements.length; i < l; i++) {
 				element = elements[i];
@@ -177,7 +177,7 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 		if (!/^[0-9A-F]{32}$/i.test(newToken)) { return; }
 
 		var els = document.getElementsByTagName( 'input' ),
-			i, el, n;
+		    i, el, n;
 
 		for ( i = 0, n = els.length; i < n; i++ ) {
 			el = els[i];
@@ -187,7 +187,7 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 			}
 		}
 	};
-
+	
 	/**
 	 * USED IN: administrator/components/com_banners/views/client/tmpl/default.php
 	 * Actually, probably not used anywhere. Can we deprecate in favor of <input type="email">?
@@ -218,7 +218,7 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 		stub = stub ? stub : 'cb';
 
 		var c = 0,
-			i, e, n;
+		    i, e, n;
 
 		for ( i = 0, n = checkbox.form.elements.length; i < n; i++ ) {
 			e = checkbox.form.elements[ i ];
@@ -240,18 +240,28 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	 * Render messages send via JSON
 	 * Used by some javascripts such as validate.js
 	 *
-	 * @param   object  messages    JavaScript object containing the messages to render. Example:
+	 * @param   {object}  messages    JavaScript object containing the messages to render. Example:
 	 *                              var messages = {
-	 *                              	"message": ["Message one", "Message two"],
-	 *                              	"error": ["Error one", "Error two"]
+	 *                                  "message": ["Message one", "Message two"],
+	 *                                  "error": ["Error one", "Error two"]
 	 *                              };
+	 * @param  {string} selector     The selector of the container where the message will be rendered
+	 * @param  {bool}   keepOld      If we shall discard old messages
+	 * @param  {int}    timeout      The milliseconds before the message self destruct
 	 * @return  void
 	 */
-	Joomla.renderMessages = function( messages ) {
-		Joomla.removeMessages();
+	Joomla.renderMessages = function( messages, selector, keepOld, timeout ) {
+		var messageContainer, type, typeMessages, messagesBox, title, titleWrapper, i, messageWrapper, alertClass;
 
-		var messageContainer = document.getElementById( 'system-message-container' ),
-			type, typeMessages, messagesBox, title, titleWrapper, i, messageWrapper, alertClass;
+		if (typeof selector === 'undefined' || selector && selector === '#system-message-container') {
+			messageContainer = document.getElementById( 'system-message-container' );
+		} else {
+			messageContainer = document.querySelector( selector );
+		}
+
+		if (typeof keepOld === 'undefined' || keepOld && keepOld === false) {
+			Joomla.removeMessages( messageContainer );
+		}
 
 		for ( type in messages ) {
 			if ( !messages.hasOwnProperty( type ) ) { continue; }
@@ -295,6 +305,12 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 			}
 
 			messageContainer.appendChild( messagesBox );
+
+			if (timeout && parseInt(timeout) > 0) {
+				setTimeout(function() {
+					Joomla.removeMessages(messageContainer);
+				}, timeout);
+			}
 		}
 	};
 
@@ -302,10 +318,18 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	/**
 	 * Remove messages
 	 *
+	 * @param  {element} container    The element of the container of the message to be removed
+	 *
 	 * @return  void
 	 */
-	Joomla.removeMessages = function() {
-		var messageContainer = document.getElementById( 'system-message-container' );
+	Joomla.removeMessages = function( container ) {
+		var messageContainer;
+
+		if (typeof container === 'undefined') {
+			messageContainer = document.getElementById( 'system-message-container' );
+		} else {
+			messageContainer = container;
+		}
 
 		// Empty container with a while for Chrome performance issues
 		while ( messageContainer.firstChild ) messageContainer.removeChild( messageContainer.firstChild );
@@ -320,9 +344,9 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	 * Treat AJAX errors.
 	 * Used by some javascripts such as sendtestmail.js and permissions.js
 	 *
-	 * @param   object  xhr          XHR object.
-	 * @param   string  textStatus   Type of error that occurred.
-	 * @param   string  error        Textual portion of the HTTP status.
+	 * @param   {object}  xhr          XHR object.
+	 * @param   {string}  textStatus   Type of error that occurred.
+	 * @param   {string}  error        Textual portion of the HTTP status.
 	 *
 	 * @return  object  JavaScript object containing the system error message.
 	 *
@@ -398,7 +422,7 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 
 		// Toggle main toggle checkbox depending on checkbox selection
 		var c = true,
-			i, e, n;
+		    i, e, n;
 
 		for ( i = 0, n = form.elements.length; i < n; i++ ) {
 			e = form.elements[ i ];
@@ -557,7 +581,7 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 		if ( !radioObj ) { return ''; }
 
 		var n = radioObj.length,
-			i;
+		    i;
 
 		if ( n === undefined ) {
 			return radioObj.checked ? radioObj.value : '';
@@ -600,8 +624,8 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 	 */
 	window.listItemTask = function ( id, task ) {
 		var f = document.adminForm,
-			i = 0, cbx,
-			cb = f[ id ];
+		    i = 0, cbx,
+		    cb = f[ id ];
 
 		if ( !cb ) return false;
 
@@ -621,7 +645,6 @@ Joomla.editors.instances = Joomla.editors.instances || {};
 
 		return false;
 	};
-
 	/**
 	 * Default function. Usually would be overriden by the component
 	 *

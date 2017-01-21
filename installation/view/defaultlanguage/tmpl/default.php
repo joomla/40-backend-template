@@ -2,7 +2,7 @@
 /**
  * @package    Joomla.Installation
  *
- * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -23,8 +23,8 @@ JS
 ?>
 <?php echo JHtml::_('InstallationHtml.helper.stepbarlanguages'); ?>
 <form action="index.php" method="post" id="adminForm" class="form-validate">
-	<div class="btn-toolbar">
-		<div class="btn-group float-xs-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a
 				class="btn btn-secondary"
 				href="#"
@@ -57,12 +57,12 @@ JS
 		<p class="form-text text-muted small"><?php echo JText::_('INSTL_DEFAULTLANGUAGE_ACTIVATE_MULTILANGUAGE_DESC'); ?></p>
 	</div>
 	<div id="multilanguageOptions">
-		<div class="form-group" id="installLocalisedContent" style="display:auto;">
+		<div class="form-group" id="installLocalisedContent" style="display:none;">
 			<?php echo $this->form->getLabel('installLocalisedContent'); ?>
 			<?php echo $this->form->getInput('installLocalisedContent'); ?>
 			<p class="form-text text-muted small"><?php echo JText::_('INSTL_DEFAULTLANGUAGE_INSTALL_LOCALISED_CONTENT_DESC'); ?></p>
 		</div>
-		<div class="form-group" id="activatePluginLanguageCode" style="display:auto;">
+		<div class="form-group" id="activatePluginLanguageCode" style="display:none;">
 			<?php echo $this->form->getLabel('activatePluginLanguageCode'); ?>
 			<?php echo $this->form->getInput('activatePluginLanguageCode'); ?>
 			<p class="form-text text-muted small"><?php echo JText::_('INSTL_DEFAULTLANGUAGE_ACTIVATE_LANGUAGE_CODE_PLUGIN_DESC'); ?></p>
@@ -97,12 +97,12 @@ JS
 						<?php if ($lang->published) echo 'checked="checked"'; ?>
 					/>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<label for="admin-language-cb<?php echo $i; ?>">
 						<?php echo $lang->name; ?>
 					</label>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<?php echo $lang->language; ?>
 				</td>
 			</tr>
@@ -138,20 +138,20 @@ JS
 						<?php if ($lang->published) echo 'checked="checked"'; ?>
 					/>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<label for="site-language-cb<?php echo $i; ?>">
 						<?php echo $lang->name; ?>
 					</label>
 				</td>
-				<td align="text-xs-center">
+				<td align="text-center">
 					<?php echo $lang->language; ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
 	</table>
-	<div class="btn-toolbar">
-		<div class="btn-group float-xs-right">
+	<div class="btn-toolbar justify-content-end">
+		<div class="btn-group">
 			<a
 				class="btn btn-secondary"
 				href="#"
@@ -178,3 +178,14 @@ JS
 	<input type="hidden" name="task" value="setdefaultlanguage" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
+
+<script type="text/javascript">
+	jQuery('input[name="jform[activateMultilanguage]"]').each(function(index, el) {
+		jQuery(el).on('click', function() {
+			Install.toggle('installLocalisedContent', 'activateMultilanguage', 1);
+			Install.toggle('activatePluginLanguageCode', 'activateMultilanguage', 1);
+		});
+		Install.toggle('installLocalisedContent', 'activateMultilanguage', 1);
+		Install.toggle('activatePluginLanguageCode', 'activateMultilanguage', 1);
+	});
+</script>

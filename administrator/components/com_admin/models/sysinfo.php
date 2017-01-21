@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_admin
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -313,7 +313,7 @@ class AdminModelSysInfo extends JModelLegacy
 			'sapi_name'             => php_sapi_name(),
 			'version'               => $version->getLongVersion(),
 			'platform'              => $platform->getLongVersion(),
-			'useragent'             => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "",
+			'useragent'             => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
 		);
 
 		return $this->info;
@@ -392,7 +392,7 @@ class AdminModelSysInfo extends JModelLegacy
 		$output = preg_replace('#<table[^>]*>#', '<table class="table table-striped adminlist">', $output[1][0]);
 		$output = preg_replace('#(\w),(\w)#', '\1, \2', $output);
 		$output = preg_replace('#<hr />#', '', $output);
-		$output = str_replace('<div class="text-xs-center">', '', $output);
+		$output = str_replace('<div class="text-center">', '', $output);
 		$output = preg_replace('#<tr class="h">(.*)<\/tr>#', '<thead><tr class="h">$1</tr></thead><tbody>', $output);
 		$output = str_replace('</table>', '</tbody></table>', $output);
 		$output = str_replace('</div>', '', $output);

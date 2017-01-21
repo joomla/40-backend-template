@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_cache
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -17,21 +17,21 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-main-container" class="j-main-container">
-		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('filterButton' => false, 'totalResults' => count($this->data)))); ?>
+		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 		<?php if (count($this->data) > 0) : ?>
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th width="1%" class="nowrap text-xs-center">
+					<th width="1%" class="nowrap text-center">
 						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th class="title nowrap">
 						<?php echo JHtml::_('searchtools.sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
 					</th>
-					<th width="10%" class="nowrap text-xs-center">
+					<th width="10%" class="nowrap text-center">
 						<?php echo JHtml::_('searchtools.sort', 'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
 					</th>
-					<th width="10%" class="nowrap text-xs-center">
+					<th width="10%" class="nowrap text-center">
 						<?php echo JHtml::_('searchtools.sort', 'COM_CACHE_SIZE', 'size', $listDirn, $listOrder); ?>
 					</th>
 				</tr>
@@ -56,10 +56,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<strong><?php echo $item->group; ?></strong>
 							</label>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo $item->count; ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo JHtml::_('number.bytes', $item->size*1024); ?>
 						</td>
 					</tr>

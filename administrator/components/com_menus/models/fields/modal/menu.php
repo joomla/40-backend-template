@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_menus
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -13,7 +13,7 @@ JHtml::_('bootstrap.tooltip', '.hasTooltip');
 /**
  * Supports a modal menu item picker.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  3.7.0
  */
 class JFormFieldModal_Menu extends JFormField
 {
@@ -21,7 +21,7 @@ class JFormFieldModal_Menu extends JFormField
 	 * The form field type.
 	 *
 	 * @var     string
-	 * @since   __DEPLOY_VERSION__
+	 * @since   3.7.0
 	 */
 	protected $type = 'Modal_Menu';
 
@@ -30,7 +30,7 @@ class JFormFieldModal_Menu extends JFormField
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   3.7.0
 	 */
 	protected function getInput()
 	{
@@ -38,6 +38,7 @@ class JFormFieldModal_Menu extends JFormField
 		$allowEdit   = ((string) $this->element['edit'] == 'true');
 		$allowClear  = ((string) $this->element['clear'] != 'false');
 		$allowSelect = ((string) $this->element['select'] != 'false');
+		$clientId    = (int) $this->element['clientid'];
 
 		// Load language
 		JFactory::getLanguage()->load('com_menus', JPATH_ADMINISTRATOR);
@@ -75,8 +76,9 @@ class JFormFieldModal_Menu extends JFormField
 		}
 
 		// Setup variables for display.
-		$linkItems  = 'index.php?option=com_menus&amp;view=items&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
-		$linkItem   = 'index.php?option=com_menus&amp;view=item&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
+		$linkSuffix = '&amp;layout=modal&amp;client_id=' . $clientId . '&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
+		$linkItems  = 'index.php?option=com_menus&amp;view=items' . $linkSuffix;
+		$linkItem   = 'index.php?option=com_menus&amp;view=item' . $linkSuffix;
 		$modalTitle = JText::_('COM_MENUS_CHANGE_MENUITEM');
 
 		if (isset($this->element['language']))
@@ -130,7 +132,7 @@ class JFormFieldModal_Menu extends JFormField
 		if ($allowSelect)
 		{
 			$html .= '<a'
-				. ' class="btn btn-primary hasTooltip' . ($value ? ' hidden' : '') . '"'
+				. ' class="btn btn-primary hasTooltip' . ($value ? ' element-invisible' : '') . '"'
 				. ' id="' . $this->id . '_select"'
 				. ' data-toggle="modal"'
 				. ' role="button"'
@@ -144,7 +146,7 @@ class JFormFieldModal_Menu extends JFormField
 		if ($allowNew)
 		{
 			$html .= '<a'
-				. ' class="btn btn-secondary hasTooltip' . ($value ? ' hidden' : '') . '"'
+				. ' class="btn btn-secondary hasTooltip' . ($value ? ' element-invisible' : '') . '"'
 				. ' id="' . $this->id . '_new"'
 				. ' data-toggle="modal"'
 				. ' role="button"'
@@ -158,7 +160,7 @@ class JFormFieldModal_Menu extends JFormField
 		if ($allowEdit)
 		{
 			$html .= '<a'
-				. ' class="btn btn-secondary hasTooltip' . ($value ? '' : ' hidden') . '"'
+				. ' class="btn btn-secondary hasTooltip' . ($value ? '' : ' element-invisible') . '"'
 				. ' id="' . $this->id . '_edit"'
 				. ' data-toggle="modal"'
 				. ' role="button"'
@@ -172,7 +174,7 @@ class JFormFieldModal_Menu extends JFormField
 		if ($allowClear)
 		{
 			$html .= '<a'
-				. ' class="btn btn-secondary' . ($value ? '' : ' hidden') . '"'
+				. ' class="btn btn-secondary' . ($value ? '' : ' element-invisible') . '"'
 				. ' id="' . $this->id . '_clear"'
 				. ' href="#"'
 				. ' onclick="window.processModalParent(\'' . $this->id . '\'); return false;">'
@@ -196,9 +198,9 @@ class JFormFieldModal_Menu extends JFormField
 					'url'         => $urlSelect,
 					'height'      => '400px',
 					'width'       => '800px',
-					'bodyHeight'  => '70',
-					'modalWidth'  => '80',
-					'footer'      => '<a role="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">' . JText::_("JLIB_HTML_BEHAVIOR_CLOSE") . '</a>',
+					'bodyHeight'  => 70,
+					'modalWidth'  => 80,
+					'footer'      => '<a role="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">' . JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>',
 				)
 			);
 		}
@@ -217,17 +219,17 @@ class JFormFieldModal_Menu extends JFormField
 					'url'         => $urlNew,
 					'height'      => '400px',
 					'width'       => '800px',
-					'bodyHeight'  => '70',
-					'modalWidth'  => '80',
+					'bodyHeight'  => 70,
+					'modalWidth'  => 80,
 					'footer'      => '<a role="button" class="btn btn-secondary" aria-hidden="true"'
 							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'item\', \'cancel\', \'item-form\'); return false;">'
-							. JText::_("JLIB_HTML_BEHAVIOR_CLOSE") . '</a>'
+							. JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
 							. '<a role="button" class="btn btn-primary" aria-hidden="true"'
 							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'item\', \'save\', \'item-form\'); return false;">'
-							. JText::_("JSAVE") . '</a>'
+							. JText::_('JSAVE') . '</a>'
 							. '<a role="button" class="btn btn-success" aria-hidden="true"'
 							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'item\', \'apply\', \'item-form\'); return false;">'
-							. JText::_("JAPPLY") . '</a>',
+							. JText::_('JAPPLY') . '</a>',
 				)
 			);
 		}
@@ -246,17 +248,17 @@ class JFormFieldModal_Menu extends JFormField
 					'url'         => $urlEdit,
 					'height'      => '400px',
 					'width'       => '800px',
-					'bodyHeight'  => '70',
-					'modalWidth'  => '80',
+					'bodyHeight'  => 70,
+					'modalWidth'  => 80,
 					'footer'      => '<a role="button" class="btn btn-secondary" aria-hidden="true"'
 							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'item\', \'cancel\', \'item-form\'); return false;">'
-							. JText::_("JLIB_HTML_BEHAVIOR_CLOSE") . '</a>'
+							. JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
 							. '<a role="button" class="btn btn-primary" aria-hidden="true"'
 							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'item\', \'save\', \'item-form\'); return false;">'
-							. JText::_("JSAVE") . '</a>'
+							. JText::_('JSAVE') . '</a>'
 							. '<a role="button" class="btn btn-success" aria-hidden="true"'
 							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'item\', \'apply\', \'item-form\'); return false;">'
-							. JText::_("JAPPLY") . '</a>',
+							. JText::_('JAPPLY') . '</a>',
 				)
 			);
 		}
@@ -275,7 +277,7 @@ class JFormFieldModal_Menu extends JFormField
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   3.7.0
 	 */
 	protected function getLabel()
 	{

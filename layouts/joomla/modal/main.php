@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  Layout
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -39,7 +39,7 @@ $modalClasses = array('modal');
 
 if (!isset($params['animation']) || $params['animation'])
 {
-	array_push($modalClasses, 'fade');
+	$modalClasses[] = 'fade';
 }
 
 $modalWidth       = isset($params['modalWidth']) ? round((int) $params['modalWidth'], -1) : '';

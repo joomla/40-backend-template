@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_installer
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -37,38 +37,41 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<th width="1%" class="nowrap">
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
-						<th width="1%" class="nowrap text-xs-center">
+						<th width="1%" class="nowrap text-center">
 							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'status', $listDirn, $listOrder); ?>
 						</th>
 						<th class="nowrap">
 							<?php echo JHtml::_('searchtools.sort', 'COM_INSTALLER_HEADING_NAME', 'name', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="text-xs-center">
+						<th width="10%" class="text-center">
 							<?php echo JHtml::_('searchtools.sort', 'COM_INSTALLER_HEADING_LOCATION', 'client_translated', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="text-xs-center">
+						<th width="10%" class="text-center">
 							<?php echo JHtml::_('searchtools.sort', 'COM_INSTALLER_HEADING_TYPE', 'type_translated', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="hidden-sm-down text-xs-center">
+						<th width="10%" class="hidden-sm-down text-center">
 							<?php echo JText::_('JVERSION'); ?>
 						</th>
-						<th width="10%" class="hidden-sm-down text-xs-center">
+						<th width="10%" class="hidden-sm-down text-center">
 							<?php echo JText::_('JDATE'); ?>
 						</th>
-						<th width="10%" class="hidden-sm-down text-xs-center">
+						<th width="10%" class="hidden-sm-down text-center">
 							<?php echo JText::_('JAUTHOR'); ?>
 						</th>
-						<th width="5%" class="hidden-sm-down text-xs-center">
+						<th width="5%" class="hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'COM_INSTALLER_HEADING_FOLDER', 'folder_translated', $listDirn, $listOrder); ?>
 						</th>
-						<th width="5%" class="nowrap hidden-sm-down text-xs-center">
+						<th class="hidden-sm-down text-center">
+							<?php echo JHtml::_('searchtools.sort', 'COM_INSTALLER_HEADING_PACKAGE_ID', 'package_id', $listDirn, $listOrder); ?>
+						</th>
+						<th width="1%" class="nowrap hidden-sm-down text-center">
 							<?php echo JHtml::_('searchtools.sort', 'COM_INSTALLER_HEADING_ID', 'extension_id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="10">
+						<td colspan="11">
 							<?php echo $this->pagination->getListFooter(); ?>
 						</td>
 					</tr>
@@ -79,7 +82,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<td>
 							<?php echo JHtml::_('grid.id', $i, $item->extension_id); ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php if (!$item->element) : ?>
 							<strong>X</strong>
 							<?php else : ?>
@@ -93,27 +96,30 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								</span>
 							</label>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo $item->client_translated; ?>
 						</td>
-						<td class="text-xs-center">
+						<td class="text-center">
 							<?php echo $item->type_translated; ?>
 						</td>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
 							<?php echo @$item->version != '' ? $item->version : '&#160;'; ?>
 						</td>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
 							<?php echo @$item->creationDate != '' ? $item->creationDate : '&#160;'; ?>
 						</td>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
 							<span class="editlinktip hasTooltip" title="<?php echo JHtml::tooltipText(JText::_('COM_INSTALLER_AUTHOR_INFORMATION'), $item->author_info, 0); ?>">
 								<?php echo @$item->author != '' ? $item->author : '&#160;'; ?>
 							</span>
 						</td>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
 							<?php echo $item->folder_translated; ?>
 						</td>
-						<td class="hidden-sm-down text-xs-center">
+						<td class="hidden-sm-down text-center">
+							<?php echo $item->package_id ?: '&#160;'; ?>
+						</td>
+						<td class="hidden-sm-down text-center">
 							<?php echo $item->extension_id; ?>
 						</td>
 					</tr>

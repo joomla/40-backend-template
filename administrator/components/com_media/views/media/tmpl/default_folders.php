@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_media
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -20,7 +20,7 @@ $ulTarget = str_replace('/', '-', $this->folders['data']->relative);
 	$target = str_replace('/', '-', $folder['data']->relative); ?>
 	<li id="<?php echo $target; ?>">
 		<a href="index.php?option=com_media&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $folder['data']->relative; ?>" target="folderframe">
-			<span class="icon-folder-2 float-xs-left"></span>
+			<span class="icon-folder-2 float-left"></span>
 			<?php echo $folder['data']->name; ?>
 		</a>
 		<?php echo $this->getFolderLevel($folder); ?>

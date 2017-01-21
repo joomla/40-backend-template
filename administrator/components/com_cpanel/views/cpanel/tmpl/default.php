@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_cpanel
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -34,35 +34,12 @@ JFactory::getDocument()->addScriptDeclaration(
 );
 ?>
 
-<?php if ($user->authorise('core.manage', 'com_postinstall') && $this->postinstall_message_count) : ?>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="alert alert-info">
-				<h4>
-					<?php echo JText::_('COM_CPANEL_MESSAGES_TITLE'); ?>
-				</h4>
-				<p>
-					<?php echo JText::_('COM_CPANEL_MESSAGES_BODY_NOCLOSE'); ?>
-				</p>
-				<p>
-					<?php echo JText::_('COM_CPANEL_MESSAGES_BODYMORE_NOCLOSE'); ?>
-				</p>
-				<p>
-					<a href="index.php?option=com_postinstall&amp;eid=700" class="btn btn-primary">
-						<?php echo JText::_('COM_CPANEL_MESSAGES_REVIEW'); ?>
-					</a>
-				</p>
-			</div>
-		</div>
-	</div>
-<?php endif; ?>
-
 <div class="row">
 
 	<?php $iconmodules = JModuleHelper::getModules('icon');
 	if ($iconmodules) : ?>
 		<div class="col-md-12">
-			<div class="cpanel-links">
+			<div class="cpanel-links mb-3">
 				<?php
 				// Display the submenu position modules
 				foreach ($iconmodules as $iconmodule)

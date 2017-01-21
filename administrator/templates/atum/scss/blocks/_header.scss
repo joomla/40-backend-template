@@ -2,17 +2,29 @@
 
 .header {
   position: relative;
-  z-index: 1;
-  height: 50px;
-  background: $white;
-  border-bottom: 1px solid rgba(0, 0, 0, .17);
+  z-index: 5;
+  height: $header-height;
+  margin-bottom: 3px;
+  background: $atum-template-color;
+
+  &::after {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    height: 3px;
+    content: "";
+    background-color: $brand-primary;
+    background-image: linear-gradient(to right, $atum-hl-grad-inner 0%, $atum-hl-grad-outer 100%);
+  }
 
   .page-title {
-    margin: 0;
+    display: inline-block;
+    margin: 0 0 0 25px;
     font-size: 1.25rem;
     font-weight: normal;
-    line-height: 2.4rem;
+    line-height: $header-height;
     color: $atum-inverted-text-color;
+    border-bottom: 1px solid #20252e;
 
     .icon-list {
       color: $atum-inverted-text-color;
@@ -27,17 +39,226 @@
     display: inline-block;
     float: none;
     padding: 0;
-    line-height: 1;
-    color: $atum-inverted-text-color;
+    font-size: 1.1rem;
+    line-height: $header-height;
+    color: $white-offset;
 
     &:hover,
     &:focus {
-      color: $atum-inverted-text-color;
+      color: darken($white-offset, 6%);
     }
 
     @include media-breakpoint-only(sm) {
       margin-right: 0;
       margin-left: 10px;
+    }
+  }
+
+  nav {
+    position: absolute;
+    top: 0;
+    right: 15px;
+  }
+
+  .nav-item + .nav-item {
+    margin-left: 1px;
+  }
+
+  .nav-link {
+    position: relative;
+    padding: 0;
+    margin-left: 4px;
+    line-height: $header-height;
+
+    .fa {
+      width: 30px;
+      height: 23px;
+      font-size: 1.1rem;
+      line-height: 23px;
+      color: $white-offset;
+      background-color: lighten($atum-template-color, 10%);
+      border-radius: 2px;
+    }
+
+    .badge {
+      position: absolute;
+      top: 2px;
+      right: -5px;
+    }
+
+    &.dropdown-toggle::after {
+      display: none;
+    }
+  }
+
+  .dropdown-notifications {
+    min-width: 280px;
+    padding: 0;
+    border: 0;
+  }
+
+  .dropdown-menu {
+    &::after {
+      left: .65rem;
+    }
+  }
+
+  .dropdown-menu-right {
+    &::after {
+      right: .65rem;
+      left: auto;
+    }
+  }
+
+  .header-profile {
+    .dropdown-menu {
+      padding-top: 0;
+
+      &::after {
+        color: $atum-container-main-bg;
+      }
+    }
+  }
+  .header-profile-user {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    margin-bottom: .3rem;
+    background-color: $atum-container-main-bg;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-radius: $border-radius $border-radius 0 0;
+  }
+
+}
+
+.container-title {
+  position: relative;
+  padding-top: 17px;
+  padding-bottom: 16px;
+  overflow: hidden;
+  color: $white;
+  background-color: $atum-template-color-light;
+
+  .page-title {
+    margin-bottom: 0;
+    font-size: 1.3rem;
+    font-weight: normal;
+
+    span {
+      margin-right: 15px;
+      font-size: $font-size-h1;
+      color: lighten($atum-template-color, 20%);
+    }
+  }
+}
+
+// Menu
+.menu-collapse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  width: $header-height;
+  height: $header-height;
+  text-align: center;
+  background-color: lighten($atum-template-color, 10%);
+
+  .menu-text {
+    margin-right: 5px;
+    font-size: 16px;
+    line-height: $header-height;
+    color: $atum-template-color;
+
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+
+  .menu-toggle {
+    position: relative;
+    display: inline-block;
+    width: $atum-button-width;
+    height: $atum-button-height;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background $atum-button-transistion-duration;
+
+    span {
+      position: absolute;
+      top: ($atum-button-height / 2) - ($atum-bar-thickness / 2);
+      right: $atum-button-pad;
+      left: $atum-button-pad;
+      display: block;
+      height: $atum-bar-thickness;
+      background-color: $white-offset;
+      transition: transform $atum-button-transistion-duration;
+
+      &::before,
+      &::after {
+        position: absolute;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: $atum-bar-thickness;
+        content: "";
+        background-color: $white-offset;
+      }
+
+      &::before {
+        top: -$atum-bar-thickness - $atum-button-bar-space;
+        transition: transform $atum-button-transistion-duration, width $atum-button-transistion-duration, top $atum-button-transistion-duration;
+        transform-origin: top left;
+
+        @include media-breakpoint-down(sm) {
+          transform-origin: top right;
+        }
+      }
+
+      &::after {
+        bottom: -$atum-bar-thickness - $atum-button-bar-space;
+        transition: transform $atum-button-transistion-duration, width $atum-button-transistion-duration, bottom $atum-button-transistion-duration;
+        transform-origin: bottom left;
+
+        @include media-breakpoint-down(sm) {
+          transform-origin: bottom right;
+        }
+      }
+    }
+
+    @include media-breakpoint-down(sm) {
+      float: none;
+      margin: 0 auto;
+    }
+  }
+
+  .menu-toggle .active {
+    span {
+      transform: rotate(180deg);
+
+      &::before,
+      &::after {
+        width: 50%;
+      }
+
+      &::before {
+        top: 0;
+        transform: translateX(-$atum-bar-thickness) translateY($atum-bar-thickness / 2) rotate(-45deg);
+
+        @include media-breakpoint-down(sm) {
+          transform: translateX($atum-button-width / 2 - $atum-button-pad + $atum-bar-thickness) translateY($atum-bar-thickness / 2) rotate(45deg);
+        }
+      }
+
+      &::after {
+        bottom: 0;
+        transform: translateX(-$atum-bar-thickness) translateY(-$atum-bar-thickness / 2) rotate(45deg);
+
+        @include media-breakpoint-down(sm) {
+          bottom: 4px;
+          transform: translateX($atum-button-width / 2 - $atum-button-pad + $atum-bar-thickness) translateY($atum-bar-thickness / 2) rotate(-45deg);
+        }
+      }
     }
   }
 }

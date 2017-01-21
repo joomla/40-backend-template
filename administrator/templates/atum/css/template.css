@@ -8893,6 +8893,13 @@ legend {
   height: auto;
   background: none; }
 
+.invalid {
+  border-color: #bc6564;
+  color: #bc6564; }
+
+.valid {
+  border-color: #64bd63; }
+
 .header {
   position: relative;
   z-index: 5;

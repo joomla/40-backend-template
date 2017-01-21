@@ -153,7 +153,6 @@ abstract class JHtmlBehavior
 		static::core();
 
 		// Add validate.js language strings
-		JText::script('JLIB_FORM_FIELD_INVALID');
 		JText::script('JLIB_FORM_CONTAINS_INVALID_FIELDS');
 		JText::script('JLIB_FORM_FIELD_REQUIRED_VALUE');
 		JText::script('JLIB_FORM_FIELD_REQUIRED_CHECK');

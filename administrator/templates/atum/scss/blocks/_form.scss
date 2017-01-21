@@ -88,3 +88,13 @@ legend {
   height: auto;
   background: none;
 }
+
+// Validation
+.invalid {
+  border-color: $switcher-color-danger;
+  color: $switcher-color-danger;
+}
+
+.valid {
+  border-color: $switcher-color-success;
+}

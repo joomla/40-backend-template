@@ -53,6 +53,7 @@ module.exports = function(grunt) {
 					'media/vendor/mediaelement/*',
 					'media/vendor/chosenjs/*',
 					'media/vendor/awesomplete/*',
+					'media/vendor/flying-focus-a11y/*',
 				],
 				expand: true,
 				options: {
@@ -158,6 +159,10 @@ module.exports = function(grunt) {
 					{ expand: true, cwd: '<%= folder.node_module %>perfect-scrollbar/dist/js', src: ['*.js'], dest: 'media/vendor/perfect-scrollbar/js/', filter: 'isFile'},
 					// perfect-scrollbar css files
 					{ cwd: '<%= folder.node_module %>perfect-scrollbar/dist/css', src: ['*.css'], dest: 'media/vendor/perfect-scrollbar/css/', expand: true, filter: 'isFile'},
+					// flying-focus js files
+					{ expand: true, cwd: '<%= folder.node_module %>flying-focus-a11y/src/js', src: ['*.js'], dest: 'media/vendor/flying-focus-a11y/js/', filter: 'isFile'},
+					// perfect-scrollbar scss files
+					{ cwd: '<%= folder.node_module %>flying-focus-a11y/src/scss', src: ['*.scss'], dest: 'media/vendor/flying-focus-a11y/scss/', expand: true, filter: 'isFile'},
 
 					// Licenses
 					{ src: ['<%= folder.node_module %>jquery/LICENSE.txt'], dest: 'media/vendor/jquery/LICENSE.txt'},
@@ -168,6 +173,7 @@ module.exports = function(grunt) {
 					{ src: ['<%= folder.node_module %>dragula/license'], dest: 'media/vendor/dragula/license'},
 					{ src: ['<%= folder.node_module %>awesomplete/LICENSE'], dest: 'media/vendor/awesomplete/LICENSE'},
 					{ src: ['<%= folder.node_module %>perfect-scrollbar/LICENSE'], dest: 'media/vendor/perfect-scrollbar/LICENSE'},
+					{ src: ['<%= folder.node_module %>flying-focus-a11y/MIT-LICENSE'], dest: 'media/vendor/flying-focus-a11y/MIT-LICENSE'},
 				]
 			}
 		},

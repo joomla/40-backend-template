@@ -47,7 +47,7 @@ vendors:
                   'version': '1.0.0-beta'
                   'dependencies': ''
     'flying-focus-a11y':
-                  'version': '1.5.0'
+                  'version': '1.5.2'
                   'dependencies': ''
 
 ## DO NOT EDIT THE NEXT LINES UNLESS YOU KNOW WHAT YOU ARE DOING ##

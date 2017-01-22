@@ -19,7 +19,7 @@ $input           = $app->input;
 
 // Add JavaScript Frameworks
 JHtml::_('bootstrap.framework');
-$doc->addScriptVersion(JUri::root() . 'media/vendor/flying-focus-a11y/js/flying-focus.js');
+$doc->addScriptVersion(JUri::root() . 'media/vendor/flying-focus-a11y/js/flying-focus.min.js');
 $doc->addScriptVersion($this->baseurl . '/templates/' . $this->template . '/js/template.js');
 
 // Add Stylesheets

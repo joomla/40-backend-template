@@ -29,6 +29,7 @@ module.exports = function(grunt) {
 			system        : 'media/system/js',
 			fields        : 'media/system/js/fields',
 			legacy        : 'media/system/js/legacy',
+			vendor        : 'media/vendor',
 			puny          : 'media/vendor/punycode/js',
 			codemirror    : 'media/vendor/codemirror',
 			adminTemplate : 'administrator/templates/atum',
@@ -224,6 +225,7 @@ module.exports = function(grunt) {
 							'!<%= folder.codemirror %>/mode/*/*.min.js',
 							'<%= folder.codemirror %>/theme/*/*.js',
 							'!<%= folder.codemirror %>/theme/*/*.min.js',
+							'<%= folder.vendor %>/flying-focus-a11y/js/*.js',
 							// '<%= folder.puny %>/*.js',            // Uglifying punicode.js fails!!!
 							// '!<%= folder.puny %>/*.min.js',       // Uglifying punicode.js fails!!!
 						],

@@ -2,17 +2,18 @@
 	'use strict';
 
 	document.addEventListener('DOMContentLoaded', function() {
-		var DURATION    = 150;
-		var ringElem    = null;
-		var movingId    = 0;
-		var prevFocused = null;
-		var keyDownTime = 0;
-		var win         = window;
-		var doc         = document;
-		var body        = doc.body;
+		var DURATION = 150,
+		    ringElem = null,
+		    movingId = 0,
+		    prevFocused = null,
+		    keyDownTime = 0,
+		    win = window,
+		    doc = document,
+		    body = doc.body;
 
 		doc.addEventListener('keydown', function(event) {
 			var code = event.which;
+
 			// Show animation only upon Tab or Arrow keys press.
 			if (code === 9 || (code > 36 && code < 41)) {
 				keyDownTime = Date.now();
@@ -21,11 +22,13 @@
 
 		doc.addEventListener('focus', function(event) {
 			var target = event.target;
+
 			if (target.id === 'flying-focus') {
 				return;
 			}
 
 			var isFirstFocus = false;
+
 			if (!ringElem) {
 				isFirstFocus = true;
 				initialize();
@@ -56,7 +59,8 @@
 		}, true);
 
 		function initialize() {
-			ringElem = doc.createElement('flying-focus'); // use uniq element name to decrease the chances of a conflict with website styles
+			// use uniq element name to decrease the chances of a conflict with website styles
+			ringElem = doc.createElement('flying-focus');
 			ringElem.id = 'flying-focus';
 			ringElem.style.transitionDuration = ringElem.style.WebkitTransitionDuration = DURATION / 1000 + 's';
 			body.appendChild(ringElem);
@@ -66,6 +70,7 @@
 			if (!movingId) {
 				return;
 			}
+
 			clearTimeout(movingId);
 			movingId = 0;
 			ringElem.classList.remove('flying-focus_visible');

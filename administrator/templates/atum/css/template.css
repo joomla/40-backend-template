@@ -1326,7 +1326,6 @@ joomla-alert {
   max-width: none; }
 
 .nav.nav-tabs {
-  display: flex;
   align-items: stretch;
   justify-content: space-around;
   flex-wrap: unset;

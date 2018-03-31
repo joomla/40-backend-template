@@ -1587,10 +1587,13 @@ joomla-alert {
   background-color: #ebeff5; }
 
 .content {
+  padding-top: 22px;
   border-radius: none; }
   .content > .row {
     margin-right: 0;
     margin-left: 0; }
+  .subhead + .content {
+    padding-top: 0; }
 
 .row-selected {
   background-color: #d9edf7; }

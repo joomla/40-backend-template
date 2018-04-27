@@ -17,6 +17,8 @@
   transition: all .3s ease;
 
   @include media-breakpoint-down(md) {
+    margin-top: 3px;
+
     .main-nav {
       max-height: calc(100vh - 147px);
     }
@@ -143,7 +145,7 @@
 
     > a + ul {
       left: 60px;
-      z-index: 1080;
+      z-index: 1;
       opacity: 1;
       transition-delay: .2s;
     }

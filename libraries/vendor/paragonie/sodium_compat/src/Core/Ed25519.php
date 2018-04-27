@@ -102,7 +102,7 @@ abstract class ParagonIE_Sodium_Core_Ed25519 extends ParagonIE_Sodium_Core_Curve
     }
 
     /**
-     * @param string $pk
+     * @param $pk
      * @return string
      * @throws SodiumException
      * @throws TypeError
@@ -342,7 +342,7 @@ abstract class ParagonIE_Sodium_Core_Ed25519 extends ParagonIE_Sodium_Core_Curve
         if (self::strlen($S) < 32) {
             throw new SodiumException('Signature must be 32 bytes');
         }
-        $L = array(
+        static $L = array(
             0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
             0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -352,7 +352,6 @@ abstract class ParagonIE_Sodium_Core_Ed25519 extends ParagonIE_Sodium_Core_Curve
         $n = 1;
         $i = 32;
 
-        /** @var array<int, int> $L */
         do {
             --$i;
             $x = self::chrToInt($S[$i]);
@@ -375,8 +374,7 @@ abstract class ParagonIE_Sodium_Core_Ed25519 extends ParagonIE_Sodium_Core_Curve
      */
     public static function small_order($R)
     {
-        /** @var array<int, array<int, int>> $blacklist */
-        $blacklist = array(
+        static $blacklist = array(
             /* 0 (order 4) */
             array(
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -462,13 +460,12 @@ abstract class ParagonIE_Sodium_Core_Ed25519 extends ParagonIE_Sodium_Core_Curve
                 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
             )
         );
-        /** @var int $countBlacklist */
         $countBlacklist = count($blacklist);
 
         for ($i = 0; $i < $countBlacklist; ++$i) {
             $c = 0;
             for ($j = 0; $j < 32; ++$j) {
-                $c |= self::chrToInt($R[$j]) ^ (int) $blacklist[$i][$j];
+                $c |= self::chrToInt($R[$j]) ^ $blacklist[$i][$j];
             }
             if ($c === 0) {
                 return true;

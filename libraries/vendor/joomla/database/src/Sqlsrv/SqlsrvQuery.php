@@ -10,8 +10,8 @@ namespace Joomla\Database\Sqlsrv;
 
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\DatabaseQuery;
-use Joomla\Database\ParameterType;
 use Joomla\Database\Query\LimitableInterface;
+use Joomla\Database\Query\PreparableInterface;
 use Joomla\Database\Query\QueryElement;
 
 /**
@@ -19,7 +19,7 @@ use Joomla\Database\Query\QueryElement;
  *
  * @since  1.0
  */
-class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
+class SqlsrvQuery extends DatabaseQuery implements PreparableInterface
 {
 	/**
 	 * The character(s) used to quote SQL statement names such as table names or field names, etc.
@@ -49,22 +49,6 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 	protected $bounded = array();
 
 	/**
-	 * The offset for the result set.
-	 *
-	 * @var    integer
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $offset;
-
-	/**
-	 * The limit for the result set.
-	 *
-	 * @var    integer
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $limit;
-
-	/**
 	 * Magic function to convert the query to a string.
 	 *
 	 * @return  string  The completed query.
@@ -73,12 +57,6 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 	 */
 	public function __toString()
 	{
-		// For the moment if we are given a query string we can't effectively process limits, fix this later
-		if ($this->sql)
-		{
-			return $this->sql;
-		}
-
 		$query = '';
 
 		switch ($this->type)
@@ -128,7 +106,7 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 					$query .= (string) $this->order;
 				}
 
-				if ($this->limit > 0 || $this->offset > 0)
+				if ($this instanceof LimitableInterface && ($this->limit > 0 || $this->offset > 0))
 				{
 					$query = $this->processLimit($query, $this->limit, $this->offset);
 				}
@@ -256,7 +234,7 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 	 *
 	 * @param   string|integer  $key            The key that will be used in your SQL query to reference the value. Usually of
 	 *                                          the form ':key', but can also be an integer.
-	 * @param   mixed           $value          The value that will be bound. The value is passed by reference to support output
+	 * @param   mixed           &$value         The value that will be bound. The value is passed by reference to support output
 	 *                                          parameters such as those possible with stored procedures.
 	 * @param   string          $dataType       The corresponding bind type. (Unused)
 	 * @param   integer         $length         The length of the variable. Usually required for OUTPUT parameters. (Unused)
@@ -266,7 +244,7 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 	 *
 	 * @since   1.5.0
 	 */
-	public function bind($key = null, &$value = null, $dataType = ParameterType::STRING, $length = 0, $driverOptions = array())
+	public function bind($key = null, &$value = null, $dataType = 's', $length = 0, $driverOptions = array())
 	{
 		// Case 1: Empty Key (reset $bounded array)
 		if (empty($key))
@@ -287,9 +265,8 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 			return $this;
 		}
 
-		$obj           = new \stdClass;
-		$obj->value    = &$value;
-		$obj->dataType = $dataType;
+		$obj        = new \stdClass;
+		$obj->value = &$value;
 
 		// Case 3: Simply add the Key/Value into the bounded array
 		$this->bounded[$key] = $obj;
@@ -459,15 +436,7 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 		// Go through all joins and add them to the tables array
 		foreach ($this->join as $join)
 		{
-			$joinTbl = str_replace(
-				'#__',
-				$this->db->getPrefix(),
-				str_replace(
-					']',
-					'',
-					preg_replace("/.*(#.+\sAS\s[^\s]*).*/i", '$1', (string) $join)
-				)
-			);
+			$joinTbl = str_replace('#__', $this->db->getPrefix(), str_replace(']', '', preg_replace("/.*(#.+\sAS\s[^\s]*).*/i", '$1', (string) $join)));
 
 			list($table, $alias) = preg_split("/\sAS\s/i", $joinTbl);
 
@@ -622,8 +591,7 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 				|| $lastWord == 'END'
 				|| is_numeric($lastWord))
 			{
-				/*
-				 * Ends with:
+				/* Ends with:
 				 * - SQL function
 				 * - single static value like 'only '+'string'
 				 * - @@var
@@ -1183,58 +1151,5 @@ class SqlsrvQuery extends DatabaseQuery implements LimitableInterface
 		}
 
 		return $columns;
-	}
-
-	/**
-	 * Method to modify a query already in string format with the needed additions to make the query limited to a particular number of
-	 * results, or start at a particular offset.
-	 *
-	 * @param   string   $query   The query in string format
-	 * @param   integer  $limit   The limit for the result set
-	 * @param   integer  $offset  The offset for the result set
-	 *
-	 * @return  string
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function processLimit($query, $limit, $offset = 0)
-	{
-		$orderBy = stristr($query, 'ORDER BY');
-
-		if (is_null($orderBy) || empty($orderBy))
-		{
-			$orderBy = 'ORDER BY (select 0)';
-		}
-
-		$query = str_ireplace($orderBy, '', $query);
-
-		$rowNumberText = ',ROW_NUMBER() OVER (' . $orderBy . ') AS RowNumber FROM ';
-
-		$query = preg_replace('/\\s+FROM/', '\\1 ' . $rowNumberText . ' ', $query, 1);
-		$query = 'SELECT TOP ' . $limit . ' * FROM (' . $query . ') _myResults WHERE RowNumber > ' . $offset;
-
-		return $query;
-	}
-
-	/**
-	 * Sets the offset and limit for the result set, if the database driver supports it.
-	 *
-	 * Usage:
-	 * $query->setLimit(100, 0); (retrieve 100 rows, starting at first record)
-	 * $query->setLimit(50, 50); (retrieve 50 rows, starting at 50th record)
-	 *
-	 * @param   integer  $limit   The limit for the result set
-	 * @param   integer  $offset  The offset for the result set
-	 *
-	 * @return  $this
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function setLimit($limit = 0, $offset = 0)
-	{
-		$this->limit  = (int) $limit;
-		$this->offset = (int) $offset;
-
-		return $this;
 	}
 }

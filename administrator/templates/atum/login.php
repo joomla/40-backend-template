@@ -28,7 +28,7 @@ HTMLHelper::_('stylesheet', 'font-awesome.css', ['version' => 'auto', 'relative'
 HTMLHelper::_('stylesheet', 'template' . ($this->direction === 'rtl' ? '-rtl' : '') . '.css', ['version' => 'auto', 'relative' => true]);
 
 // Alerts
-HTMLHelper::_('webcomponent', 'vendor/joomla-custom-elements/joomla-alert.min.js', ['relative' => true, 'version' => 'auto']);
+HTMLHelper::_('webcomponent', ['joomla-alert' => 'vendor/joomla-custom-elements/joomla-alert.min.js'], ['relative' => true, 'version' => 'auto', 'detectBrowser' => false, 'detectDebug' => false]);
 
 
 // Load custom CSS file
@@ -60,11 +60,10 @@ $this->setMetaData('theme-color', '#1c3d5c');
 
 <body class="site <?php echo $option . ' view-' . $view . ' layout-' . $layout . ' task-' . $task . ' itemid-' . $itemid . ' '; ?>">
 	<?php // Container ?>
-	<div class="login-bg-grad"></div>
 	<div class="d-flex justify-content-center align-items-center h-100">
 		<div class="login">
 			<div class="login-logo">
-				<img src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/images/logo-joomla-white.svg" alt="<?php echo $sitename; ?>">
+				<img src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/images/logo-white.svg" alt="<?php echo $sitename; ?>">
 			</div>
 			<div id="content">
 				<noscript>
@@ -84,7 +83,7 @@ $this->setMetaData('theme-color', '#1c3d5c');
 				</div>
 				<?php // End Content ?>
 			</div>
-			<div class="mt-4 d-none d-md-flex justify-content-between">
+			<div class="mt-2 d-none d-md-flex justify-content-between">
 				<a href="<?php echo Uri::root(); ?>" target="_blank" class="text-white"><span class="fa fa-eye mr-1" aria-hidden="true"></span><?php echo Text::_('TPL_ATUM_VIEW_SITE'); ?></a>
 				<span class="text-white">&nbsp;&copy; <?php echo date('Y'); ?> <?php echo $sitename; ?></span>
 			</div>

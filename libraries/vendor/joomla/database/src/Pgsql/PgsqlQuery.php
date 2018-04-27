@@ -8,168 +8,95 @@
 
 namespace Joomla\Database\Pgsql;
 
-use Joomla\Database\Pdo\PdoQuery;
-use Joomla\Database\Query\PostgresqlQueryBuilder;
+use Joomla\Database\Postgresql\PostgresqlQuery;
+use Joomla\Database\Query\PreparableInterface;
 
 /**
  * PDO PostgreSQL Query Building Class.
  *
  * @since  1.0
  */
-class PgsqlQuery extends PdoQuery
+class PgsqlQuery extends PostgresqlQuery implements PreparableInterface
 {
-	use PostgresqlQueryBuilder;
+	/**
+	 * Holds key / value pair of bound objects.
+	 *
+	 * @var    mixed
+	 * @since  1.5.0
+	 */
+	protected $bounded = [];
 
 	/**
-	 * Magic function to convert the query to a string, only for PostgreSQL specific queries
+	 * Method to add a variable to an internal array that will be bound to a prepared SQL statement before query execution. Also
+	 * removes a variable that has been bounded from the internal bounded array when the passed in value is null.
 	 *
-	 * @return  string	The completed query.
+	 * @param   string|integer  $key            The key that will be used in your SQL query to reference the value. Usually of
+	 *                                          the form ':key', but can also be an integer.
+	 * @param   mixed           &$value         The value that will be bound. The value is passed by reference to support output
+	 *                                          parameters such as those possible with stored procedures.
+	 * @param   integer         $dataType       Constant corresponding to a SQL datatype.
+	 * @param   integer         $length         The length of the variable. Usually required for OUTPUT parameters.
+	 * @param   array           $driverOptions  Optional driver options to be used.
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @return  $this
+	 *
+	 * @since   1.5.0
 	 */
-	public function __toString()
+	public function bind($key = null, &$value = null, $dataType = \PDO::PARAM_STR, $length = 0, $driverOptions = array())
 	{
-		$query = '';
-
-		switch ($this->type)
+		// Case 1: Empty Key (reset $bounded array)
+		if (empty($key))
 		{
-			case 'select':
-				$query .= (string) $this->select;
-				$query .= (string) $this->from;
+			$this->bounded = array();
 
-				if ($this->join)
-				{
-					// Special case for joins
-					foreach ($this->join as $join)
-					{
-						$query .= (string) $join;
-					}
-				}
-
-				if ($this->where)
-				{
-					$query .= (string) $this->where;
-				}
-
-				if ($this->selectRowNumber)
-				{
-					if ($this->order)
-					{
-						$query .= (string) $this->order;
-					}
-
-					break;
-				}
-
-				if ($this->group)
-				{
-					$query .= (string) $this->group;
-				}
-
-				if ($this->having)
-				{
-					$query .= (string) $this->having;
-				}
-
-				if ($this->order)
-				{
-					$query .= (string) $this->order;
-				}
-
-				if ($this->forUpdate)
-				{
-					$query .= (string) $this->forUpdate;
-				}
-				else
-				{
-					if ($this->forShare)
-					{
-						$query .= (string) $this->forShare;
-					}
-				}
-
-				if ($this->noWait)
-				{
-					$query .= (string) $this->noWait;
-				}
-
-				break;
-
-			case 'update':
-				$query .= (string) $this->update;
-				$query .= (string) $this->set;
-
-				if ($this->join)
-				{
-					$tmpFrom     = $this->from;
-					$tmpWhere    = $this->where ? clone $this->where : null;
-					$this->from  = null;
-
-					// Workaround for special case of JOIN with UPDATE
-					foreach ($this->join as $join)
-					{
-						$joinElem = $join->getElements();
-
-						$joinArray = preg_split('/\sON\s/i', $joinElem[0], 2);
-
-						$this->from($joinArray[0]);
-
-						if (isset($joinArray[1]))
-						{
-							$this->where($joinArray[1]);
-						}
-					}
-
-					$query .= (string) $this->from;
-
-					if ($this->where)
-					{
-						$query .= (string) $this->where;
-					}
-
-					$this->from  = $tmpFrom;
-					$this->where = $tmpWhere;
-				}
-				elseif ($this->where)
-				{
-					$query .= (string) $this->where;
-				}
-
-				break;
-
-			case 'insert':
-				$query .= (string) $this->insert;
-
-				if ($this->values)
-				{
-					if ($this->columns)
-					{
-						$query .= (string) $this->columns;
-					}
-
-					$elements = $this->values->getElements();
-
-					if (!($elements[0] instanceof $this))
-					{
-						$query .= ' VALUES ';
-					}
-
-					$query .= (string) $this->values;
-
-					if ($this->returning)
-					{
-						$query .= (string) $this->returning;
-					}
-				}
-
-				break;
-
-			default:
-				$query = parent::__toString();
-				break;
+			return $this;
 		}
 
-		return $this->processLimit($query, $this->limit, $this->offset);
+		// Case 2: Key Provided, null value (unset key from $bounded array)
+		if (is_null($value))
+		{
+			if (isset($this->bounded[$key]))
+			{
+				unset($this->bounded[$key]);
+			}
+
+			return $this;
+		}
+
+		$obj = new \stdClass;
+
+		$obj->value = &$value;
+		$obj->dataType = $dataType;
+		$obj->length = $length;
+		$obj->driverOptions = $driverOptions;
+
+		// Case 3: Simply add the Key/Value into the bounded array
+		$this->bounded[$key] = $obj;
+
+		return $this;
+	}
+
+	/**
+	 * Retrieves the bound parameters array when key is null and returns it by reference. If a key is provided then that item is
+	 * returned.
+	 *
+	 * @param   mixed  $key  The bounded variable key to retrieve.
+	 *
+	 * @return  mixed
+	 *
+	 * @since   1.5.0
+	 */
+	public function &getBounded($key = null)
+	{
+		if (empty($key))
+		{
+			return $this->bounded;
+		}
+
+		if (isset($this->bounded[$key]))
+		{
+			return $this->bounded[$key];
+		}
 	}
 
 	/**
@@ -179,62 +106,17 @@ class PgsqlQuery extends PdoQuery
 	 *
 	 * @return  $this
 	 *
-	 * @since   1.0
+	 * @since   1.5.0
 	 */
 	public function clear($clause = null)
 	{
 		switch ($clause)
 		{
-			case 'limit':
-				$this->limit = null;
-				break;
-
-			case 'offset':
-				$this->offset = null;
-				break;
-
-			case 'forUpdate':
-				$this->forUpdate = null;
-				break;
-
-			case 'forShare':
-				$this->forShare = null;
-				break;
-
-			case 'noWait':
-				$this->noWait = null;
-				break;
-
-			case 'returning':
-				$this->returning = null;
-				break;
-
-			case 'select':
-			case 'update':
-			case 'delete':
-			case 'insert':
-			case 'from':
-			case 'join':
-			case 'set':
-			case 'where':
-			case 'group':
-			case 'having':
-			case 'order':
-			case 'columns':
-			case 'values':
-				parent::clear($clause);
-				break;
-
-			default:
-				$this->forUpdate = null;
-				$this->forShare = null;
-				$this->noWait = null;
-				$this->returning = null;
-
-				parent::clear($clause);
+			case null:
+				$this->bounded = array();
 				break;
 		}
 
-		return $this;
+		return parent::clear($clause);
 	}
 }

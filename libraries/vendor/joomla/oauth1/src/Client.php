@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework OAuth1 Package
  *
- * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -168,7 +168,7 @@ abstract class Client
 	 *
 	 * @return  void
 	 *
-	 * @since   1.1.2
+	 * @since   __DEPLOY_VERSION__
 	 * @throws  \DomainException
 	 */
 	private function generateRequestToken()
@@ -205,7 +205,7 @@ abstract class Client
 	 *
 	 * @return  void
 	 *
-	 * @since   1.1.2
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function authorise()
 	{
@@ -228,7 +228,7 @@ abstract class Client
 	 *
 	 * @return  void
 	 *
-	 * @since   1.1.2
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function generateAccessToken()
 	{
@@ -348,7 +348,7 @@ abstract class Client
 	 *
 	 * @return  string  The header.
 	 *
-	 * @since   1.1.2
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function createHeader(array $parameters): string
 	{
@@ -431,7 +431,7 @@ abstract class Client
 	 *
 	 * @return  array  The array containing the request parameters, including signature.
 	 *
-	 * @since   1.1.2
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function signRequest(string $url, string $method, array $parameters): array
 	{
@@ -456,7 +456,7 @@ abstract class Client
 	 *
 	 * @return  string  The base string.
 	 *
-	 * @since   1.1.2
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function baseString(string $url, string $method, array $parameters): string
 	{
@@ -544,7 +544,7 @@ abstract class Client
 	 *
 	 * @return  string  The prepared signing key.
 	 *
-	 * @since   1.1.2
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function prepareSigningKey(): string
 	{

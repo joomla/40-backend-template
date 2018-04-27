@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Utilities Package
  *
- * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -90,15 +90,15 @@ final class ArrayHelper
 	 * Utility function to map an array to a string.
 	 *
 	 * @param   array    $array         The array to map.
-	 * @param   string   $innerGlue     The glue (optional, defaults to '=') between the key and the value.
-	 * @param   string   $outerGlue     The glue (optional, defaults to ' ') between array elements.
+	 * @param   string   $inner_glue    The glue (optional, defaults to '=') between the key and the value.
+	 * @param   string   $outer_glue    The glue (optional, defaults to ' ') between array elements.
 	 * @param   boolean  $keepOuterKey  True if final key should be kept.
 	 *
 	 * @return  string
 	 *
 	 * @since   1.0
 	 */
-	public static function toString(array $array, $innerGlue = '=', $outerGlue = ' ', $keepOuterKey = false)
+	public static function toString(array $array, $inner_glue = '=', $outer_glue = ' ', $keepOuterKey = false)
 	{
 		$output = [];
 
@@ -112,21 +112,21 @@ final class ArrayHelper
 				}
 
 				// This is value is an array, go and do it again!
-				$output[] = static::toString($item, $innerGlue, $outerGlue, $keepOuterKey);
+				$output[] = static::toString($item, $inner_glue, $outer_glue, $keepOuterKey);
 			}
 			else
 			{
-				$output[] = $key . $innerGlue . '"' . $item . '"';
+				$output[] = $key . $inner_glue . '"' . $item . '"';
 			}
 		}
 
-		return implode($outerGlue, $output);
+		return implode($outer_glue, $output);
 	}
 
 	/**
 	 * Utility function to map an object to an array
 	 *
-	 * @param   object   $source   The source object
+	 * @param   object   $p_obj    The source object
 	 * @param   boolean  $recurse  True to recurse through multi-level objects
 	 * @param   string   $regex    An optional regular expression to match on field names
 	 *
@@ -134,11 +134,11 @@ final class ArrayHelper
 	 *
 	 * @since   1.0
 	 */
-	public static function fromObject($source, $recurse = true, $regex = null)
+	public static function fromObject($p_obj, $recurse = true, $regex = null)
 	{
-		if (is_object($source) || is_array($source))
+		if (is_object($p_obj) || is_array($p_obj))
 		{
-			return self::arrayFromObject($source, $recurse, $regex);
+			return self::arrayFromObject($p_obj, $recurse, $regex);
 		}
 
 		return [];
@@ -204,7 +204,7 @@ final class ArrayHelper
 	 *
 	 * @return  array  An array with the new column added to the source array
 	 *
-	 * @since   1.5.0
+	 * @since   __DEPLOY_VERSION__
 	 * @see     https://secure.php.net/manual/en/language.types.array.php
 	 */
 	public static function addColumn(array $array, array $column, $colName, $keyCol = null)
@@ -264,7 +264,7 @@ final class ArrayHelper
 	 *
 	 * @return  array  Column of values from the source array
 	 *
-	 * @since   1.5.0
+	 * @since   __DEPLOY_VERSION__
 	 * @see     https://secure.php.net/manual/en/language.types.array.php
 	 */
 	public static function dropColumn(array $array, $colName)
@@ -715,12 +715,13 @@ final class ArrayHelper
 	/**
 	 * Merge array recursively.
 	 *
-	 * @param   array  ...$args  Array list to be merged.
+	 * @param   array  $args  Array list to be merge.
 	 *
 	 * @return  array  Merged array.
 	 *
-	 * @since   __DEPLOY_VERSION__
 	 * @throws  \InvalidArgumentException
+	 *
+	 * @since   __DEPLOY_VERSION__
 	 */
 	public static function mergeRecursive(...$args): array
 	{

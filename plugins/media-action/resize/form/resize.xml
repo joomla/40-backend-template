@@ -3,11 +3,11 @@
 	<fieldset name="Resize" label="PLG_MEDIA-ACTION_RESIZE_LABEL">
 		<field
 			name="resize_quality"
-			type="number"
+			type="integer"
 			label="PLG_MEDIA-ACTION_RESIZE_QUALITY"
 			addonBefore="PLG_MEDIA-ACTION_RESIZE_QUALITY"
-			min="1"
-			max="100"
+			first="1"
+			last="100"
 			step="1"
 			default="80"
 		/>

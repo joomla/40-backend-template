@@ -36,7 +36,7 @@ class PlgButtonReadmore extends CMSPlugin
 	 *
 	 * @param   string  $name  The name of the button to add
 	 *
-	 * @return  CMSObject  $button  A two element array of (imageName, textToInsert)
+	 * @return  JObject  $button  A two element array of (imageName, textToInsert)
 	 *
 	 * @since   1.5
 	 */
@@ -63,6 +63,7 @@ class PlgButtonReadmore extends CMSPlugin
 
 		$button = new CMSObject;
 		$button->modal   = false;
+		$button->class   = 'btn btn-secondary';
 		$button->onclick = 'insertReadmore(\'' . $name . '\');return false;';
 		$button->text    = Text::_('PLG_READMORE_BUTTON_READMORE');
 		$button->name    = 'arrow-down';

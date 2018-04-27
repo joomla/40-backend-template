@@ -33,7 +33,7 @@ Joomla.MediaManager.Edit = Joomla.MediaManager.Edit || {};
 		ctx.drawImage(image, -image.width / 2, -image.height / 2);
 
 		// The format
-		var format = Joomla.MediaManager.Edit.original.extension === 'jpg' ? 'jpeg' : Joomla.MediaManager.Edit.original.extension;
+		var format = Joomla.MediaManager.Edit.original.extension === 'jpg' ? 'jpeg' : 'jpg';
 
 		// The quality
 		var quality = document.getElementById('jform_rotate_quality').value;
@@ -47,7 +47,10 @@ Joomla.MediaManager.Edit = Joomla.MediaManager.Edit || {};
 		image.height = canvas.height;
 		image.src = Joomla.MediaManager.Edit.current.contents;
 
-		// Update the angle input box
+		// Update the width input box
+		document.getElementById('jform_rotate_angle').value = angle;
+
+		// Update the height input box
 		document.getElementById('jform_rotate_a').value = angle;
 
 		// Notify the app that a change has been made
@@ -56,19 +59,13 @@ Joomla.MediaManager.Edit = Joomla.MediaManager.Edit || {};
 
 	var initRotate = function (mediaData) {
 		var funct = function () {
-			// The number input listener
+			// The listeners
+			document.getElementById('jform_rotate_angle').addEventListener('change', function () {
+				rotate(parseInt(this.value));
+			});
 			document.getElementById('jform_rotate_a').addEventListener('input', function () {
 				rotate(parseInt(this.value));
 			});
-
-			// The 90 degree rotate buttons listeners
-			var elements = document.querySelectorAll("#jform_rotate_distinct label");
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].addEventListener('click', function (e) {
-					rotate(parseInt(this.querySelector('input').value));
-				});
-			}
-
 		}
 		setTimeout(funct, 1000);
 	};

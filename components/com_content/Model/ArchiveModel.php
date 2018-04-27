@@ -10,7 +10,6 @@ namespace Joomla\Component\Content\Site\Model;
 
 defined('_JEXEC') or die;
 
-use Joomla\Component\Content\Site\Helper\QueryHelper;
 use Joomla\Component\Content\Site\Model\ArticlesModel;
 use Joomla\Utilities\ArrayHelper;
 
@@ -69,7 +68,7 @@ class ArchiveModel extends ArticlesModel
 		$articleOrderDate = $params->get('order_date');
 
 		// No category ordering
-		$secondary = QueryHelper::orderbySecondary($articleOrderby, $articleOrderDate);
+		$secondary = \ContentHelperQuery::orderbySecondary($articleOrderby, $articleOrderDate);
 
 		$this->setState('list.ordering', $secondary . ', a.created DESC');
 		$this->setState('list.direction', '');
@@ -99,7 +98,7 @@ class ArchiveModel extends ArticlesModel
 
 		// Filter on month, year
 		// First, get the date field
-		$queryDate = QueryHelper::getQueryDate($articleOrderDate);
+		$queryDate = \ContentHelperQuery::getQueryDate($articleOrderDate);
 
 		if ($month = $this->getState('filter.month'))
 		{

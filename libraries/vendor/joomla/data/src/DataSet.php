@@ -215,9 +215,9 @@ class DataSet implements DumpableInterface, \ArrayAccess, \Countable, \Iterator
 
 		foreach ($this->objects as $object)
 		{
-			$objectVars = json_decode(json_encode($object), true);
+			$object_vars = json_decode(json_encode($object), true);
 
-			$keys = (is_null($keys)) ? $objectVars : $function($keys, $objectVars);
+			$keys = (is_null($keys)) ? $object_vars : $function($keys, $object_vars);
 		}
 
 		return array_keys($keys);
@@ -249,7 +249,7 @@ class DataSet implements DumpableInterface, \ArrayAccess, \Countable, \Iterator
 
 		foreach ($this->objects as $key => $object)
 		{
-			$arrayItem = [];
+			$array_item = [];
 
 			$key = ($associative) ? $key : $i++;
 
@@ -257,11 +257,11 @@ class DataSet implements DumpableInterface, \ArrayAccess, \Countable, \Iterator
 
 			foreach ($keys as $property)
 			{
-				$propertyKey             = ($associative) ? $property : $j++;
-				$arrayItem[$propertyKey] = (isset($object->$property)) ? $object->$property : null;
+				$property_key              = ($associative) ? $property : $j++;
+				$array_item[$property_key] = (isset($object->$property)) ? $object->$property : null;
 			}
 
-			$return[$key] = $arrayItem;
+			$return[$key] = $array_item;
 		}
 
 		return $return;

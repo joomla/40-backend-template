@@ -76,10 +76,9 @@ class ModulesDispatcher extends Dispatcher
 	 */
 	public function getController(string $name, string $client = '', array $config = array()): BaseController
 	{
-		if ($this->input->get('task') === 'orderPosition')
+		if ($this->input->get('task') === 'module.orderPosition')
 		{
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
-			$client = 'Administrator';
 		}
 
 		return parent::getController($name, $client, $config);

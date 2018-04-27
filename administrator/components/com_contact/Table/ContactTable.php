@@ -65,11 +65,12 @@ class ContactTable extends Table
 		$date   = \JFactory::getDate()->toSql();
 		$userId = \JFactory::getUser()->id;
 
+		$this->modified = $date;
+
 		if ($this->id)
 		{
 			// Existing item
 			$this->modified_by = $userId;
-			$this->modified    = $date;
 		}
 		else
 		{
@@ -240,11 +241,6 @@ class ContactTable extends Table
 		if (empty($this->metadata))
 		{
 			$this->metadata = '{}';
-		}
-
-		if (empty($this->modified))
-		{
-			$this->modified = $this->getDbo()->getNullDate();
 		}
 
 		return true;

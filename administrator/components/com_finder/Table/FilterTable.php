@@ -108,11 +108,6 @@ class FilterTable extends Table
 			$this->params = (string) $params;
 		}
 
-		if (empty($this->modified))
-		{
-			$this->modified = $nullDate;
-		}
-
 		return true;
 	}
 
@@ -225,11 +220,12 @@ class FilterTable extends Table
 		$date = \JFactory::getDate()->toSql();
 		$userId = \JFactory::getUser()->id;
 
+		$this->modified = $date;
+
 		if ($this->filter_id)
 		{
 			// Existing item
 			$this->modified_by = $userId;
-			$this->modified    = $date;
 		}
 		else
 		{

@@ -9,9 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-
 extract($displayData);
 
 /**
@@ -56,15 +53,15 @@ $link = 'index.php?option=com_users&amp;view=users&amp;layout=modal&amp;tmpl=com
 	. (isset($excluded) ? ('&amp;excluded=' . base64_encode(json_encode($excluded))) : '');
 
 // Invalidate the input value if no user selected
-if (Text::_('JLIB_FORM_SELECT_USER') === htmlspecialchars($userName, ENT_COMPAT, 'UTF-8'))
+if (JText::_('JLIB_FORM_SELECT_USER') === htmlspecialchars($userName, ENT_COMPAT, 'UTF-8'))
 {
 	$userName = '';
 }
 
 if (!$readonly)
 {
-	HTMLHelper::_('jquery.framework');
-	HTMLHelper::_('script', 'system/fields/fielduser.min.js', ['version' => 'auto', 'relative' => true]);
+	JHtml::_('jquery.framework');
+	JHtml::_('script', 'system/fields/fielduser.min.js', ['version' => 'auto', 'relative' => true]);
 }
 ?>
 <?php // Create a dummy text field with the user name. ?>
@@ -81,20 +78,20 @@ if (!$readonly)
 		<input
 			type="text" id="<?php echo $id; ?>"
 			value="<?php echo  htmlspecialchars($userName, ENT_COMPAT, 'UTF-8'); ?>"
-			placeholder="<?php echo Text::_('JLIB_FORM_SELECT_USER'); ?>"
+			placeholder="<?php echo JText::_('JLIB_FORM_SELECT_USER'); ?>"
 			readonly
 			class="field-user-input-name <?php echo $class ? (string) $class : ''?>"
 			<?php echo $size ? ' size="' . (int) $size . '"' : ''; ?>
 			<?php echo $required ? 'required' : ''; ?>/>
 		<?php if (!$readonly) : ?>
-			<a class="btn btn-primary button-select" title="<?php echo Text::_('JLIB_FORM_CHANGE_USER') ?>"><span class="icon-user"></span></a>
-			<?php echo HTMLHelper::_(
+			<a class="btn btn-primary button-select" title="<?php echo JText::_('JLIB_FORM_CHANGE_USER') ?>"><span class="icon-user"></span></a>
+			<?php echo JHtml::_(
 				'bootstrap.renderModal',
 				'userModal_' . $id,
 				[
-					'title'  => Text::_('JLIB_FORM_CHANGE_USER'),
+					'title'  => JText::_('JLIB_FORM_CHANGE_USER'),
 					'closeButton' => true,
-					'footer' => '<a type="button" class="btn" data-dismiss="modal">' . Text::_('JCANCEL') . '</a>',
+					'footer' => '<a type="button" class="btn" data-dismiss="modal">' . JText::_('JCANCEL') . '</a>',
 				]
 			); ?>
 		<?php endif; ?>

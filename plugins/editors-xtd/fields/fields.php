@@ -36,7 +36,7 @@ class PlgButtonFields extends CMSPlugin
 	 *
 	 * @param   string  $name  The name of the button to add
 	 *
-	 * @return  CMSObject  The button options as JObject
+	 * @return  JObject  The button options as JObject
 	 *
 	 * @since  3.7.0
 	 */
@@ -67,15 +67,16 @@ class PlgButtonFields extends CMSPlugin
 
 		$button          = new CMSObject;
 		$button->modal   = true;
+		$button->class   = 'btn';
 		$button->link    = $link;
 		$button->text    = Text::_('PLG_EDITORS-XTD_FIELDS_BUTTON_FIELD');
 		$button->name    = 'puzzle';
-		$button->options = [
+		$button->options = array(
 			'height'     => '300px',
 			'width'      => '800px',
 			'bodyHeight' => '70',
 			'modalWidth' => '80',
-		];
+		);
 
 		return $button;
 	}

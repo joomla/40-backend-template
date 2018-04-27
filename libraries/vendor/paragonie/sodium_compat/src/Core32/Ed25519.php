@@ -16,8 +16,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      * @internal You should not use this directly from another application
      *
      * @return string (96 bytes)
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function keypair()
     {
@@ -35,8 +33,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      * @param string $sk
      * @param string $seed
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function seed_keypair(&$pk, &$sk, $seed)
     {
@@ -55,7 +51,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      *
      * @param string $keypair
      * @return string
-     * @throws TypeError
      */
     public static function secretkey($keypair)
     {
@@ -70,8 +65,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      *
      * @param string $keypair
      * @return string
-     * @throws RangeException
-     * @throws TypeError
      */
     public static function publickey($keypair)
     {
@@ -86,8 +79,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      *
      * @param string $sk
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function publickey_from_secretkey($sk)
     {
@@ -103,10 +94,9 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
     }
 
     /**
-     * @param string $pk
+     * @param $pk
      * @return string
      * @throws SodiumException
-     * @throws TypeError
      */
     public static function pk_to_curve25519($pk)
     {
@@ -147,8 +137,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      *
      * @param string $sk
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function sk_to_pk($sk)
     {
@@ -165,8 +153,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      * @param string $message
      * @param string $sk
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function sign($message, $sk)
     {
@@ -181,8 +167,7 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      * @param string $message A signed message
      * @param string $pk      Public key
      * @return string         Message (without signature)
-     * @throws SodiumException
-     * @throws TypeError
+     * @throws Exception
      */
     public static function sign_open($message, $pk)
     {
@@ -204,8 +189,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      * @param string $message
      * @param string $sk
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function sign_detached($message, $sk)
     {
@@ -269,8 +252,7 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      * @param string $message
      * @param string $pk
      * @return bool
-     * @throws SodiumException
-     * @throws TypeError
+     * @throws Exception
      */
     public static function verify_detached($sig, $message, $pk)
     {
@@ -336,8 +318,7 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
      *
      * @param string $S
      * @return bool
-     * @throws SodiumException
-     * @throws TypeError
+     * @throws Exception
      */
     public static function check_S_lt_L($S)
     {
@@ -350,7 +331,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
         );
-        /** @var array<int, int> $L */
         $c = 0;
         $n = 1;
         $i = 32;
@@ -372,8 +352,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
     /**
      * @param string $R
      * @return bool
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function small_order($R)
     {
@@ -463,7 +441,6 @@ abstract class ParagonIE_Sodium_Core32_Ed25519 extends ParagonIE_Sodium_Core32_C
                 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
             )
         );
-        /** @var array<int, array<int, int>> $blacklist */
         $countBlacklist = count($blacklist);
 
         for ($i = 0; $i < $countBlacklist; ++$i) {

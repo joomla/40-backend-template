@@ -14,7 +14,6 @@ use Joomla\Application\AbstractApplication;
 use Joomla\CMS\Application\CLI\CliInput;
 use Joomla\CMS\Application\CLI\CliOutput;
 use Joomla\CMS\Application\CLI\Output\Stdout;
-use Joomla\CMS\Extension\ExtensionManagerTrait;
 use Joomla\Input\Cli;
 use Joomla\Input\Input;
 use Joomla\DI\Container;
@@ -33,7 +32,7 @@ use Joomla\Session\SessionInterface;
  */
 abstract class CliApplication extends AbstractApplication implements DispatcherAwareInterface, CMSApplicationInterface
 {
-	use DispatcherAwareTrait, EventAware, IdentityAware, ContainerAwareTrait, ExtensionManagerTrait;
+	use DispatcherAwareTrait, EventAware, IdentityAware, ContainerAwareTrait;
 
 	/**
 	 * Output object
@@ -281,18 +280,6 @@ abstract class CliApplication extends AbstractApplication implements DispatcherA
 	public function getSession()
 	{
 		return $this->container->get(SessionInterface::class);
-	}
-
-	/**
-	 * Retrieve the application configuration object.
-	 *
-	 * @return  Registry
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function getConfig()
-	{
-		return $this->config;
 	}
 
 	/**

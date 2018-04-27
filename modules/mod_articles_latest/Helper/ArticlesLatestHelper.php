@@ -15,7 +15,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Router\Route;
-use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Component\Content\Site\Model\ArticlesModel;
 
@@ -31,18 +30,20 @@ abstract class ArticlesLatestHelper
 	/**
 	 * Retrieve a list of article
 	 *
-	 * @param   Registry       $params  The module parameters.
-	 * @param   ArticlesModel  $model   The model.
+	 * @param   \Joomla\Registry\Registry  &$params  module parameters
 	 *
 	 * @return  mixed
 	 *
 	 * @since   1.6
 	 */
-	public static function getList(Registry $params, ArticlesModel $model)
+	public static function getList(&$params)
 	{
 		// Get the Dbo and User object
 		$db   = Factory::getDbo();
 		$user = Factory::getUser();
+
+		// Get an instance of the generic articles model
+		$model = new ArticlesModel(array('ignore_request' => true));
 
 		// Set application parameters in model
 		$app       = Factory::getApplication();

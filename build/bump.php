@@ -63,8 +63,10 @@ $readMeFiles = array(
 $directoryLoopExcludeDirectories = array(
 			'/.git',
 			'/libraries/vendor/',
+			'/libraries/phputf8/',
 			'/libraries/php-encryption/',
 			'/libraries/phpass/',
+			'/libraries/idna_convert/',
 			);
 
 $directoryLoopExcludeFiles = array(

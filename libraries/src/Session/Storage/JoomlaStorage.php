@@ -56,16 +56,11 @@ class JoomlaStorage extends NativeStorage
 	 */
 	public function __construct(Input $input, \SessionHandlerInterface $handler = null, array $options = [])
 	{
-		// Disable transparent sid support and default use cookies
-		$options += [
-			'use_cookies'   => 1,
-			'use_trans_sid' => 0,
-		];
+		// Disable transparent sid support
+		ini_set('session.use_trans_sid', '0');
 
-		if (!headers_sent())
-		{
-			session_cache_limiter('none');
-		}
+		ini_set('session.use_cookies', 1);
+		session_cache_limiter('none');
 
 		$this->setOptions($options);
 		$this->setHandler($handler);
@@ -228,11 +223,6 @@ class JoomlaStorage extends NativeStorage
 	 */
 	protected function setCookieParams()
 	{
-		if (headers_sent())
-		{
-			return;
-		}
-
 		$cookie = session_get_cookie_params();
 
 		if ($this->forceSSL)

@@ -14,7 +14,9 @@
 		var hreflang = '', editor, tag;
 
 		if (!Joomla.getOptions('xtd-articles')) {
-			throw new Error('Joomla API is not properly initiated')
+			// Something went wrong!
+			window.parent.jModalClose();
+			return false;
 		}
 
 		editor = Joomla.getOptions('xtd-articles').editor;
@@ -27,11 +29,7 @@
 		tag = '<a' + hreflang + ' href="' + link + '">' + title + '</a>';
 
 		window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
-
-		if (window.parent.Joomla.currentModal) {
-			// @TODO Remove jQuery, use Joomla-UI
-			parent.window.jQuery(window.parent.Joomla.currentModal).modal('hide');
-		}
+		window.parent.jModalClose();
 	};
 
 	document.addEventListener('DOMContentLoaded', function(){

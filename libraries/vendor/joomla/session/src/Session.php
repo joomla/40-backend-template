@@ -120,48 +120,58 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	}
 
 	/**
-	 * Get a session token.
+	 * Get a session token, if a token isn't set yet one will be generated.
 	 *
-	 * Tokens are used to secure forms from spamming attacks. Once a token has been generated the system will check the request to see if
+	 * Tokens are used to secure forms from spamming attacks. Once a token has been generated the system will check the post request to see if
 	 * it is present, if not it will invalidate the session.
 	 *
-	 * @param   boolean  $forceNew  If true, forces a new token to be created
+	 * @param   boolean  $forceNew  If true, force a new token to be created
 	 *
-	 * @return  string
+	 * @return  string  The session token
 	 *
 	 * @since   1.0
 	 */
 	public function getToken($forceNew = false)
 	{
-		// Ensure the session token exists and create it if necessary
-		if (!$this->has('session.token') || $forceNew)
+		$token = $this->get('session.token');
+
+		// Create a token
+		if ($token === null || $forceNew)
 		{
-			$this->set('session.token', $this->createToken());
+			$token = $this->createToken();
+			$this->set('session.token', $token);
 		}
 
-		return $this->get('session.token');
+		return $token;
 	}
 
 	/**
-	 * Check if the session has the given token.
+	 * Method to determine if a token exists in the session. If not the session will be set to expired
 	 *
-	 * @param   string   $token        Hashed token to be verified
+	 * @param   string   $tCheck       Hashed token to be verified
 	 * @param   boolean  $forceExpire  If true, expires the session
 	 *
 	 * @return  boolean
 	 *
 	 * @since   1.0
 	 */
-	public function hasToken($token, $forceExpire = true)
+	public function hasToken($tCheck, $forceExpire = true)
 	{
-		$result = $this->get('session.token') === $token;
+		// Check if a token exists in the session
+		$tStored = $this->get('session.token');
 
-		if (!$result && $forceExpire)
+		// Check token
+		if (($tStored !== $tCheck))
 		{
-			$this->setState('expired');
+			if ($forceExpire)
+			{
+				$this->setState('expired');
+			}
+
+			return false;
 		}
 
-		return $result;
+		return true;
 	}
 
 	/**
@@ -599,14 +609,20 @@ class Session implements SessionInterface, DispatcherAwareInterface
 	 */
 	public function fork($destroy = false)
 	{
-		$result = $this->store->regenerate($destroy);
+		if ($this->getState() !== 'active')
+		{
+			// @TODO :: generated error here
+			return false;
+		}
 
-		if ($result)
+		$this->store->regenerate($destroy);
+
+		if ($destroy)
 		{
 			$this->setTimers();
 		}
 
-		return $result;
+		return true;
 	}
 
 	/**

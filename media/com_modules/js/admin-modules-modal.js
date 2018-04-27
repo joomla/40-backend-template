@@ -19,11 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				editor = event.target.getAttribute('data-editor');
 
 			window.parent.Joomla.editors.instances[editor].replaceSelection("{loadmodule " + type + "," + name + "}");
-
-			if (window.parent.Joomla.currentModal) {
-				// @TODO Remove jQuery, use Joomla-UI
-				parent.window.jQuery(window.parent.Joomla.currentModal).modal('hide');
-			}
+			window.parent.jModalClose();
 		});
 	}
 
@@ -35,11 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				editor = event.target.getAttribute('data-editor');
 
 			window.parent.Joomla.editors.instances[editor].replaceSelection("{loadposition " + position + "}");
-
-			if (window.parent.Joomla.currentModal) {
-				// @TODO Remove jQuery, use Joomla-UI
-				parent.window.jQuery(window.parent.Joomla.currentModal).modal('hide');
-			}
+			window.parent.jModalClose();
 		});
 	}
 });

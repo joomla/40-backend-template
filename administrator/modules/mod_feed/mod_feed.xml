@@ -12,7 +12,7 @@
 	<namespace>Joomla\Module\Feed</namespace>
 	<files>
 		<filename module="mod_feed">mod_feed.php</filename>
-		<folder>Helper</folder>
+		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
 	<languages>

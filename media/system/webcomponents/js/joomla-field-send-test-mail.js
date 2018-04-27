@@ -1,13 +1,12 @@
-;((customElements, Joomla) => {
+((customElements, Joomla) => {
 
 	class JoomlaFieldSendTestMail extends HTMLElement {
 
-	// attributeChangedCallback(attr, oldValue, newValue) {}
 	constructor() {
 		super();
 
 		if (!Joomla) {
-			throw new Error('Joomla API is not properly initiated');
+			throw new Error('Joomla API is not loaded')
 		}
 
 		if (!this.getAttribute('uri')) {
@@ -46,7 +45,7 @@
 			method: 'POST',
 			data: JSON.stringify(email_data),
 			perform: true,
-			headers: { 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			onSuccess: (response, xhr) => {
 				response = JSON.parse(response);
 				if (typeof response.messages === 'object' && response.messages !== null) {

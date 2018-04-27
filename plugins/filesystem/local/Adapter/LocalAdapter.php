@@ -441,9 +441,6 @@ class LocalAdapter implements AdapterInterface
 			$this->copyFile($sourcePath, $destinationPath, $force);
 		}
 
-		// Get the relative path
-		$destinationPath = str_replace($this->rootPath, '', $destinationPath);
-
 		return $destinationPath;
 	}
 
@@ -551,9 +548,6 @@ class LocalAdapter implements AdapterInterface
 		{
 			$this->moveFile($sourcePath, $destinationPath, $force);
 		}
-
-		// Get the relative path
-		$destinationPath = str_replace($this->rootPath, '', $destinationPath);
 
 		return $destinationPath;
 	}
@@ -807,7 +801,7 @@ class LocalAdapter implements AdapterInterface
 			throw new \Exception(Text::_('JLIB_MEDIA_ERROR_UPLOAD_INPUT'), 500);
 		}
 
-		$can = $helper->canUpload(array('name' => $name, 'size' => strlen($mediaContent), 'tmp_name' => $tmpFile), 'com_media');
+		$can = $helper->canUpload(array('name' => $name, 'size' => count($mediaContent), 'tmp_name' => $tmpFile), 'com_media');
 
 		\JFile::delete($tmpFile);
 
@@ -829,8 +823,6 @@ class LocalAdapter implements AdapterInterface
 	 */
 	private function getFileName($path)
 	{
-		$path = \JPath::clean($path);
-
 		// Basename does not work here as it strips out certain characters like upper case umlaut u
 		$path = explode(DIRECTORY_SEPARATOR, $path);
 

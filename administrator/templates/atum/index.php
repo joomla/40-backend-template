@@ -45,7 +45,7 @@ HTMLHelper::_('stylesheet', 'template' . ($this->direction === 'rtl' ? '-rtl' : 
 HTMLHelper::_('stylesheet', 'user.css', array('version' => 'auto', 'relative' => true));
 
 // Alerts
-HTMLHelper::_('webcomponent', 'vendor/joomla-custom-elements/joomla-alert.min.js', ['relative' => true, 'version' => 'auto', 'detectBrowser' => false, 'detectDebug' => false]);
+HTMLHelper::_('webcomponent', ['joomla-alert' => 'vendor/joomla-custom-elements/joomla-alert.min.js'], ['relative' => true, 'version' => 'auto', 'detectBrowser' => false, 'detectDebug' => false]);
 
 // Load specific language related CSS
 HTMLHelper::_('stylesheet', 'administrator/language/' . $lang->getTag() . '/' . $lang->getTag() . '.css', array('version' => 'auto'));
@@ -74,16 +74,14 @@ $this->setMetaData('theme-color', '#1c3d5c');
 
 	<?php // Header ?>
 	<header id="header" class="header">
-		<div class="container-fluid d-flex align-items-center">
-			<div class="header-title d-flex mr-auto">
-				<div class="d-flex">
+		<div class="container-fluid">
+			<div class="d-flex row justify-content-end">
+				<div class="d-flex align-items-center">
 					<a class="logo" href="<?php echo Route::_('index.php'); ?>" aria-label="<?php echo Text::_('TPL_BACK_TO_CONTROL_PANEL'); ?>">
 						<img src="<?php echo $logoBlue; ?>" alt="<?php echo $sitename; ?>">
 					</a>
 				</div>
 				<jdoc:include type="modules" name="title" />
-			</div>
-			<div class="header-items d-flex ml-auto">
 				<jdoc:include type="modules" name="status" style="no" />
 			</div>
 		</div>
@@ -108,12 +106,16 @@ $this->setMetaData('theme-color', '#1c3d5c');
 				<?php // Subheader ?>
 				<a class="btn btn-subhead d-md-none d-lg-none d-xl-none" data-toggle="collapse" data-target=".subhead-collapse"><?php echo Text::_('TPL_ATUM_TOOLBAR'); ?>
 					<span class="icon-wrench"></span></a>
-				<div id="subhead" class="subhead">
-						<div id="container-collapse" class="container-collapse"></div>
-						<div class="row">
-							<div class="col-md-12">
-								<jdoc:include type="modules" name="toolbar" style="no" />
+				<div class="subhead-collapse" data-scroll="<?php echo $hidden; ?>">
+					<div id="subhead" class="subhead">
+						<div class="container-fluid">
+							<div id="container-collapse" class="container-collapse"></div>
+							<div class="row">
+								<div class="col-md-12">
+									<jdoc:include type="modules" name="toolbar" style="no" />
+								</div>
 							</div>
+						</div>
 					</div>
 				</div>
 			<?php endif; ?>

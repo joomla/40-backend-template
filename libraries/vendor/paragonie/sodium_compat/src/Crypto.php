@@ -419,8 +419,6 @@ abstract class ParagonIE_Sodium_Crypto
      * @param string $nonce
      * @param string $keypair
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
      */
     public static function box($plaintext, $nonce, $keypair)
     {
@@ -443,7 +441,6 @@ abstract class ParagonIE_Sodium_Crypto
      * @param string $message
      * @param string $publicKey
      * @return string
-     * @throws SodiumException
      * @throws TypeError
      */
     public static function box_seal($message, $publicKey)
@@ -489,7 +486,6 @@ abstract class ParagonIE_Sodium_Crypto
      * @param string $message
      * @param string $keypair
      * @return string
-     * @throws SodiumException
      * @throws TypeError
      */
     public static function box_seal_open($message, $keypair)

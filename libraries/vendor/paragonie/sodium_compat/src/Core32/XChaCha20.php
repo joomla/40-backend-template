@@ -16,8 +16,7 @@ class ParagonIE_Sodium_Core32_XChaCha20 extends ParagonIE_Sodium_Core32_HChaCha2
      * @param string $nonce
      * @param string $key
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
+     * @throws Exception
      */
     public static function stream($len = 64, $nonce = '', $key = '')
     {
@@ -44,8 +43,7 @@ class ParagonIE_Sodium_Core32_XChaCha20 extends ParagonIE_Sodium_Core32_HChaCha2
      * @param string $key
      * @param string $ic
      * @return string
-     * @throws SodiumException
-     * @throws TypeError
+     * @throws Exception
      */
     public static function streamXorIc($message, $nonce = '', $key = '', $ic = '')
     {

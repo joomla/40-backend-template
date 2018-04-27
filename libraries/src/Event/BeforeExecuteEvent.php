@@ -9,7 +9,6 @@
 namespace Joomla\CMS\Event;
 
 use Joomla\Application\AbstractApplication;
-use Joomla\DI\Container;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -30,17 +29,5 @@ class BeforeExecuteEvent extends AbstractImmutableEvent
 	public function getApplication(): AbstractApplication
 	{
 		return $this->getArgument('subject');
-	}
-
-	/**
-	 * Get the event's container object
-	 *
-	 * @return  Container
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function getContainer(): Container
-	{
-		return $this->getArgument('container');
 	}
 }

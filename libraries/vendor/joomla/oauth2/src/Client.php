@@ -9,11 +9,9 @@
 namespace Joomla\OAuth2;
 
 use Joomla\Application\AbstractWebApplication;
-use Joomla\Http\Exception\UnexpectedResponseException;
 use Joomla\Http\HttpFactory;
-use Joomla\Http\Http;
 use Joomla\Input\Input;
-use Joomla\Uri\Uri;
+use Joomla\Http\Http;
 
 /**
  * Joomla Framework class for interacting with an OAuth 2.0 server.
@@ -85,32 +83,21 @@ class Client
 	 * @return  string  The access token
 	 *
 	 * @since   1.0
-	 * @throws  UnexpectedResponseException
 	 * @throws  \RuntimeException
 	 */
 	public function authenticate()
 	{
 		if ($data['code'] = $this->input->get('code', false, 'raw'))
 		{
-			$data = array(
-				'grant_type'    => 'authorization_code',
-				'redirect_uri'  => $this->getOption('redirecturi'),
-				'client_id'     => $this->getOption('clientid'),
-				'client_secret' => $this->getOption('clientsecret'),
-			);
-
+			$data['grant_type'] = 'authorization_code';
+			$data['redirect_uri'] = $this->getOption('redirecturi');
+			$data['client_id'] = $this->getOption('clientid');
+			$data['client_secret'] = $this->getOption('clientsecret');
 			$response = $this->http->post($this->getOption('tokenurl'), $data);
 
 			if (!($response->code >= 200 && $response->code < 400))
 			{
-				throw new UnexpectedResponseException(
-					$response,
-					sprintf(
-						'Error code %s received requesting access token: %s.',
-						$response->code,
-						$response->body
-					)
-				);
+				throw new \RuntimeException('Error code ' . $response->code . ' received requesting access token: ' . $response->body . '.');
 			}
 
 			if (strpos($response->headers['Content-Type'], 'application/json') !== false)
@@ -168,7 +155,7 @@ class Client
 	/**
 	 * Create the URL for authentication.
 	 *
-	 * @return  string
+	 * @return  string  The URL for authentication
 	 *
 	 * @since   1.0
 	 * @throws  \InvalidArgumentException
@@ -180,35 +167,36 @@ class Client
 			throw new \InvalidArgumentException('Authorization URL and client_id are required');
 		}
 
-		$url = new Uri($this->getOption('authurl'));
-		$url->setVar('response_type', 'code');
-		$url->setVar('client_id', urlencode($this->getOption('clientid')));
+		$url = $this->getOption('authurl');
+		$url .= (strpos($url, '?') !== false) ? '&' : '?';
+		$url .= 'response_type=code';
+		$url .= '&client_id=' . urlencode($this->getOption('clientid'));
 
-		if ($redirect = $this->getOption('redirecturi'))
+		if ($this->getOption('redirecturi'))
 		{
-			$url->setVar('redirect_uri', urlencode($redirect));
+			$url .= '&redirect_uri=' . urlencode($this->getOption('redirecturi'));
 		}
 
-		if ($scope = $this->getOption('scope'))
+		if ($this->getOption('scope'))
 		{
-			$scope = is_array($scope) ? implode(' ', $scope) : $scope;
-			$url->setVar('scope', urlencode($scope));
+			$scope = is_array($this->getOption('scope')) ? implode(' ', $this->getOption('scope')) : $this->getOption('scope');
+			$url .= '&scope=' . urlencode($scope);
 		}
 
-		if ($state = $this->getOption('state'))
+		if ($this->getOption('state'))
 		{
-			$url->setVar('state', urlencode($state));
+			$url .= '&state=' . urlencode($this->getOption('state'));
 		}
 
 		if (is_array($this->getOption('requestparams')))
 		{
 			foreach ($this->getOption('requestparams') as $key => $value)
 			{
-				$url->setVar($key, urlencode($value));
+				$url .= '&' . $key . '=' . urlencode($value);
 			}
 		}
 
-		return (string) $url;
+		return $url;
 	}
 
 	/**
@@ -240,15 +228,23 @@ class Client
 			$token = $this->refreshToken($token['refresh_token']);
 		}
 
-		$url = new Uri($url);
-
 		if (!$this->getOption('authmethod') || $this->getOption('authmethod') == 'bearer')
 		{
 			$headers['Authorization'] = 'Bearer ' . $token['access_token'];
 		}
 		elseif ($this->getOption('authmethod') == 'get')
 		{
-			$url->setVar($this->getOption('getparam', 'access_token'), $token['access_token']);
+			if (strpos($url, '?'))
+			{
+				$url .= '&';
+			}
+			else
+			{
+				$url .= '?';
+			}
+
+			$url .= $this->getOption('getparam') ? $this->getOption('getparam') : 'access_token';
+			$url .= '=' . $token['access_token'];
 		}
 
 		switch ($method)
@@ -272,14 +268,7 @@ class Client
 
 		if ($response->code < 200 || $response->code >= 400)
 		{
-			throw new UnexpectedResponseException(
-				$response,
-				sprintf(
-					'Error code %s received requesting data: %s.',
-					$response->code,
-					$response->body
-				)
-			);
+			throw new \RuntimeException('Error code ' . $response->code . ' received requesting data: ' . $response->body . '.');
 		}
 
 		return $response;
@@ -359,7 +348,7 @@ class Client
 	 * @return  array  The new access token
 	 *
 	 * @since   1.0
-	 * @throws  UnexpectedResponseException
+	 * @throws  \Exception
 	 * @throws  \RuntimeException
 	 */
 	public function refreshToken($token = null)
@@ -381,25 +370,15 @@ class Client
 			$token = $token['refresh_token'];
 		}
 
-		$data = array(
-			'grant_type'    => 'refresh_token',
-			'refresh_token' => $token,
-			'client_id'     => $this->getOption('clientid'),
-			'client_secret' => $this->getOption('clientsecret'),
-		);
-
+		$data['grant_type'] = 'refresh_token';
+		$data['refresh_token'] = $token;
+		$data['client_id'] = $this->getOption('clientid');
+		$data['client_secret'] = $this->getOption('clientsecret');
 		$response = $this->http->post($this->getOption('tokenurl'), $data);
 
 		if (!($response->code >= 200 || $response->code < 400))
 		{
-			throw new UnexpectedResponseException(
-				$response,
-				sprintf(
-					'Error code %s received refreshing token: %s.',
-					$response->code,
-					$response->body
-				)
-			);
+			throw new \Exception('Error code ' . $response->code . ' received refreshing token: ' . $response->body . '.');
 		}
 
 		if (strpos($response->headers['Content-Type'], 'application/json') !== false)

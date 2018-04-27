@@ -144,7 +144,7 @@ class MysqlDriver extends PdoDriver implements UTF8MB4SupportInterface
 		if ($this->utf8mb4)
 		{
 			// At this point we know the client supports utf8mb4.  Now we must check if the server supports utf8mb4 as well.
-			$serverVersion = $this->getVersion();
+			$serverVersion = $this->connection->getAttribute(\PDO::ATTR_SERVER_VERSION);
 			$this->utf8mb4 = version_compare($serverVersion, '5.5.3', '>=');
 
 			if (!$this->utf8mb4)
@@ -162,7 +162,8 @@ class MysqlDriver extends PdoDriver implements UTF8MB4SupportInterface
 			$this->connection->query('SET @@SESSION.sql_mode = \'' . implode(',', $this->options['sqlModes']) . '\';');
 		}
 
-		$this->setOption(\PDO::ATTR_EMULATE_PREPARES, true);
+		$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+		$this->connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
 	}
 
 	/**

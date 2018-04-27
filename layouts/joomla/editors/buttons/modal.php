@@ -35,25 +35,16 @@ if (is_array($button->get('options')) && isset($options['confirmText']) && isset
 	$confirm = '<a class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="' . $options['confirmCallback'] . '">'
 		. $options['confirmText'] . '</a>';
 }
-
-if (null !== $button->get('id'))
-{
-	$id = str_replace(' ', '', $button->get('id'));
-}
-else
-{
-	$id = str_replace(' ', '', $button->get('text')) . 'Modal';
-}
 // Create the modal
 echo HTMLHelper::_(
 	'bootstrap.renderModal',
-	$id,
+	str_replace(' ', '', $button->get('text')) . 'Modal',
 	array(
 		'url'    => $link,
 		'title'  => $title,
 		'height' => array_key_exists('height', $options) ? $options['height'] : '400px',
 		'width'  => array_key_exists('width', $options) ? $options['width'] : '800px',
-		'bodyHeight'  => array_key_exists('bodyHeight', $options) ? $options['bodyHeight'] : '70',
+		'bodyHeight'  => array_key_exists('wibodyHeightdth', $options) ? $options['bodyHeight'] : '70',
 		'modalWidth'  => array_key_exists('modalWidth', $options) ? $options['modalWidth'] : '80',
 		'footer' => $confirm . '<button class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">'
 			. Text::_("JLIB_HTML_BEHAVIOR_CLOSE") . '</button>'

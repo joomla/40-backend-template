@@ -1,14 +1,13 @@
 // Toolbar
 
 .subhead {
-  position: sticky;
-  z-index: 1040;
+  position: absolute;
   top: 0;
   right: 0;
   left: 0;
   width: auto;
   min-height: 43px;
-  padding: 13px 0;
+  padding: 15px 0;
   color: #0c192e;
   background: $atum-container-main-bg;
 

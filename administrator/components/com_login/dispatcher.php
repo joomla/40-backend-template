@@ -29,14 +29,17 @@ class LoginDispatcher extends Dispatcher
 	protected $namespace = 'Joomla\\Component\\Login';
 
 	/**
-	 * Dispatch a controller task.
+	 * Constructor for Dispatcher
 	 *
-	 * @return  void
+	 * @param   CMSApplication  $app    The application for the dispatcher
+	 * @param   \JInput         $input  The input object
 	 *
 	 * @since   4.0.0
 	 */
-	public function dispatch()
+	public function __construct(CMSApplication $app, \JInput $input = null)
 	{
+		parent::__construct($app, $input);
+
 		// Only accept two values login and logout for `task`
 		$task = $this->input->get('task');
 
@@ -44,8 +47,6 @@ class LoginDispatcher extends Dispatcher
 		{
 			$this->input->set('task', '');
 		}
-
-		parent::dispatch();
 	}
 
 	/**

@@ -10,10 +10,9 @@ namespace Joomla\CMS\MVC\Model;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Extension\ComponentInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\LegacyFactory;
+use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
@@ -313,10 +312,18 @@ abstract class BaseDatabaseModel extends CMSObject
 
 		if (!$factory)
 		{
-			$factory = Factory::getApplication()->bootComponent($this->option)->createMVCFactory(Factory::getApplication());
+			$reflect = new \ReflectionClass($this);
+			if ($reflect->getNamespaceName())
+			{
+				// Guess the root namespace
+				$ns = explode('\\', $reflect->getNamespaceName());
+				$ns = implode('\\', array_slice($ns, 0, 3));
+
+				$factory = new MVCFactory($ns, \JFactory::getApplication());
+			}
 		}
 
-		$this->factory = $factory;
+		$this->factory = $factory ? : new LegacyFactory;
 	}
 
 	/**
@@ -619,21 +626,22 @@ abstract class BaseDatabaseModel extends CMSObject
 	/**
 	 * Clean the cache
 	 *
-	 * @param   string  $group  The cache group
+	 * @param   string   $group      The cache group
+	 * @param   integer  $client_id  The ID of the client
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0
 	 */
-	protected function cleanCache($group = null)
+	protected function cleanCache($group = null, $client_id = 0)
 	{
 		$conf = \JFactory::getConfig();
 
-		$options = [
-			'defaultgroup' => $group ?: ($this->option ?? \JFactory::getApplication()->input->get('option')),
-			'cachebase'    => $conf->get('cache_path', JPATH_CACHE),
-			'result'       => true,
-		];
+		$options = array(
+			'defaultgroup' => $group ?: (isset($this->option) ? $this->option : \JFactory::getApplication()->input->get('option')),
+			'cachebase' => $client_id ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'),
+			'result' => true,
+		);
 
 		try
 		{
@@ -648,19 +656,5 @@ abstract class BaseDatabaseModel extends CMSObject
 
 		// Trigger the onContentCleanCache event.
 		\JFactory::getApplication()->triggerEvent($this->event_clean_cache, $options);
-	}
-
-	/**
-	 * Boots the component with the given name.
-	 *
-	 * @param   string  $component  The component name, eg. com_content.
-	 *
-	 * @return  ComponentInterface  The service container
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	protected function bootComponent($component): ComponentInterface
-	{
-		return Factory::getApplication()->bootComponent($component);
 	}
 }

@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Registry Package
  *
- * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -64,7 +64,7 @@ class Ini implements FormatInterface
 		$last = count($variables);
 
 		// Assume that the first element is in section
-		$inSection = true;
+		$in_section = true;
 
 		// Iterate over the object to set the properties.
 		foreach ($variables as $key => $value)
@@ -73,7 +73,7 @@ class Ini implements FormatInterface
 			if (is_object($value))
 			{
 				// Add an empty line if previous string wasn't in a section
-				if (!$inSection)
+				if (!$in_section)
 				{
 					$local[] = '';
 				}
@@ -88,10 +88,10 @@ class Ini implements FormatInterface
 					{
 						$assoc = ArrayHelper::isAssociative($v);
 
-						foreach ($v as $arrayKey => $item)
+						foreach ($v as $array_key => $item)
 						{
-							$arrayKey = $assoc ? $arrayKey : '';
-							$local[]  = $k . '[' . $arrayKey . ']=' . $this->getValueAsIni($item);
+							$array_key = $assoc ? $array_key : '';
+							$local[]   = $k . '[' . $array_key . ']=' . $this->getValueAsIni($item);
 						}
 					}
 					else
@@ -110,17 +110,17 @@ class Ini implements FormatInterface
 			{
 				$assoc = ArrayHelper::isAssociative($value);
 
-				foreach ($value as $arrayKey => $item)
+				foreach ($value as $array_key => $item)
 				{
-					$arrayKey = $assoc ? $arrayKey : '';
-					$global[] = $key . '[' . $arrayKey . ']=' . $this->getValueAsIni($item);
+					$array_key = $assoc ? $array_key : '';
+					$global[]  = $key . '[' . $array_key . ']=' . $this->getValueAsIni($item);
 				}
 			}
 			else
 			{
 				// Not in a section so add the property to the global array.
-				$global[]  = $key . '=' . $this->getValueAsIni($value);
-				$inSection = false;
+				$global[]   = $key . '=' . $this->getValueAsIni($value);
+				$in_section = false;
 			}
 		}
 
@@ -200,21 +200,21 @@ class Ini implements FormatInterface
 			list ($key, $value) = explode('=', $line, 2);
 
 			// If we have an array item
-			if (substr($key, -1) === ']' && ($openBrace = strpos($key, '[', 1)) !== false)
+			if (substr($key, -1) === ']' && ($open_brace = strpos($key, '[', 1)) !== false)
 			{
 				if ($options['supportArrayValues'])
 				{
-					$array    = true;
-					$arrayKey = substr($key, $openBrace + 1, -1);
+					$array     = true;
+					$array_key = substr($key, $open_brace + 1, -1);
 
 					// If we have a multi-dimensional array or malformed key
-					if (strpos($arrayKey, '[') !== false || strpos($arrayKey, ']') !== false)
+					if (strpos($array_key, '[') !== false || strpos($array_key, ']') !== false)
 					{
 						// Maybe throw exception?
 						continue;
 					}
 
-					$key = substr($key, 0, $openBrace);
+					$key = substr($key, 0, $open_brace);
 				}
 				else
 				{
@@ -282,9 +282,9 @@ class Ini implements FormatInterface
 						$obj->$section->$key = [];
 					}
 
-					if (!empty($arrayKey))
+					if (!empty($array_key))
 					{
-						$obj->$section->{$key}[$arrayKey] = $value;
+						$obj->$section->{$key}[$array_key] = $value;
 					}
 					else
 					{
@@ -305,9 +305,9 @@ class Ini implements FormatInterface
 						$obj->$key = [];
 					}
 
-					if (!empty($arrayKey))
+					if (!empty($array_key))
 					{
-						$obj->{$key}[$arrayKey] = $value;
+						$obj->{$key}[$array_key] = $value;
 					}
 					else
 					{

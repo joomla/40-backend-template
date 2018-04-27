@@ -78,7 +78,7 @@
 				label="INSTL_DATABASE_TYPE_DESC"
 				supported="mysql,mysqli,pgsql,postgresql"
 				required="true"
-				default="mysqli"
+				default="mysql"
 				filter="string"
 		/>
 		<field

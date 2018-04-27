@@ -18,6 +18,9 @@ if ($app->isClient('site'))
 
 JLoader::register('ContentHelperRoute', JPATH_ROOT . '/components/com_content/helpers/route.php');
 
+// Include the component HTML helpers.
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+
 JHtml::_('behavior.core');
 JHtml::_('script', 'com_content/admin-articles-modal.min.js', array('version' => 'auto', 'relative' => true));
 JHtml::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom'));

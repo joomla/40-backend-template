@@ -31,11 +31,7 @@
 		tag = '<a href=\"' + uri + thislang + lang + '">' + title + '</a>';
 
 		window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
-
-		if (window.parent.Joomla.currentModal) {
-			// @TODO Remove jQuery, use Joomla-UI
-			parent.window.jQuery(window.parent.Joomla.currentModal).modal('hide');
-		}
+		window.parent.jModalClose();
 	};
 
 	document.addEventListener('DOMContentLoaded', function(){

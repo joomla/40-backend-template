@@ -14,10 +14,7 @@ Joomla = window.Joomla || {};
 			window.parent.jInsertEditorText("{field " + id + "}", editor);
 		}
 
-		if (window.parent.Joomla.currentModal) {
-			// @TODO Remove jQuery, use Joomla-UI
-			parent.window.jQuery(window.parent.Joomla.currentModal).modal('hide');
-		}
+		window.parent.jModalClose();
 	};
 
 	Joomla.fieldgroupIns = function(id, editor) {
@@ -28,9 +25,6 @@ Joomla = window.Joomla || {};
 			window.parent.jInsertEditorText("{fieldgroup " + id + "}", editor);
 		}
 
-		if (window.parent.Joomla.currentModal) {
-			// @TODO Remove jQuery, use Joomla-UI
-			parent.window.jQuery(window.parent.Joomla.currentModal).modal('hide');
-		}
+		window.parent.jModalClose();
 	};
 })(Joomla);

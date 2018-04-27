@@ -143,7 +143,7 @@ class HtmlDocument extends Document
 		$data['scripts']     = $this->_scripts;
 		$data['script']      = $this->_script;
 		$data['custom']      = $this->_custom;
-		$data['scriptText']  = \JText::getScriptStrings();
+		$data['scriptText']  = \JText::script();
 
 		return $data;
 	}

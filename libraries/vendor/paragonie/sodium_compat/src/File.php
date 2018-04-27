@@ -593,7 +593,6 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         /** @var resource $hs */
         $hs = hash_init('sha512');
         hash_update($hs, self::substr($az, 32, 32));
-        /** @var resource $hs */
         $hs = self::updateHashWithFile($hs, $fp, $size);
 
         /** @var string $nonceHash */
@@ -614,7 +613,6 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         $hs = hash_init('sha512');
         hash_update($hs, self::substr($sig, 0, 32));
         hash_update($hs, self::substr($pk, 0, 32));
-        /** @var resource $hs */
         $hs = self::updateHashWithFile($hs, $fp, $size);
 
         /** @var string $hramHash */
@@ -723,7 +721,6 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         $hs = hash_init('sha512');
         hash_update($hs, self::substr($sig, 0, 32));
         hash_update($hs, self::substr($publicKey, 0, 32));
-        /** @var resource $hs */
         $hs = self::updateHashWithFile($hs, $fp, $size);
         /** @var string $hDigest */
         $hDigest = hash_final($hs, true);
@@ -1084,7 +1081,7 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         // Move file pointer to beginning of file
         fseek($fp, 0, SEEK_SET);
         for ($i = 0; $i < $size; $i += self::BUFFER_SIZE) {
-            /** @var string|bool $message */
+            /** @var string $message */
             $message = fread(
                 $fp,
                 ($size - $i) > self::BUFFER_SIZE
@@ -1094,7 +1091,6 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
             if (!is_string($message)) {
                 throw new SodiumException('Unexpected error reading from file.');
             }
-            /** @var string $message */
             /** @psalm-suppress InvalidArgument */
             hash_update($hash, $message);
         }
@@ -1117,19 +1113,17 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
      */
     private static function sign_core32($filePath, $secretKey)
     {
-        /** @var int|bool $size */
+        /** @var int $size */
         $size = filesize($filePath);
         if (!is_int($size)) {
             throw new SodiumException('Could not obtain the file size');
         }
-        /** @var int $size */
 
-        /** @var resource|bool $fp */
+        /** @var resource $fp */
         $fp = fopen($filePath, 'rb');
         if (!is_resource($fp)) {
             throw new SodiumException('Could not open input file for reading');
         }
-        /** @var resource $fp */
 
         /** @var string $az */
         $az = hash('sha512', self::substr($secretKey, 0, 32), true);
@@ -1140,7 +1134,6 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         /** @var resource $hs */
         $hs = hash_init('sha512');
         hash_update($hs, self::substr($az, 32, 32));
-        /** @var resource $hs */
         $hs = self::updateHashWithFile($hs, $fp, $size);
 
         /** @var string $nonceHash */
@@ -1161,7 +1154,6 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         $hs = hash_init('sha512');
         hash_update($hs, self::substr($sig, 0, 32));
         hash_update($hs, self::substr($pk, 0, 32));
-        /** @var resource $hs */
         $hs = self::updateHashWithFile($hs, $fp, $size);
 
         /** @var string $hramHash */
@@ -1219,19 +1211,17 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
             throw new SodiumException('All zero public key');
         }
 
-        /** @var int|bool $size */
+        /** @var int $size */
         $size = filesize($filePath);
         if (!is_int($size)) {
             throw new SodiumException('Could not obtain the file size');
         }
-        /** @var int $size */
 
-        /** @var resource|bool $fp */
+        /** @var resource $fp */
         $fp = fopen($filePath, 'rb');
         if (!is_resource($fp)) {
             throw new SodiumException('Could not open input file for reading');
         }
-        /** @var resource $fp */
 
         /** @var bool The original value of ParagonIE_Sodium_Compat::$fastMult */
         $orig = ParagonIE_Sodium_Compat::$fastMult;
@@ -1246,7 +1236,6 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         $hs = hash_init('sha512');
         hash_update($hs, self::substr($sig, 0, 32));
         hash_update($hs, self::substr($publicKey, 0, 32));
-        /** @var resource $hs */
         $hs = self::updateHashWithFile($hs, $fp, $size);
         /** @var string $hDigest */
         $hDigest = hash_final($hs, true);

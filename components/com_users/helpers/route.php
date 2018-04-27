@@ -32,8 +32,10 @@ class UsersHelperRoute
 		// Get the menu items for this component.
 		if (!isset($items))
 		{
-			$component = JComponentHelper::getComponent('com_users');
-			$items     = JFactory::getApplication()->getMenu()->getItems('component_id', $component->id);
+			$app   = JFactory::getApplication();
+			$menu  = $app->getMenu();
+			$com   = JComponentHelper::getComponent('com_users');
+			$items = $menu->getItems('component_id', $com->id);
 
 			// If no items found, set to empty array.
 			if (!$items)
@@ -57,17 +59,19 @@ class UsersHelperRoute
 	{
 		// Get the items.
 		$items  = self::getItems();
+		$itemid = null;
 
 		// Search for a suitable menu id.
 		foreach ($items as $item)
 		{
 			if (isset($item->query['view']) && $item->query['view'] === 'login')
 			{
-				return $item->id;
+				$itemid = $item->id;
+				break;
 			}
 		}
 
-		return null;
+		return $itemid;
 	}
 
 	/**
@@ -82,6 +86,7 @@ class UsersHelperRoute
 	{
 		// Get the items.
 		$items  = self::getItems();
+		$itemid = null;
 
 		// Search for a suitable menu id.
 		// Menu link can only go to users own profile.
@@ -90,11 +95,12 @@ class UsersHelperRoute
 		{
 			if (isset($item->query['view']) && $item->query['view'] === 'profile')
 			{
-				return $item->id;
+				$itemid = $item->id;
+				break;
 			}
 		}
 
-		return null;
+		return $itemid;
 	}
 
 	/**
@@ -109,17 +115,19 @@ class UsersHelperRoute
 	{
 		// Get the items.
 		$items  = self::getItems();
+		$itemid = null;
 
 		// Search for a suitable menu id.
 		foreach ($items as $item)
 		{
 			if (isset($item->query['view']) && $item->query['view'] === 'registration')
 			{
-				return $item->id;
+				$itemid = $item->id;
+				break;
 			}
 		}
 
-		return null;
+		return $itemid;
 	}
 
 	/**
@@ -134,17 +142,19 @@ class UsersHelperRoute
 	{
 		// Get the items.
 		$items  = self::getItems();
+		$itemid = null;
 
 		// Search for a suitable menu id.
 		foreach ($items as $item)
 		{
 			if (isset($item->query['view']) && $item->query['view'] === 'remind')
 			{
-				return $item->id;
+				$itemid = $item->id;
+				break;
 			}
 		}
 
-		return null;
+		return $itemid;
 	}
 
 	/**
@@ -159,17 +169,19 @@ class UsersHelperRoute
 	{
 		// Get the items.
 		$items  = self::getItems();
+		$itemid = null;
 
 		// Search for a suitable menu id.
 		foreach ($items as $item)
 		{
 			if (isset($item->query['view']) && $item->query['view'] === 'resend')
 			{
-				return $item->id;
+				$itemid = $item->id;
+				break;
 			}
 		}
 
-		return null;
+		return $itemid;
 	}
 
 	/**
@@ -184,16 +196,18 @@ class UsersHelperRoute
 	{
 		// Get the items.
 		$items  = self::getItems();
+		$itemid = null;
 
 		// Search for a suitable menu id.
 		foreach ($items as $item)
 		{
 			if (isset($item->query['view']) && $item->query['view'] === 'reset')
 			{
-				return $item->id;
+				$itemid = $item->id;
+				break;
 			}
 		}
 
-		return null;
+		return $itemid;
 	}
 }

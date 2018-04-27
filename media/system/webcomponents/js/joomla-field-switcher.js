@@ -1,4 +1,4 @@
-;((customElements) => {
+;(() => {
 	// Keycodes
 	const KEYCODE = {
 		ENTER: 13,
@@ -8,13 +8,10 @@
 	class JoomlaSwitcherElement extends HTMLElement {
 		/* Attributes to monitor */
 		static get observedAttributes() { return ['type', 'off-text', 'on-text']; }
-
 		get type() { return this.getAttribute('type'); }
 		set type(value) { return this.setAttribute('type', value); }
 		get offText() { return this.getAttribute('off-text') || 'Off'; }
 		get onText() { return this.getAttribute('on-text') || 'On'; }
-
-		// attributeChangedCallback(attr, oldValue, newValue) {}
 
 		constructor() {
 			super();
@@ -22,6 +19,7 @@
 			this.inputs = [];
 			this.spans = [];
 			this.inputsContainer = '';
+			this.spansContainer = '';
 			this.newActive = '';
 		}
 
@@ -37,6 +35,7 @@
 			this.createMarkup.bind(this)();
 
 			this.inputsContainer = this.firstElementChild;
+			this.spansContainer = this.lastElementChild;
 
 			this.inputsContainer.setAttribute('role', 'switch');
 
@@ -201,4 +200,4 @@
 	}
 
 	customElements.define('joomla-field-switcher', JoomlaSwitcherElement);
-})(customElements);
+})();

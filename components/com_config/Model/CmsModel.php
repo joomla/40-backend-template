@@ -208,20 +208,20 @@ abstract class CmsModel extends BaseDatabaseModel
 	/**
 	 * Clean the cache
 	 *
-	 * @param   string  $group  The cache group
+	 * @param   string   $group      The cache group
+	 * @param   integer  $client_id  The ID of the client
 	 *
 	 * @return  void
 	 *
 	 * @since   3.2
 	 */
-	protected function cleanCache($group = null)
+	protected function cleanCache($group = null, $client_id = 0)
 	{
 		$conf = \JFactory::getConfig();
 
-		$options = [
+		$options = array(
 			'defaultgroup' => $group ?: ($this->option ?? \JFactory::getApplication()->input->get('option')),
-			'cachebase'    => $conf->get('cache_path', JPATH_CACHE),
-		];
+			'cachebase' => $client_id ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'));
 
 		$cache = \JCache::getInstance('callback', $options);
 		$cache->clean();

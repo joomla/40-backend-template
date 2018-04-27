@@ -8,14 +8,12 @@
 
 namespace Joomla\Database;
 
-use Joomla\Database\Query\PreparableInterface;
-
 /**
  * Joomla Framework Query Building Interface.
  *
  * @since  __DEPLOY_VERSION__
  */
-interface QueryInterface extends PreparableInterface
+interface QueryInterface
 {
 	/**
 	 * Convert the query object to a string.

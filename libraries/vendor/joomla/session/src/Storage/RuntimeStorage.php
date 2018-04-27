@@ -255,11 +255,6 @@ class RuntimeStorage implements StorageInterface
 	 */
 	public function regenerate(bool $destroy = false): bool
 	{
-		if (!$this->isActive())
-		{
-			return false;
-		}
-
 		if ($destroy)
 		{
 			$this->id = $this->generateId();

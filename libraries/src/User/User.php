@@ -509,7 +509,6 @@ class User extends \JObject
 	public function setLastVisit($timestamp = null)
 	{
 		// Create the user table object
-		/** @var \Joomla\CMS\Table\User $table */
 		$table = $this->getTable();
 		$table->load($this->id);
 
@@ -556,7 +555,7 @@ class User extends \JObject
 	 * @param   string  $type    The user table name to be used
 	 * @param   string  $prefix  The user table prefix to be used
 	 *
-	 * @return  Table  The user table object
+	 * @return  object  The user table object
 	 *
 	 * @note    At 4.0 this method will no longer be static
 	 * @since   11.1

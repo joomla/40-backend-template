@@ -34,7 +34,7 @@ class PlgButtonPagebreak extends CMSPlugin
 	 *
 	 * @param   string  $name  The name of the button to add
 	 *
-	 * @return  CMSObject  The button options as JObject
+	 * @return  JObject  The button options as JObject
 	 *
 	 * @since   1.5
 	 */
@@ -62,15 +62,16 @@ class PlgButtonPagebreak extends CMSPlugin
 
 		$button          = new CMSObject;
 		$button->modal   = true;
+		$button->class   = 'btn btn-secondary';
 		$button->link    = $link;
 		$button->text    = Text::_('PLG_EDITORSXTD_PAGEBREAK_BUTTON_PAGEBREAK');
 		$button->name    = 'copy';
-		$button->options = [
+		$button->options = array(
 			'height'     => '200px',
 			'width'      => '400px',
 			'bodyHeight' => '70',
 			'modalWidth' => '80',
-		];
+		);
 
 		return $button;
 	}

@@ -42,7 +42,7 @@ $scriptOptions = [
 		'base'     => JUri::base(true),
 	],
 	"webcomponents" => [
-		Uri::root() . 'media/vendor/joomla-custom-elements/js/joomla-alert.min.js',
+		"joomla-alert" => Uri::root() . 'media/vendor/joomla-custom-elements/js/joomla-alert.min.js',
 	]
 ];
 ?>

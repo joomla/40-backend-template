@@ -562,6 +562,7 @@ iframe {
     justify-content: space-between;
     align-items: flex-end; }
     .view-login .form-group label span {
+      font-size: .9rem;
       color: #c6d2de; }
   .view-login h1 {
     text-align: center;

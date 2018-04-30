@@ -45,64 +45,66 @@
 			this.inputLabel = '';
 			this.inputLabelText = '';
 
+			// Let's bind some functions so we always have the same context
 			this.createMarkup = this.createMarkup.bind(this);
+			this.addListeners = this.addListeners.bind(this);
+			this.removeListeners = this.removeListeners.bind(this);
+			this.switch = this.switch.bind(this);
+			this.toggle = this.toggle.bind(this);
+			this.keyEvents = this.keyEvents.bind(this);
 		}
 
 		/* Lifecycle, element appended to the DOM */
 		connectedCallback() {
-
-			if (!this.initialized && this.inputs.length === 0) {
-				this.inputs = [].slice.call(this.querySelectorAll('input'));
-
-				if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
-					throw new Error('`Joomla-switcher` requires two inputs type="radio"');
-				}
-
-				this.form = this.inputs[0].form;
-
-				if (this.form) {
-					this.onSubmit = this.onSubmit.bind(this);
-					this.form.addEventListener('submit', this.onSubmit);
-				}
-
-				this.inputLabel = document.querySelector(`[for="${this.id}"]`);
-				if (this.inputLabel) {
-					this.inputLabelText = this.inputLabel.innerText;
-				}
-				// Create the markup
-				this.createMarkup();
-
-				this.inputsContainer = this.inputs[0].parentNode;
-
-				this.inputsContainer.setAttribute('role', 'switch');
-
-				if (this.inputs[1].checked) {
-					this.inputs[1].parentNode.classList.add('active');
-					this.spans[1].classList.add('active');
-
-					// Aria-label ONLY in the container span!
-					this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
-				} else {
-					this.spans[0].classList.add('active');
-
-					// Aria-label ONLY in the container span!
-					this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
-				}
-
-				this.inputs.forEach((switchEl) => {
-					// Add the active class on click
-					switchEl.addEventListener('click', this.toggle.bind(this));
-				});
-
-				this.inputsContainer.addEventListener('keydown', this.keyEvents.bind(this));
+			// Element was moved so we need to re add the event listeners
+			if (this.initialized && this.inputs.length > 0) {
+				this.addListeners();
+				return;
 			}
+
+			this.inputs = [].slice.call(this.querySelectorAll('input'));
+
+			if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
+				throw new Error('`Joomla-switcher` requires two inputs type="radio"');
+			}
+
+			this.form = this.inputs[0].form;
+
+			if (this.form) {
+				this.onSubmit = this.onSubmit.bind(this);
+				this.form.addEventListener('submit', this.onSubmit);
+			}
+
+			this.inputLabel = document.querySelector(`[for="${this.id}"]`);
+			if (this.inputLabel) {
+				this.inputLabelText = this.inputLabel.innerText;
+			}
+			// Create the markup
+			this.createMarkup();
+
+			this.inputsContainer = this.inputs[0].parentNode;
+
+			this.inputsContainer.setAttribute('role', 'switch');
+
+			if (this.inputs[1].checked) {
+				this.inputs[1].parentNode.classList.add('active');
+				this.spans[1].classList.add('active');
+
+				// Aria-label ONLY in the container span!
+				this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
+			} else {
+				this.spans[0].classList.add('active');
+
+				// Aria-label ONLY in the container span!
+				this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
+			}
+
+			this.addListeners();
 		}
 
 		/* Lifecycle, element removed from the DOM */
 		disconnectedCallback() {
-			this.removeEventListener('joomla.switcher.toggle', this.toggle, true);
-			this.removeEventListener('click', this.switch, true);
-			this.removeEventListener('keydown', this.keydown, true);
+			this.removeListeners();
 		}
 
 		/* Method to dispatch events */
@@ -227,17 +229,33 @@
 		/** Method to toggle the switch */
 		toggle() {
 			this.newActive = this.inputs[1].classList.contains('active') ? 0 : 1;
-
-			this.switch.bind(this)();
+			this.switch();
 		}
 
 		keyEvents(event) {
 			if (event.keyCode === KEYCODE.ENTER || event.keyCode === KEYCODE.SPACE) {
 				event.preventDefault();
 				this.newActive = this.inputs[1].classList.contains('active') ? 0 : 1;
-
-				this.switch.bind(this)();
+				this.switch();
 			}
+		}
+
+		addListeners() {
+			this.inputs.forEach((switchEl) => {
+				// Add the active class on click
+				switchEl.addEventListener('click', this.toggle);
+			});
+
+			this.inputsContainer.addEventListener('keydown', this.keyEvents);
+		}
+
+		removeListeners() {
+			this.inputs.forEach((switchEl) => {
+				// Add the active class on click
+				switchEl.removeEventListener('click', this.toggle);
+			});
+
+			this.inputsContainer.removeEventListener('keydown', this.keyEvents);
 		}
 
 		onSubmit(e) {

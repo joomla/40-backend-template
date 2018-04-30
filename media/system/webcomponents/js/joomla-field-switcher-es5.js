@@ -79,7 +79,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			_this.inputLabel = '';
 			_this.inputLabelText = '';
 
+			// Let's bind some functions so we always have the same context
 			_this.createMarkup = _this.createMarkup.bind(_this);
+			_this.addListeners = _this.addListeners.bind(_this);
+			_this.removeListeners = _this.removeListeners.bind(_this);
+			_this.switch = _this.switch.bind(_this);
+			_this.toggle = _this.toggle.bind(_this);
+			_this.keyEvents = _this.keyEvents.bind(_this);
 			return _this;
 		}
 
@@ -89,53 +95,50 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 		_createClass(JoomlaSwitcherElement, [{
 			key: 'connectedCallback',
 			value: function connectedCallback() {
-				var _this2 = this;
-
-				if (!this.initialized && this.inputs.length === 0) {
-					this.inputs = [].slice.call(this.querySelectorAll('input'));
-
-					if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
-						throw new Error('`Joomla-switcher` requires two inputs type="radio"');
-					}
-
-					this.form = this.inputs[0].form;
-
-					if (this.form) {
-						this.onSubmit = this.onSubmit.bind(this);
-						this.form.addEventListener('submit', this.onSubmit);
-					}
-
-					this.inputLabel = document.querySelector('[for="' + this.id + '"]');
-					if (this.inputLabel) {
-						this.inputLabelText = this.inputLabel.innerText;
-					}
-					// Create the markup
-					this.createMarkup();
-
-					this.inputsContainer = this.inputs[0].parentNode;
-
-					this.inputsContainer.setAttribute('role', 'switch');
-
-					if (this.inputs[1].checked) {
-						this.inputs[1].parentNode.classList.add('active');
-						this.spans[1].classList.add('active');
-
-						// Aria-label ONLY in the container span!
-						this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
-					} else {
-						this.spans[0].classList.add('active');
-
-						// Aria-label ONLY in the container span!
-						this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
-					}
-
-					this.inputs.forEach(function (switchEl) {
-						// Add the active class on click
-						switchEl.addEventListener('click', _this2.toggle.bind(_this2));
-					});
-
-					this.inputsContainer.addEventListener('keydown', this.keyEvents.bind(this));
+				// Element was moved so we need to re add the event listeners
+				if (this.initialized && this.inputs.length > 0) {
+					this.addListeners();
+					return;
 				}
+
+				this.inputs = [].slice.call(this.querySelectorAll('input'));
+
+				if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
+					throw new Error('`Joomla-switcher` requires two inputs type="radio"');
+				}
+
+				this.form = this.inputs[0].form;
+
+				if (this.form) {
+					this.onSubmit = this.onSubmit.bind(this);
+					this.form.addEventListener('submit', this.onSubmit);
+				}
+
+				this.inputLabel = document.querySelector('[for="' + this.id + '"]');
+				if (this.inputLabel) {
+					this.inputLabelText = this.inputLabel.innerText;
+				}
+				// Create the markup
+				this.createMarkup();
+
+				this.inputsContainer = this.inputs[0].parentNode;
+
+				this.inputsContainer.setAttribute('role', 'switch');
+
+				if (this.inputs[1].checked) {
+					this.inputs[1].parentNode.classList.add('active');
+					this.spans[1].classList.add('active');
+
+					// Aria-label ONLY in the container span!
+					this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
+				} else {
+					this.spans[0].classList.add('active');
+
+					// Aria-label ONLY in the container span!
+					this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
+				}
+
+				this.addListeners();
 			}
 
 			/* Lifecycle, element removed from the DOM */
@@ -143,9 +146,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 		}, {
 			key: 'disconnectedCallback',
 			value: function disconnectedCallback() {
-				this.removeEventListener('joomla.switcher.toggle', this.toggle, true);
-				this.removeEventListener('click', this.switch, true);
-				this.removeEventListener('keydown', this.keydown, true);
+				this.removeListeners();
 			}
 
 			/* Method to dispatch events */
@@ -282,8 +283,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			key: 'toggle',
 			value: function toggle() {
 				this.newActive = this.inputs[1].classList.contains('active') ? 0 : 1;
-
-				this.switch.bind(this)();
+				this.switch();
 			}
 		}, {
 			key: 'keyEvents',
@@ -291,9 +291,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 				if (event.keyCode === KEYCODE.ENTER || event.keyCode === KEYCODE.SPACE) {
 					event.preventDefault();
 					this.newActive = this.inputs[1].classList.contains('active') ? 0 : 1;
-
-					this.switch.bind(this)();
+					this.switch();
 				}
+			}
+		}, {
+			key: 'addListeners',
+			value: function addListeners() {
+				var _this2 = this;
+
+				this.inputs.forEach(function (switchEl) {
+					// Add the active class on click
+					switchEl.addEventListener('click', _this2.toggle);
+				});
+
+				this.inputsContainer.addEventListener('keydown', this.keyEvents);
+			}
+		}, {
+			key: 'removeListeners',
+			value: function removeListeners() {
+				var _this3 = this;
+
+				this.inputs.forEach(function (switchEl) {
+					// Add the active class on click
+					switchEl.removeEventListener('click', _this3.toggle);
+				});
+
+				this.inputsContainer.removeEventListener('keydown', this.keyEvents);
 			}
 		}, {
 			key: 'onSubmit',

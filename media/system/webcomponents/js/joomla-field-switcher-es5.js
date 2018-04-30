@@ -1,4 +1,4 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15,6 +15,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 		ENTER: 13,
 		SPACE: 32
 	};
+
+	var template = document.createElement('template');
+	template.innerHTML = '<style>{{CSS_CONTENTS_AUTOMATICALLY_INSERTED_HERE}}</style>\n<slot></slot>';
+
+	// Patch shadow DOM
+	if (window.ShadyCSS) {
+		ShadyCSS.prepareTemplate(template, 'joomla-field-switcher');
+	}
 
 	var JoomlaSwitcherElement = function (_HTMLElement) {
 		_inherits(JoomlaSwitcherElement, _HTMLElement);
@@ -54,10 +62,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 			var _this = _possibleConstructorReturn(this, (JoomlaSwitcherElement.__proto__ || Object.getPrototypeOf(JoomlaSwitcherElement)).call(this));
 
+			_this.attachShadow({ mode: 'open' });
+			_this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+			// Patch shadow DOM
+			if (window.ShadyCSS) {
+				ShadyCSS.styleElement(_this);
+			}
+
 			_this.inputs = [];
 			_this.spans = [];
+			_this.initialized = false;
 			_this.inputsContainer = '';
 			_this.newActive = '';
+			_this.form = '';
+
+			_this.createMarkup = _this.createMarkup.bind(_this);
 			return _this;
 		}
 
@@ -69,38 +89,47 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			value: function connectedCallback() {
 				var _this2 = this;
 
-				this.inputs = [].slice.call(this.querySelectorAll('input'));
+				if (!this.initialized && this.inputs.length === 0) {
+					this.inputs = [].slice.call(this.querySelectorAll('input'));
 
-				if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
-					throw new Error('`Joomla-switcher` requires two inputs type="checkbox"');
+					if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
+						throw new Error('`Joomla-switcher` requires two inputs type="radio"');
+					}
+
+					this.form = this.inputs[0].form;
+
+					if (this.form) {
+						this.onSubmit = this.onSubmit.bind(this);
+						this.form.addEventListener('submit', this.onSubmit);
+					}
+
+					// Create the markup
+					this.createMarkup();
+
+					this.inputsContainer = this.inputs[0].parentNode;
+
+					this.inputsContainer.setAttribute('role', 'switch');
+
+					if (this.inputs[1].checked) {
+						this.inputs[1].parentNode.classList.add('active');
+						this.spans[1].classList.add('active');
+
+						// Aria-label ONLY in the container span!
+						this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
+					} else {
+						this.spans[0].classList.add('active');
+
+						// Aria-label ONLY in the container span!
+						this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
+					}
+
+					this.inputs.forEach(function (switchEl) {
+						// Add the active class on click
+						switchEl.addEventListener('click', _this2.toggle.bind(_this2));
+					});
+
+					this.inputsContainer.addEventListener('keydown', this.keyEvents.bind(this));
 				}
-
-				// Create the markup
-				this.createMarkup.bind(this)();
-
-				this.inputsContainer = this.firstElementChild;
-
-				this.inputsContainer.setAttribute('role', 'switch');
-
-				if (this.inputs[1].checked) {
-					this.inputs[1].parentNode.classList.add('active');
-					this.spans[1].classList.add('active');
-
-					// Aria-label ONLY in the container span!
-					this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
-				} else {
-					this.spans[0].classList.add('active');
-
-					// Aria-label ONLY in the container span!
-					this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
-				}
-
-				this.inputs.forEach(function (switchEl) {
-					// Add the active class on click
-					switchEl.addEventListener('click', _this2.toggle.bind(_this2));
-				});
-
-				this.inputsContainer.addEventListener('keydown', this.keyEvents.bind(this));
 			}
 
 			/* Lifecycle, element removed from the DOM */
@@ -131,18 +160,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			value: function createMarkup() {
 				var checked = 0;
 
-				// Create the first 'span' wrapper
-				var spanFirst = document.createElement('span');
-				spanFirst.classList.add('switcher');
-				spanFirst.setAttribute('tabindex', 0);
-
 				// If no type has been defined, the default as "success"
 				if (!this.type) {
 					this.setAttribute('type', 'success');
 				}
 
+				// Create the first 'span' wrapper
+				var spanFirst = document.createElement('span');
+				spanFirst.classList.add('switcher');
+				spanFirst.classList.add(this.type);
+				spanFirst.setAttribute('tabindex', '0');
+
 				var switchEl = document.createElement('span');
 				switchEl.classList.add('switch');
+				switchEl.classList.add(this.type);
 
 				this.inputs.forEach(function (input, index) {
 					// Remove the tab focus from the inputs
@@ -185,8 +216,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 				spanSecond.appendChild(labelSecond);
 
 				// Append everything back to the main element
-				this.appendChild(spanFirst);
-				this.appendChild(spanSecond);
+				this.shadowRoot.appendChild(spanFirst);
+				this.shadowRoot.appendChild(spanSecond);
+
+				this.initialized = true;
 			}
 
 			/** Method to toggle the switch */
@@ -255,6 +288,35 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 					this.switch.bind(this)();
 				}
+			}
+		}, {
+			key: 'onSubmit',
+			value: function onSubmit(e) {
+				// Check if there is another hidden input (eg form didn't submit)
+				var old = document.getElementById(this.inputs[0].id + '_hidden');
+				console.log(old);
+				if (old) {
+					old.parentNode.removeChild(old);
+				}
+
+				// Get the current value
+				var value = 0;
+				var inputs = this.shadowRoot.querySelectorAll('input');
+
+				if (parseInt(inputs[0].value, 10) === 1 || inputs[0].checked) {
+					value = 0;
+				} else if (parseInt(inputs[1].value, 10) === 1 || inputs[1].checked) {
+					value = 1;
+				}
+
+				// Create the hidden input for the web component
+				var hiddenInput = document.createElement('input');
+				hiddenInput.setAttribute('type', 'hidden');
+				hiddenInput.setAttribute('value', value.toString(10));
+				hiddenInput.setAttribute('name', this.inputs[0].getAttribute('name'));
+				hiddenInput.id = this.inputs[0].id + '_hidden';
+
+				this.parentNode.appendChild(hiddenInput);
 			}
 		}]);
 

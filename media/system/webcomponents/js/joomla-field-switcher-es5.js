@@ -76,6 +76,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			_this.inputsContainer = '';
 			_this.newActive = '';
 			_this.form = '';
+			_this.inputLabel = '';
+			_this.inputLabelText = '';
 
 			_this.createMarkup = _this.createMarkup.bind(_this);
 			return _this;
@@ -103,6 +105,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 						this.form.addEventListener('submit', this.onSubmit);
 					}
 
+					this.inputLabel = document.querySelector('[for="' + this.id + '"]');
+					if (this.inputLabel) {
+						this.inputLabelText = this.inputLabel.innerText;
+					}
 					// Create the markup
 					this.createMarkup();
 
@@ -198,11 +204,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 				var labelFirst = document.createElement('span');
 				labelFirst.classList.add('switcher-label-0');
-				labelFirst.innerText = this.offText;
+				labelFirst.innerHTML = '' + this.offText;
 
 				var labelSecond = document.createElement('span');
 				labelSecond.classList.add('switcher-label-1');
-				labelSecond.innerText = this.onText;
+				labelSecond.innerHTML = '' + this.onText;
 
 				if (checked === 0) {
 					labelFirst.classList.add('active');
@@ -250,7 +256,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 					this.inputsContainer.setAttribute('aria-checked', true);
 
 					// Aria-label ONLY in the container span!
-					this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
+					this.inputsContainer.setAttribute('aria-label', this.inputLabelText + ' ' + this.spans[1].innerHTML);
 
 					// Dispatch the "joomla.switcher.on" event
 					this.dispatchCustomEvent('joomla.switcher.on');
@@ -261,7 +267,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 					this.inputsContainer.setAttribute('aria-checked', false);
 
 					// Aria-label ONLY in the container span!
-					this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
+					this.inputsContainer.setAttribute('aria-label', this.inputLabelText + ' ' + this.spans[0].innerHTML);
 
 					// Dispatch the "joomla.switcher.off" event
 					this.dispatchCustomEvent('joomla.switcher.off');

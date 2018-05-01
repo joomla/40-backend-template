@@ -41,7 +41,7 @@
 			this.initialized = false;
 			this.inputsContainer = '';
 			this.newActive = '';
-			this.form = '';
+			this.hiddenInput = '';
 			this.inputLabel = '';
 			this.inputLabelText = '';
 
@@ -66,13 +66,6 @@
 
 			if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
 				throw new Error('`Joomla-switcher` requires two inputs type="radio"');
-			}
-
-			this.form = this.inputs[0].form;
-
-			if (this.form) {
-				this.onSubmit = this.onSubmit.bind(this);
-				this.form.addEventListener('submit', this.onSubmit);
 			}
 
 			this.inputLabel = document.querySelector(`[for="${this.id}"]`);
@@ -100,6 +93,14 @@
 			}
 
 			this.addListeners();
+
+			// Create the hidden input for the web component
+			this.hiddenInput = document.createElement('input');
+			this.hiddenInput.setAttribute('type', 'hidden');
+			this.hiddenInput.setAttribute('value', this.inputs[1].classList.contains('active') ? "1" : "0");
+			this.hiddenInput.setAttribute('name', this.inputs[0].getAttribute('name'));
+
+			this.appendChild(this.hiddenInput);
 		}
 
 		/* Lifecycle, element removed from the DOM */
@@ -229,6 +230,7 @@
 		/** Method to toggle the switch */
 		toggle() {
 			this.newActive = this.inputs[1].classList.contains('active') ? 0 : 1;
+			this.hiddenInput.setAttribute('value', this.inputs[1].classList.contains('active') ? '0' : '1');
 			this.switch();
 		}
 
@@ -256,34 +258,6 @@
 			});
 
 			this.inputsContainer.removeEventListener('keydown', this.keyEvents);
-		}
-
-		onSubmit(e) {
-			// Check if there is another hidden input (eg form didn't submit)
-			const old = document.getElementById(this.inputs[0].id + '_hidden');
-			console.log(old)
-			if (old) {
-				old.parentNode.removeChild(old);
-			}
-
-			// Get the current value
-			let value = 0;
-			const inputs = this.shadowRoot.querySelectorAll('input');
-
-			if (parseInt(inputs[0].value, 10) === 1 || inputs[0].checked) {
-				value = 0;
-			} else if (parseInt(inputs[1].value, 10) === 1 || inputs[1].checked) {
-				value = 1;
-			}
-
-			// Create the hidden input for the web component
-			const hiddenInput = document.createElement('input');
-			hiddenInput.setAttribute('type', 'hidden');
-			hiddenInput.setAttribute('value', value.toString(10));
-			hiddenInput.setAttribute('name', this.inputs[0].getAttribute('name'));
-			hiddenInput.id = this.inputs[0].id + '_hidden';
-
-			this.parentNode.appendChild(hiddenInput);
 		}
 	}
 

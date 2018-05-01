@@ -86,6 +86,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			_this.switch = _this.switch.bind(_this);
 			_this.toggle = _this.toggle.bind(_this);
 			_this.keyEvents = _this.keyEvents.bind(_this);
+			_this.onFocus = _this.onFocus.bind(_this);
 			return _this;
 		}
 
@@ -108,9 +109,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 				}
 
 				this.inputLabel = document.querySelector('[for="' + this.id + '"]');
+
 				if (this.inputLabel) {
 					this.inputLabelText = this.inputLabel.innerText;
 				}
+
 				// Create the markup
 				this.createMarkup();
 
@@ -297,9 +300,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 				}
 			}
 		}, {
+			key: 'onFocus',
+			value: function onFocus() {
+				console.log(this.inputsContainer);
+				this.inputsContainer.focus();
+			}
+		}, {
 			key: 'addListeners',
 			value: function addListeners() {
 				var _this2 = this;
+
+				console.log(this.inputsContainer);
+				if (this.inputLabel) {
+					this.inputLabel.addEventListener('click', this.onFocus);
+				}
 
 				this.inputs.forEach(function (switchEl) {
 					// Add the active class on click
@@ -312,6 +326,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			key: 'removeListeners',
 			value: function removeListeners() {
 				var _this3 = this;
+
+				if (this.inputLabel) {
+					this.inputLabel.removeEventListener('click', this.onFocus);
+				}
 
 				this.inputs.forEach(function (switchEl) {
 					// Add the active class on click

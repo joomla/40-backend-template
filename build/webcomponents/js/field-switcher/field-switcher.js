@@ -52,6 +52,7 @@
 			this.switch = this.switch.bind(this);
 			this.toggle = this.toggle.bind(this);
 			this.keyEvents = this.keyEvents.bind(this);
+			this.onFocus = this.onFocus.bind(this);
 		}
 
 		/* Lifecycle, element appended to the DOM */
@@ -69,9 +70,11 @@
 			}
 
 			this.inputLabel = document.querySelector(`[for="${this.id}"]`);
+
 			if (this.inputLabel) {
 				this.inputLabelText = this.inputLabel.innerText;
 			}
+
 			// Create the markup
 			this.createMarkup();
 
@@ -242,7 +245,17 @@
 			}
 		}
 
+		onFocus() {
+			console.log(this.inputsContainer);
+			this.inputsContainer.focus();
+		}
+
 		addListeners() {
+			console.log(this.inputsContainer);
+			if (this.inputLabel) {
+				this.inputLabel.addEventListener('click', this.onFocus);
+			}
+
 			this.inputs.forEach((switchEl) => {
 				// Add the active class on click
 				switchEl.addEventListener('click', this.toggle);
@@ -252,6 +265,10 @@
 		}
 
 		removeListeners() {
+			if (this.inputLabel) {
+				this.inputLabel.removeEventListener('click', this.onFocus);
+			}
+
 			this.inputs.forEach((switchEl) => {
 				// Add the active class on click
 				switchEl.removeEventListener('click', this.toggle);

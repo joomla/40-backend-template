@@ -7,7 +7,7 @@
 
 	const template = document.createElement('template');
 	const path = document.currentScript.src;
-	template.innerHTML = `<link href="${path.replace('/js/', '/css/').replace('.js', '.css')}" rel="stylesheet" type="text/css"></link>
+	template.innerHTML = `<link href="${path.replace('/js/', '/css/').replace('.js', '.css').replace('-es5', '')}" rel="stylesheet" type="text/css"></link>
 <slot></slot>`;
 
 	// Patch shadow DOM

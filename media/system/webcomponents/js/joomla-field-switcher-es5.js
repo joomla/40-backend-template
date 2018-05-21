@@ -18,7 +18,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 	var template = document.createElement('template');
 	var path = document.currentScript.src;
-	template.innerHTML = '<link href="' + path.replace('/js/', '/css/').replace('.js', '.css') + '" rel="stylesheet" type="text/css"></link>\n<slot></slot>';
+	template.innerHTML = '<link href="' + path.replace('/js/', '/css/').replace('.js', '.css').replace('-es5', '') + '" rel="stylesheet" type="text/css"></link>\n<slot></slot>';
 
 	// Patch shadow DOM
 	if (window.ShadyCSS) {

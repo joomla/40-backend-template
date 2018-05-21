@@ -116,8 +116,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 					}
 					// @todo end
 
-					// Add possible parent tab to the aray for activation
-					console.log(tabLinkHash);
+					// Add possible parent tab to the array for activation
 					if (tabLinkHash.length && tabLinkHash[0] !== '') {
 						var hash = tabLinkHash[0].substring(5);
 						var element = this.querySelector('#' + hash);

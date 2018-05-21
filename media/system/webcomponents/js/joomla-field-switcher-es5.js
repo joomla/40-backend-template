@@ -17,7 +17,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 	};
 
 	var template = document.createElement('template');
-	template.innerHTML = '<style>{{CSS_CONTENTS_AUTOMATICALLY_INSERTED_HERE}}</style>\n<slot></slot>';
+	var path = document.currentScript.src;
+	template.innerHTML = '<link href="' + path.replace('/js/', '/css/').replace('.js', '.css') + '" rel="stylesheet" type="text/css"></link>\n<slot></slot>';
 
 	// Patch shadow DOM
 	if (window.ShadyCSS) {
@@ -302,7 +303,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 		}, {
 			key: 'onFocus',
 			value: function onFocus() {
-				console.log(this.inputsContainer);
 				this.inputsContainer.focus();
 			}
 		}, {
@@ -310,7 +310,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 			value: function addListeners() {
 				var _this2 = this;
 
-				console.log(this.inputsContainer);
 				if (this.inputLabel) {
 					this.inputLabel.addEventListener('click', this.onFocus);
 				}

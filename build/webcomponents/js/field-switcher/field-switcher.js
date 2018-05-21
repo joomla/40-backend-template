@@ -6,7 +6,8 @@
 	};
 
 	const template = document.createElement('template');
-	template.innerHTML = `<style>{{CSS_CONTENTS_AUTOMATICALLY_INSERTED_HERE}}</style>
+	const path = document.currentScript.src;
+	template.innerHTML = `<link href="${path.replace('/js/', '/css/').replace('.js', '.css')}" rel="stylesheet" type="text/css"></link>
 <slot></slot>`;
 
 	// Patch shadow DOM
@@ -246,12 +247,10 @@
 		}
 
 		onFocus() {
-			console.log(this.inputsContainer);
 			this.inputsContainer.focus();
 		}
 
 		addListeners() {
-			console.log(this.inputsContainer);
 			if (this.inputLabel) {
 				this.inputLabel.addEventListener('click', this.onFocus);
 			}

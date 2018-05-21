@@ -15,17 +15,14 @@
   }
 
   .page-title {
-    display: inline-block;
     margin: 0 5px;
     font-size: 1.2rem;
-    font-weight: normal;
     line-height: $header-height;
     color: $atum-template-color-dark;
 
     [class^="icon-"] {
       margin-right: 10px;
     }
-
   }
 
   .nav-link {
@@ -39,11 +36,6 @@
       color: $atum-template-color-dark;
       vertical-align: middle;
       transition: all .2s ease-in-out;
-    }
-
-    .fa-external-link { // Position correct
-      position: relative;
-      left: 2px;
     }
 
     .badge {
@@ -60,7 +52,6 @@
       font-size: 1.3rem;
       transition: all .2s ease-in-out;
     }
-
   }
 
   .dropdown-notifications {
@@ -97,13 +88,11 @@
         color: $atum-container-main-bg;
       }
     }
-
   }
 
   .dropdown-header {
     padding-top: .5rem;
     padding-bottom: .5rem;
-    margin-bottom: .3rem;
     background-color: $atum-template-color-dark;
     color: $white;
     box-shadow: $atum-box-shadow;
@@ -119,7 +108,6 @@
     font-size: $h5-font-size;
     color: $atum-template-color-dark;
   }
-
 }
 
 @include media-breakpoint-down(md) {
@@ -132,9 +120,7 @@
     > div {
       flex-direction: column;
     }
-
   }
-
 }
 
 @include media-breakpoint-down(sm) {
@@ -144,7 +130,5 @@
     .header-items {
       flex-direction: column;
     }
-
   }
-
 }

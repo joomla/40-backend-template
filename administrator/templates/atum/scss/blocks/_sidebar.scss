@@ -6,10 +6,11 @@
   @include media-breakpoint-down(md) {
     padding-left: 0;
   }
-
 }
 
 .sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: $sidebar-width;
   background-color: $atum-template-color-dark;
@@ -17,20 +18,16 @@
   transition: all .3s ease;
 
   @include media-breakpoint-down(md) {
+
     .main-nav {
       max-height: calc(100vh - 147px);
     }
-
   }
 
   .main-brand {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    height: $main-brand-height;
+    padding: 15px;
+    margin-top: auto;
   }
-
 }
 
 .menu-toggle-icon {
@@ -40,7 +37,6 @@
 
 // Sidebar navigation
 .main-nav {
-  position: relative;
   width: $sidebar-width;
   list-style: none;
   background-color: $atum-template-color-dark;
@@ -104,11 +100,11 @@
     ul {
       position: absolute;
       top: 0;
+      bottom: 0;
       left: 50px;
       z-index: -3;
       display: block;
       width: $sidebar-width;
-      height: calc(100vh - #{$header-height});
       padding: 0;
       background-color: $atum-sidebar-child-bg;
       opacity: 0;
@@ -124,7 +120,6 @@
         text-indent: 15px;
       }
     }
-
   }
 
   .close {
@@ -145,9 +140,7 @@
       left: 60px;
       z-index: 1080;
       opacity: 1;
-      transition-delay: .2s;
     }
-
   }
 
   li li {
@@ -163,7 +156,6 @@
         background-color: $atum-template-color;
         box-shadow: inset 2px 0 2px rgba($black, .1);
       }
-
     }
 
     > span {
@@ -173,7 +165,6 @@
     &:last-of-type > a {
       border-bottom: 0;
     }
-
   }
 
   // Parent icons
@@ -189,6 +180,11 @@
 
   // 2nd level items
   .collapse-level-1 {
+
+    &:not(.show) {
+      display: block;
+    }
+
     a::before {
       display: none;
     }
@@ -223,15 +219,12 @@
     > li > a {
       color: $white;
       text-indent: 15px;
-
     }
-
   }
 
   .closed & {
     overflow-x: hidden;
   }
-
 }
 
 
@@ -246,8 +239,7 @@
     width: 3px;
     content: "";
     background-color: $atum-sidebar-active;
- }
-
+  }
 }
 
 // Sidebar Closed
@@ -270,7 +262,6 @@
   .menu-toggle-icon::before {
     content: "\f054";
   }
-
 }
 
 // Edit view

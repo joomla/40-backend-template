@@ -28,7 +28,6 @@
 @import "blocks/searchtools";
 @import "blocks/sidebar";
 @import "blocks/sidebar-nav";
-@import "blocks/status";
 @import "blocks/toolbar";
 @import "blocks/treeselect";
 @import "blocks/utilities";
@@ -54,7 +53,6 @@
 // Page specifics
 @import "pages/com_config";
 @import "pages/com_cpanel";
-@import "pages/com_modules";
 @import "pages/com_templates";
 @import "pages/com_users";
 
@@ -65,9 +63,8 @@
 
 .container-main {
   position: relative;
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - #{$header-height});
   background-color: $atum-container-main-bg;
-
 }
 
 .list-view-main {
@@ -90,7 +87,6 @@
   .subhead + & {
     padding-top: 0;
   }
-
 }
 
 .row-selected {

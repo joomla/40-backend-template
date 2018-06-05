@@ -61,7 +61,9 @@ $this->setMetaData('theme-color', '#1c3d5c');
 			margin-right: 0.5rem;
 			height: 1.2rem;
 			width: 1.2rem;
+			-webkit-text-stroke-color: currentColor;
 			stroke: currentColor;
+			-webkit-text-stroke-width: 16px;
 			stroke-width: 16px;
 			fill: transparent
 		}

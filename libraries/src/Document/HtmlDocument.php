@@ -826,7 +826,7 @@ class HtmlDocument extends Document
 		}
 
 		if (!empty($files)) {
-			return '<div style="display: none">' . implode('', $files) . '</div>';
+			return '<div style="width:0;height:0">' . implode('', $files) . '</div>';
 		}
 
 		return '';

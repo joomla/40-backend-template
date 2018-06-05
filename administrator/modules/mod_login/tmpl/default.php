@@ -32,7 +32,7 @@ Text::script('JHIDE');
 			<label class="text-white" for="mod-login-username"><?php echo Text::_('JGLOBAL_USERNAME'); ?></label>
 			<div class="input-group">
 				<span class="input-group-prepend">
-					<span class="input-group-text"><span class="fa fa-user" aria-hidden="true"></span></span>
+					<span class="input-group-text"><?php echo Factory::getDocument()->setIcons('user', 'demo-class'); ?></span>
 				</span>
 				<input
 					name="username"
@@ -51,7 +51,7 @@ Text::script('JHIDE');
 			<div class="input-group">
 				<span class="input-group-prepend">
 					<span class="input-group-text">
-						<span class="fa fa-lock" aria-hidden="true"></span>
+						<?php echo Factory::getDocument()->setIcons('lock', 'demo-class'); ?>
 						<span class="sr-only"><?php echo Text::_('JSHOW'); ?></span>
 					</span>
 				</span>
@@ -71,7 +71,7 @@ Text::script('JHIDE');
 			<label class="text-white" for="mod-login-secretkey"><?php echo Text::_('JGLOBAL_SECRETKEY'); ?></label>
 				<div class="input-group">
 					<span class="input-group-prepend">
-						<span class="input-group-text"><span class="fa fa-shield" aria-hidden="true"></span></span>
+						<?php echo Factory::getDocument()->setIcons('shield', 'demo-class'); ?>
 					</span>
 					<input
 						name="secretkey"

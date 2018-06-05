@@ -524,7 +524,7 @@ class Document
 				$this->icons[] = $icon;
 			}
 
-			return '<svg class="' . $classes . '"><use xlink:href="#joomla-i-' . $icon . '"></use></svg>';
+			return '<svg class="' . $classes . '"><use href="#joomla-i-' . $icon . '"></use></svg>';
 		}
 
 		return '';

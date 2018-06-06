@@ -821,7 +821,9 @@ class HtmlDocument extends Document
 			$file = HTMLHelper::image('vendor/font-awesome/' . $icon . '.svg', '', null,true, 1);
 
 			if ($file) {
-				$files[] = @file_get_contents(JPATH_ROOT . $file);
+				$matches = [];
+				preg_match('$(\/media.+)$', $file, $matches);
+				$files[] = @file_get_contents(JPATH_ROOT . $matches[1]);
 			}
 		}
 

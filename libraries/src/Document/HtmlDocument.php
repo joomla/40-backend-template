@@ -12,6 +12,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -151,6 +152,7 @@ class HtmlDocument extends Document
 		$data['scripts']     = $this->_scripts;
 		$data['script']      = $this->_script;
 		$data['custom']      = $this->_custom;
+		$data['icons']       = $this->icons;
 		$data['scriptText']  = \JText::getScriptStrings();
 
 		return $data;
@@ -179,6 +181,7 @@ class HtmlDocument extends Document
 			$this->_scripts     = array();
 			$this->_script      = array();
 			$this->_custom      = array();
+			$this->icons        = array();
 		}
 
 		if (is_array($types))
@@ -255,6 +258,7 @@ class HtmlDocument extends Document
 		$this->_scripts     = $data['scripts'] ?? $this->_scripts;
 		$this->_script      = $data['script'] ?? $this->_script;
 		$this->_custom      = $data['custom'] ?? $this->_custom;
+		$this->icons        = $data['custom'] ?? $this->icons;
 
 		if (isset($data['scriptText']) && !empty($data['scriptText']))
 		{
@@ -794,6 +798,39 @@ class HtmlDocument extends Document
 			$with[] = $this->getBuffer($args['type'], $args['name'], $args['attribs']);
 		}
 
+		$this->_template = str_replace('</body>', self::renderIcons() . '</body>', $this->_template);
+
 		return str_replace($replace, $with, $this->_template);
+	}
+
+
+	/**
+	 * Renders the document icons
+	 *
+	 * @return  string  The svgs markup for the icons
+	 *
+	 * @since   4.0.0
+	 */
+	public function renderIcons()
+	{
+		$files        = [];
+
+		// Generate the file and load the stylesheet link
+		foreach ($this->icons as $key => $icon)
+		{
+			$file = HTMLHelper::image('vendor/font-awesome/' . $icon . '.svg', '', null,true, 1);
+
+			if ($file) {
+				$matches = [];
+				preg_match('$(\/media.+)$', $file, $matches);
+				$files[] = @file_get_contents(JPATH_ROOT . $matches[1]);
+			}
+		}
+
+		if (!empty($files)) {
+			return '<div style="display:none">' . implode('', $files) . '</div>';
+		}
+
+		return '';
 	}
 }

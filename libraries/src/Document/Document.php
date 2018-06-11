@@ -243,6 +243,14 @@ class Document
 	protected $preloadTypes = ['preload', 'dns-prefetch', 'preconnect', 'prefetch', 'prerender'];
 
 	/**
+	 * Array of icons
+	 *
+	 * @var    array
+	 * @since  4.0.0
+	 */
+	public $icons = array();
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param   array  $options  Associative array of options
@@ -307,6 +315,11 @@ class Document
 		else
 		{
 			$this->setPreloadManager(new PreloadManager);
+		}
+
+		if (array_key_exists('icons', $options))
+		{
+			$this->setIcons($options['icons']);
 		}
 	}
 
@@ -480,6 +493,41 @@ class Document
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Returns the icon names
+	 *
+	 * @return  array
+	 *
+	 * @since   4.0.0
+	 */
+	public function getIcons()
+	{
+		return $this->icons;
+	}
+
+	/**
+	 * Setter for an icon
+	 *
+	 * @param   string  $icon  Name of the meta HTML tag
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	public function setIcons($icon, $classes = null)
+	{
+		if (!empty($icon))
+		{
+			// Setup options object
+			if (!in_array($icon, $this->getIcons())) {
+				$this->icons[] = $icon;
+			}
+
+			return '<svg class="' . $classes . '"><use href="#joomla-i-' . $icon . '"></use></svg>';
+		}
+
+		return '';
 	}
 
 	/**

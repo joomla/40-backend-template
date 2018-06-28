@@ -10,7 +10,10 @@ namespace Joomla\Component\Cpanel\Administrator\View\Help;
 
 defined('_JEXEC') or die;
 
+<<<<<<< HEAD
 use Joomla\CMS\Access\Exception\NotAllowed;
+=======
+>>>>>>> boom
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -150,7 +153,11 @@ class HtmlView extends BaseHtmlView
 		}
 		else
 		{
+<<<<<<< HEAD
 			throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+=======
+			throw new JUserAuthorizationexception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+>>>>>>> boom
 		}
 
 		Factory::getLanguage()->load(

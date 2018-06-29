@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_content
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Joomla\Component\Content\Site\View\Form;
@@ -74,8 +74,8 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected $user = null;
 
-  /*
-   * Should we show a captcha form for the submission of the article?
+	/*
+	 * Should we show a captcha form for the submission of the article?
 	 *
 	 * @var   bool
 	 * @since 3.7.0
@@ -222,12 +222,12 @@ class HtmlView extends BaseHtmlView
 
 		if ($this->params->get('menu-meta_keywords'))
 		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			$this->document->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
 		if ($this->params->get('robots'))
 		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
+			$this->document->setMetaData('robots', $this->params->get('robots'));
 		}
 	}
 }

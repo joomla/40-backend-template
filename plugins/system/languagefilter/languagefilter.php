@@ -3,7 +3,7 @@
  * @package     Joomla.Plugin
  * @subpackage  System.languagefilter
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -143,7 +143,7 @@ class PlgSystemLanguageFilter extends CMSPlugin
 
 			// Attach build rules for language SEF.
 			$router->attachBuildRule(array($this, 'preprocessBuildRule'), Router::PROCESS_BEFORE);
-			$router->attachBuildRule(array($this, 'buildRule'), Router::PROCESS_DURING);
+			$router->attachBuildRule(array($this, 'buildRule'), Router::PROCESS_BEFORE);
 
 			if ($this->mode_sef)
 			{
@@ -673,7 +673,7 @@ class PlgSystemLanguageFilter extends CMSPlugin
 					}
 
 					// Retrieves the Itemid from a login form.
-					$uri = new Uri($this->app->getUserState('users.login.form.return'));
+					$uri = new JUri($this->app->getUserState('users.login.form.return'));
 
 					if ($uri->getVar('Itemid'))
 					{

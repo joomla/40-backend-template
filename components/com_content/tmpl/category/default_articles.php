@@ -3,11 +3,13 @@
  * @package     Joomla.Site
  * @subpackage  com_content
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\Component\Content\Site\Helper\AssociationHelper;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
@@ -33,10 +35,10 @@ if (!empty($this->items))
 }
 ?>
 
-<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="com-content-category__articles form-inline">
 
 <?php if ($this->params->get('filter_field') !== 'hide' || $this->params->get('show_pagination_limit')) : ?>
-	<fieldset class="filters btn-toolbar clearfix">
+	<fieldset class="com-content-category__filters filters btn-toolbar clearfix">
 		<legend class="hidden-xs-up"><?php echo JText::_('COM_CONTENT_FORM_FILTER_LEGEND'); ?></legend>
 		<?php if ($this->params->get('filter_field') !== 'hide') : ?>
 			<div class="btn-group">
@@ -54,7 +56,7 @@ if (!empty($this->items))
 			</div>
 		<?php endif; ?>
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
-			<div class="btn-group float-right">
+			<div class="com-content-category__pagination btn-group float-right">
 				<label for="limit" class="sr-only">
 					<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
 				</label>
@@ -68,7 +70,7 @@ if (!empty($this->items))
 		<input type="hidden" name="task" value="">
 	</fieldset>
 
-	<div class="control-group hidden-xs-up float-right">
+	<div class="com-content-category__filter-submit control-group hidden-xs-up float-right">
 		<div class="controls">
 			<button type="submit" name="filter_submit" class="btn btn-primary"><?php echo JText::_('COM_CONTENT_FORM_FILTER_SUBMIT'); ?></button>
 		</div>
@@ -77,11 +79,11 @@ if (!empty($this->items))
 
 <?php if (empty($this->items)) : ?>
 	<?php if ($this->params->get('show_no_articles', 1)) : ?>
-		<p><?php echo JText::_('COM_CONTENT_NO_ARTICLES'); ?></p>
+		<p class="com-content-category__no-articles"><?php echo JText::_('COM_CONTENT_NO_ARTICLES'); ?></p>
 	<?php endif; ?>
 <?php else : ?>
 
-	<table class="category table table-striped table-bordered table-hover">
+	<table class="com-content-category__table category table table-striped table-bordered table-hover">
 		<?php
 		$headerTitle    = '';
 		$headerDate     = '';
@@ -156,16 +158,14 @@ if (!empty($this->items))
 						<?php echo $this->escape($article->title); ?>
 					</a>
 					<?php if (JLanguageAssociations::isEnabled() && $this->params->get('show_associations')) : ?>
-						<?php $associations = ContentHelperAssociation::displayAssociations($article->id); ?>
+						<?php $associations = AssociationHelper::displayAssociations($article->id); ?>
 						<?php foreach ($associations as $association) : ?>
-							<?php if ($association['language']->lang_code != JFactory::getLanguage()->getTag()) : ?>
-								<?php if ($this->params->get('flags', 1) && $association['language']->image) : ?>
-									<?php $flag = JHtml::_('image', 'mod_languages/' . $association['language']->image . '.gif', $association['language']->title_native, array('title' => $association['language']->title_native), true); ?>
-									&nbsp;<a href="<?php echo JRoute::_($association['item']); ?>"><?php echo $flag; ?></a>&nbsp;
-								<?php else : ?>
-									<?php $class = 'label label-association label-' . $association['language']->sef; ?>
-									&nbsp;<a class="<?php echo $class; ?>" href="<?php echo JRoute::_($association['item']); ?>"><?php echo strtoupper($association['language']->sef); ?></a>&nbsp;
-								<?php endif; ?>
+							<?php if ($this->params->get('flags', 1) && $association['language']->image) : ?>
+								<?php $flag = JHtml::_('image', 'mod_languages/' . $association['language']->image . '.gif', $association['language']->title_native, array('title' => $association['language']->title_native), true); ?>
+								&nbsp;<a href="<?php echo JRoute::_($association['item']); ?>"><?php echo $flag; ?></a>&nbsp;
+							<?php else : ?>
+								<?php $class = 'label label-association label-' . $association['language']->sef; ?>
+								&nbsp;<a class="<?php echo $class; ?>" href="<?php echo JRoute::_($association['item']); ?>"><?php echo strtoupper($association['language']->sef); ?></a>&nbsp;
 							<?php endif; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
@@ -180,30 +180,30 @@ if (!empty($this->items))
 						<?php echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE'); ?>
 					</a>
 					<?php if (JLanguageAssociations::isEnabled() && $this->params->get('show_associations')) : ?>
-						<?php $associations = ContentHelperAssociation::displayAssociations($article->id); ?>
+						<?php $associations = AssociationHelper::displayAssociations($article->id); ?>
 						<?php foreach ($associations as $association) : ?>
 							<?php if ($this->params->get('flags', 1)) : ?>
 								<?php $flag = JHtml::_('image', 'mod_languages/' . $association['language']->image . '.gif', $association['language']->title_native, array('title' => $association['language']->title_native), true); ?>
 								&nbsp;<a href="<?php echo JRoute::_($association['item']); ?>"><?php echo $flag; ?></a>&nbsp;
 							<?php else : ?>
-								<?php $class = 'label label-association label-' . $association['language']->sef; ?>
+								<?php $class = 'badge badge-association badge-' . $association['language']->sef; ?>
 								&nbsp;<a class="' . <?php echo $class; ?> . '" href="<?php echo JRoute::_($association['item']); ?>"><?php echo strtoupper($association['language']->sef); ?></a>&nbsp;
 							<?php endif; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php if ($article->state == 0) : ?>
-					<span class="list-published label label-warning">
+					<span class="list-published badge badge-warning">
 						<?php echo JText::_('JUNPUBLISHED'); ?>
 					</span>
 				<?php endif; ?>
 				<?php if (strtotime($article->publish_up) > strtotime(JFactory::getDate())) : ?>
-					<span class="list-published label label-warning">
+					<span class="list-published badge badge-warning">
 						<?php echo JText::_('JNOTPUBLISHEDYET'); ?>
 					</span>
 				<?php endif; ?>
 				<?php if ((strtotime($article->publish_down) < strtotime(JFactory::getDate())) && $article->publish_down != JFactory::getDbo()->getNullDate()) : ?>
-					<span class="list-published label label-warning">
+					<span class="list-published badge badge-warning">
 						<?php echo JText::_('JEXPIRED'); ?>
 					</span>
 				<?php endif; ?>
@@ -272,14 +272,15 @@ if (!empty($this->items))
 <?php // Add pagination links ?>
 <?php if (!empty($this->items)) : ?>
 	<?php if (($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
-		<div class="w-100">
+		<div class="com-content-category__navigation w-100">
 			<?php if ($this->params->def('show_pagination_results', 1)) : ?>
-				<p class="counter float-right pt-3 pr-2">
+				<p class="com-content-category__counter counter float-right pt-3 pr-2">
 					<?php echo $this->pagination->getPagesCounter(); ?>
 				</p>
 			<?php endif; ?>
-
-			<?php echo $this->pagination->getPagesLinks(); ?>
+			<div class="com-content-category__pagination">
+				<?php echo $this->pagination->getPagesLinks(); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 <?php endif; ?>

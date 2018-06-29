@@ -59,7 +59,7 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 @-ms-viewport {
   width: device-width; }
@@ -4010,12 +4010,15 @@ button.close {
   .bs-popover-top .arrow, .bs-popover-auto[x-placement^="top"] .arrow {
     bottom: calc((0.5rem + 1px) * -1); }
   .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before,
-  .bs-popover-top .arrow::after, .bs-popover-auto[x-placement^="top"] .arrow::after {
+  .bs-popover-top .arrow::after,
+  .bs-popover-auto[x-placement^="top"] .arrow::after {
     border-width: 0.5rem 0.5rem 0; }
   .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before {
     bottom: 0;
     border-top-color: rgba(0, 0, 0, 0.25); }
-  .bs-popover-top .arrow::after, .bs-popover-auto[x-placement^="top"] .arrow::after {
+  
+  .bs-popover-top .arrow::after,
+  .bs-popover-auto[x-placement^="top"] .arrow::after {
     bottom: 1px;
     border-top-color: #fff; }
 
@@ -4027,12 +4030,15 @@ button.close {
     height: 1rem;
     margin: 0.3rem 0; }
   .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before,
-  .bs-popover-right .arrow::after, .bs-popover-auto[x-placement^="right"] .arrow::after {
+  .bs-popover-right .arrow::after,
+  .bs-popover-auto[x-placement^="right"] .arrow::after {
     border-width: 0.5rem 0.5rem 0.5rem 0; }
   .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before {
     left: 0;
     border-right-color: rgba(0, 0, 0, 0.25); }
-  .bs-popover-right .arrow::after, .bs-popover-auto[x-placement^="right"] .arrow::after {
+  
+  .bs-popover-right .arrow::after,
+  .bs-popover-auto[x-placement^="right"] .arrow::after {
     left: 1px;
     border-right-color: #fff; }
 
@@ -4041,12 +4047,15 @@ button.close {
   .bs-popover-bottom .arrow, .bs-popover-auto[x-placement^="bottom"] .arrow {
     top: calc((0.5rem + 1px) * -1); }
   .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before,
-  .bs-popover-bottom .arrow::after, .bs-popover-auto[x-placement^="bottom"] .arrow::after {
+  .bs-popover-bottom .arrow::after,
+  .bs-popover-auto[x-placement^="bottom"] .arrow::after {
     border-width: 0 0.5rem 0.5rem 0.5rem; }
   .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before {
     top: 0;
     border-bottom-color: rgba(0, 0, 0, 0.25); }
-  .bs-popover-bottom .arrow::after, .bs-popover-auto[x-placement^="bottom"] .arrow::after {
+  
+  .bs-popover-bottom .arrow::after,
+  .bs-popover-auto[x-placement^="bottom"] .arrow::after {
     top: 1px;
     border-bottom-color: #fff; }
   .bs-popover-bottom .popover-header::before, .bs-popover-auto[x-placement^="bottom"] .popover-header::before {
@@ -4067,12 +4076,15 @@ button.close {
     height: 1rem;
     margin: 0.3rem 0; }
   .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before,
-  .bs-popover-left .arrow::after, .bs-popover-auto[x-placement^="left"] .arrow::after {
+  .bs-popover-left .arrow::after,
+  .bs-popover-auto[x-placement^="left"] .arrow::after {
     border-width: 0.5rem 0 0.5rem 0.5rem; }
   .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before {
     right: 0;
     border-left-color: rgba(0, 0, 0, 0.25); }
-  .bs-popover-left .arrow::after, .bs-popover-auto[x-placement^="left"] .arrow::after {
+  
+  .bs-popover-left .arrow::after,
+  .bs-popover-auto[x-placement^="left"] .arrow::after {
     right: 1px;
     border-left-color: #fff; }
 
@@ -8739,12 +8751,7 @@ body {
 img {
   max-width: 100%; }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-weight: bold; }
 
 small,
@@ -8753,6 +8760,9 @@ small,
 
 dd {
   margin-bottom: 0; }
+
+.mod-menu {
+  flex-direction: column; }
 
 .j-main-container .alert {
   margin: 10px; }
@@ -8983,23 +8993,23 @@ td .form-control {
       color: #fff; }
     .container-header .navbar-brand:hover, .container-header .navbar-brand:focus {
       color: #efefef; }
-  .container-header .navbar-nav.flex-column {
+  .container-header .mod-menu {
     flex-direction: row !important; }
     @media (max-width: 991.98px) {
-      .container-header .navbar-nav.flex-column {
+      .container-header .mod-menu {
         flex-direction: column !important;
         margin-top: 20px; } }
   .container-header .navbar-collapse {
     flex-grow: 0; }
-  .container-header .navbar-nav li {
+  .container-header .mod-menu li {
     position: relative;
     display: inline-block;
     margin-right: 20px;
     text-transform: uppercase;
     letter-spacing: 1.75px; }
-    .container-header .navbar-nav li:last-child {
+    .container-header .mod-menu li:last-child {
       margin-right: 0; }
-    .container-header .navbar-nav li::after {
+    .container-header .mod-menu li::after {
       position: absolute;
       right: 50%;
       bottom: 0;
@@ -9012,13 +9022,13 @@ td .form-control {
       opacity: .2;
       transition: all .2s ease, background-color .2s ease; }
       @media (max-width: 991.98px) {
-        .container-header .navbar-nav li::after {
+        .container-header .mod-menu li::after {
           display: none; } }
-    .container-header .navbar-nav li.active::after, .container-header .navbar-nav li:hover::after {
+    .container-header .mod-menu li.active::after, .container-header .mod-menu li:hover::after {
       right: 2px;
       left: 0;
       background: #fff; }
-    .container-header .navbar-nav li a {
+    .container-header .mod-menu li a {
       position: relative;
       display: block;
       padding: .25rem 0 0;
@@ -9711,7 +9721,7 @@ joomla-alert {
     box-shadow: -1px 0 0 rgba(0, 0, 0, 0.05); }
     .nav.nav-tabs .nav-link.active {
       background-color: rgba(0, 0, 0, 0.03);
-      background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.05) 100%);
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05) 100%);
       border-right: 0;
       border-left: 0;
       border-top-left-radius: 0;

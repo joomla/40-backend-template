@@ -3,17 +3,15 @@
  * @package     Joomla.Site
  * @subpackage  com_content
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
-
-JHtml::_('behavior.caption');
 ?>
-<div class="archive">
+<div class="com-content-archive archive">
 <?php if ($this->params->get('show_page_heading')) : ?>
 <div class="page-header">
 <h1>
@@ -21,8 +19,8 @@ JHtml::_('behavior.caption');
 </h1>
 </div>
 <?php endif; ?>
-<form id="adminForm" action="<?php echo JRoute::_('index.php'); ?>" method="post" class="form-inline">
-	<fieldset class="filters">
+<form id="adminForm" action="<?php echo JRoute::_('index.php'); ?>" method="post" class="com-content-archive__form form-inline">
+	<fieldset class="com-content-archive__filters filters">
 	<div class="filter-search">
 		<?php if ($this->params->get('filter_field') !== 'hide') : ?>
 		<label class="filter-search-lbl sr-only" for="filter-search"><?php echo JText::_('COM_CONTENT_TITLE_FILTER_LABEL') . '&#160;'; ?></label>

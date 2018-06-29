@@ -229,6 +229,6 @@
 			type="component"
 			element="com_cpanel"
 			class="class:info-circle"
-			link="index.php?option=com_cpanel&amp;view=system"
+			link="index.php?option=com_cpanel&amp;view=help"
 	/>
 </menu>

@@ -109,14 +109,7 @@ foreach ($fieldSets as $name => $fieldSet)
 		$label = Text::_($label);
 	}
 
-	if (!$displayData->get('useCoreUI', false))
-	{
-		$helper = 'bootstrap';
-	}
-	else
-	{
-		$helper = 'uitab';
-	}
+	$helper = $displayData->get('useCoreUI', false) ? 'uitab' : 'bootstrap';
 
 	// Start the tab
 	echo HTMLHelper::_($helper . '.addTab', $tabName, 'attrib-' . $name, $label);

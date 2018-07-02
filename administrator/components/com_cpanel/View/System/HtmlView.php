@@ -460,6 +460,7 @@ class HtmlView extends BaseHtmlView
 		if (static::$notEmpty)
 		{
 			$this->links = $links;
+			$this->headerIcons = $headerIcons;
 		}
 		else
 		{

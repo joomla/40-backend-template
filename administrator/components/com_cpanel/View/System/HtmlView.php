@@ -129,7 +129,6 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Access
-		//MOD_MENU_ACCESS
 		if ($user->authorise('core.manage', 'com_users'))
 		{
 			// Site
@@ -151,7 +150,6 @@ class HtmlView extends BaseHtmlView
 			static::$notEmpty = true;
 		}
 
-		// index.php?option=com_config#page-permissions
 		if ($user->authorise('core.admin'))
 		{
 			$new = [
@@ -479,9 +477,9 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Helper function to build an array for each link
 	 *
-	 * @param string $name tha name of the link
-	 * @param string $link tha name of the link
-	 * @param string $icon tha name of the link
+	 * @param   string  $name  the name of the link
+	 * @param   string  $link  the url of the link
+	 * @param   string  $icon  the name of the icon
 	 *
 	 * @return array
 	 *

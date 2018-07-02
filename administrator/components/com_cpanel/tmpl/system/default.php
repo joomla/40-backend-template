@@ -8,16 +8,23 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
 ?>
 
 <div class="com-cpanel-system">
 	<?php foreach ($this->links as $name => $links) : ?>
 	<div class="com-cpanel-system__category">
-		<h4 class="com-cpanel-system__header"><?php echo \Joomla\CMS\Language\Text::_($name); ?></h4>
+		<h4 class="com-cpanel-system__header">
+			<?php if ($this->headerIcons[$name]) : ?>
+				<span class="fa fa-<?php echo $this->headerIcons[$name]; ?>" aria-hidden="true"></span>
+			<?php endif; ?>
+			<?php echo Text::_($name); ?>
+		</h4>
 		<ul class="list-group list-group-flush">
 			<?php foreach ($links as $id => $link) : ?>
 				<li class="list-group-item">
-					<a href="<?php echo $link['link']; ?>"><?php echo JText::_($link['title']); ?></a>
+					<a href="<?php echo $link['link']; ?>"><?php echo Text::_($link['title']); ?></a>
 				</li>
 			<?php endforeach; ?>
 		</ul>

@@ -1,11 +1,4 @@
 <?php
-
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Session\Session;
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_media
@@ -15,6 +8,13 @@ use Joomla\CMS\Session\Session;
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
 
 // Add javascripts
 HTMLHelper::_('behavior.core');
@@ -54,6 +54,7 @@ $config = [
 
 Factory::getDocument()->addScriptOptions('com_media', $config);
 
+$this->useCoreUI = true;
 ?>
 <div class="row">
 	<form action="#" method="post" name="adminForm" id="media-form" class="form-validate col-md-12">

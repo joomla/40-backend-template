@@ -13,7 +13,7 @@ use Joomla\CMS\Language\Text;
 ?>
 
 <div class="com-cpanel-help">
-	<h4 class="com-cpanel-help__header"><span class="fa fa-<?php echo $link['icon']; ?>"></span><?php echo Text::_('MOD_MENU_HELP'); ?></h4>
+	<h4 class="com-cpanel-help__header"><?php echo Text::_('MOD_MENU_HELP'); ?></h4>
 	<ul class="list-group list-group-flush">
 		<?php foreach ($this->links as $link) : ?>
 			<li class="list-group-item">

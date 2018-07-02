@@ -18,8 +18,6 @@
   }
 
   &-system {
-    -webkit-column-count: 4;
-    -moz-column-count: 4;
     column-count: 4;
 
     &__category {
@@ -43,6 +41,14 @@
 
     .list-group {
       box-shadow: $atum-box-shadow;
+    }
+
+    @include media-breakpoint-down(md) {
+      column-count: 2;
+    }
+
+    @include media-breakpoint-down(sm) {
+      column-count: 1;
     }
   }
 }

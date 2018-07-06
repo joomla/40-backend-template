@@ -5,6 +5,16 @@
 		SPACE: 32,
 	};
 
+	const template = document.createElement('template');
+	const path = document.currentScript.src;
+	template.innerHTML = `<link href="${path.replace('/js/', '/css/').replace('.js', '.css').replace('-es5', '')}" rel="stylesheet" type="text/css"></link>
+<slot></slot>`;
+
+	// Patch shadow DOM
+	if (window.ShadyCSS) {
+		ShadyCSS.prepareTemplate(template, 'joomla-field-switcher');
+	}
+
 	class JoomlaSwitcherElement extends HTMLElement {
 		/* Attributes to monitor */
 		static get observedAttributes() { return ['type', 'off-text', 'on-text']; }
@@ -19,24 +29,57 @@
 		constructor() {
 			super();
 
+			this.attachShadow({mode: 'open'});
+			this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+			// Patch shadow DOM
+			if (window.ShadyCSS) {
+				ShadyCSS.styleElement(this)
+			}
+
 			this.inputs = [];
 			this.spans = [];
+			this.initialized = false;
 			this.inputsContainer = '';
 			this.newActive = '';
+			this.hiddenInput = '';
+			this.inputLabel = '';
+			this.inputLabelText = '';
+
+			// Let's bind some functions so we always have the same context
+			this.createMarkup = this.createMarkup.bind(this);
+			this.addListeners = this.addListeners.bind(this);
+			this.removeListeners = this.removeListeners.bind(this);
+			this.switch = this.switch.bind(this);
+			this.toggle = this.toggle.bind(this);
+			this.keyEvents = this.keyEvents.bind(this);
+			this.onFocus = this.onFocus.bind(this);
 		}
 
 		/* Lifecycle, element appended to the DOM */
 		connectedCallback() {
+			// Element was moved so we need to re add the event listeners
+			if (this.initialized && this.inputs.length > 0) {
+				this.addListeners();
+				return;
+			}
+
 			this.inputs = [].slice.call(this.querySelectorAll('input'));
 
 			if (this.inputs.length !== 2 || this.inputs[0].type !== 'radio') {
-				throw new Error('`Joomla-switcher` requires two inputs type="checkbox"');
+				throw new Error('`Joomla-switcher` requires two inputs type="radio"');
+			}
+
+			this.inputLabel = document.querySelector(`[for="${this.id}"]`);
+
+			if (this.inputLabel) {
+				this.inputLabelText = this.inputLabel.innerText;
 			}
 
 			// Create the markup
-			this.createMarkup.bind(this)();
+			this.createMarkup();
 
-			this.inputsContainer = this.firstElementChild;
+			this.inputsContainer = this.inputs[0].parentNode;
 
 			this.inputsContainer.setAttribute('role', 'switch');
 
@@ -53,19 +96,20 @@
 				this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
 			}
 
-			this.inputs.forEach((switchEl) => {
-				// Add the active class on click
-				switchEl.addEventListener('click', this.toggle.bind(this));
-			});
+			this.addListeners();
 
-			this.inputsContainer.addEventListener('keydown', this.keyEvents.bind(this));
+			// Create the hidden input for the web component
+			this.hiddenInput = document.createElement('input');
+			this.hiddenInput.setAttribute('type', 'hidden');
+			this.hiddenInput.setAttribute('value', this.inputs[1].classList.contains('active') ? "1" : "0");
+			this.hiddenInput.setAttribute('name', this.inputs[0].getAttribute('name'));
+
+			this.appendChild(this.hiddenInput);
 		}
 
 		/* Lifecycle, element removed from the DOM */
 		disconnectedCallback() {
-			this.removeEventListener('joomla.switcher.toggle', this.toggle, true);
-			this.removeEventListener('click', this.switch, true);
-			this.removeEventListener('keydown', this.keydown, true);
+			this.removeListeners();
 		}
 
 		/* Method to dispatch events */
@@ -80,18 +124,20 @@
 		createMarkup() {
 			let checked = 0;
 
-			// Create the first 'span' wrapper
-			const spanFirst = document.createElement('span');
-			spanFirst.classList.add('switcher');
-			spanFirst.setAttribute('tabindex', 0);
-
 			// If no type has been defined, the default as "success"
 			if (!this.type) {
 				this.setAttribute('type', 'success');
 			}
 
+			// Create the first 'span' wrapper
+			const spanFirst = document.createElement('span');
+			spanFirst.classList.add('switcher');
+			spanFirst.classList.add(this.type);
+			spanFirst.setAttribute('tabindex', '0');
+
 			const switchEl = document.createElement('span');
 			switchEl.classList.add('switch');
+			switchEl.classList.add(this.type);
 
 			this.inputs.forEach((input, index) => {
 				// Remove the tab focus from the inputs
@@ -116,11 +162,11 @@
 
 			const labelFirst = document.createElement('span');
 			labelFirst.classList.add('switcher-label-0');
-			labelFirst.innerText = this.offText;
+			labelFirst.innerHTML = `${this.offText}`;
 
 			const labelSecond = document.createElement('span');
 			labelSecond.classList.add('switcher-label-1');
-			labelSecond.innerText = this.onText;
+			labelSecond.innerHTML = `${this.onText}`;
 
 			if (checked === 0) {
 				labelFirst.classList.add('active');
@@ -134,8 +180,10 @@
 			spanSecond.appendChild(labelSecond);
 
 			// Append everything back to the main element
-			this.appendChild(spanFirst);
-			this.appendChild(spanSecond);
+			this.shadowRoot.appendChild(spanFirst);
+			this.shadowRoot.appendChild(spanSecond);
+
+			this.initialized = true;
 		}
 
 		/** Method to toggle the switch */
@@ -163,7 +211,7 @@
 				this.inputsContainer.setAttribute('aria-checked', true);
 
 				// Aria-label ONLY in the container span!
-				this.inputsContainer.setAttribute('aria-label', this.spans[1].innerHTML);
+				this.inputsContainer.setAttribute('aria-label', `${this.inputLabelText} ${this.spans[1].innerHTML}`);
 
 				// Dispatch the "joomla.switcher.on" event
 				this.dispatchCustomEvent('joomla.switcher.on');
@@ -174,7 +222,7 @@
 				this.inputsContainer.setAttribute('aria-checked', false);
 
 				// Aria-label ONLY in the container span!
-				this.inputsContainer.setAttribute('aria-label', this.spans[0].innerHTML);
+				this.inputsContainer.setAttribute('aria-label', `${this.inputLabelText} ${this.spans[0].innerHTML}`);
 
 				// Dispatch the "joomla.switcher.off" event
 				this.dispatchCustomEvent('joomla.switcher.off');
@@ -186,17 +234,46 @@
 		/** Method to toggle the switch */
 		toggle() {
 			this.newActive = this.inputs[1].classList.contains('active') ? 0 : 1;
-
-			this.switch.bind(this)();
+			this.hiddenInput.setAttribute('value', this.inputs[1].classList.contains('active') ? '0' : '1');
+			this.switch();
 		}
 
 		keyEvents(event) {
 			if (event.keyCode === KEYCODE.ENTER || event.keyCode === KEYCODE.SPACE) {
 				event.preventDefault();
 				this.newActive = this.inputs[1].classList.contains('active') ? 0 : 1;
-
-				this.switch.bind(this)();
+				this.switch();
 			}
+		}
+
+		onFocus() {
+			this.inputsContainer.focus();
+		}
+
+		addListeners() {
+			if (this.inputLabel) {
+				this.inputLabel.addEventListener('click', this.onFocus);
+			}
+
+			this.inputs.forEach((switchEl) => {
+				// Add the active class on click
+				switchEl.addEventListener('click', this.toggle);
+			});
+
+			this.inputsContainer.addEventListener('keydown', this.keyEvents);
+		}
+
+		removeListeners() {
+			if (this.inputLabel) {
+				this.inputLabel.removeEventListener('click', this.onFocus);
+			}
+
+			this.inputs.forEach((switchEl) => {
+				// Add the active class on click
+				switchEl.removeEventListener('click', this.toggle);
+			});
+
+			this.inputsContainer.removeEventListener('keydown', this.keyEvents);
 		}
 	}
 

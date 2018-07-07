@@ -1365,6 +1365,42 @@ iframe {
   background: transparent;
   border: 0; }
 
+.layout-edit joomla-tab > section {
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0; }
+
+.layout-edit joomla-tab > ul {
+  position: fixed;
+  z-index: 1080;
+  bottom: 0;
+  left: 15px;
+  right: 15px;
+  background-color: #fff;
+  box-shadow: none;
+  border-radius: 0; }
+
+.layout-edit joomla-tab a[role="tab"] {
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.25); }
+
+.layout-edit joomla-field-permissions > joomla-tab > ul {
+  position: static; }
+
+.layout-edit joomla-tab a[role="tab"][active]::after {
+  height: 6px;
+  top: -1px;
+  bottom: auto; }
+
+.layout-edit joomla-tab a[role="tab"][active] {
+  background-color: #fff;
+  background-image: none;
+  box-shadow: 2px 0 1px -1px rgba(0, 0, 0, 0.25) inset, -2px 0 1px -1px rgba(0, 0, 0, 0.25) inset; }
+
+.layout-edit .card-body {
+  background: transparent;
+  box-shadow: none; }
+
 .pagination {
   margin: 1rem; }
 
